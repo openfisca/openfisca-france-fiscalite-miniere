@@ -17,3 +17,11 @@ class nature(variables.Variable):
     label = "Substances dont l'imposition est prévue par la loi"
     reference = "https://bofip.impots.gouv.fr/bofip/264-PGP"
     definition_period = periods.YEAR
+
+
+class quantite(variables.Variable):
+    value_type = float
+    entity = entities.societe
+    label = "Kilogrammes extraits, dont l'imposition est prévue par la loi"
+    reference = "https://bofip.impots.gouv.fr/bofip/264-PGP"
+    definition_period = periods.YEAR
