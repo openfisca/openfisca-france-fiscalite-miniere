@@ -1,0 +1,13 @@
+- name: "Redevance départementale des mines - Or"
+  period: 2020
+  input:
+    nature:
+      2019: or
+      2018: or
+    quantite:
+      2019: 1000
+      2018: 1000
+  output:
+    redevance_departamentale_des_mines:
+      2020: 29900
+      2019: 0
