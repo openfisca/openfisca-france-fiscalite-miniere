@@ -1,0 +1,38 @@
+- name: "Redevance départementale des mines - Or"
+  input:
+    nature:
+      2019: or
+      2018: or
+    quantite:
+      2019: 1000
+      2018: 1000
+  output:
+    redevance_departamentale_des_mines:
+      2020: 29900
+      2019: 29000
+
+- name: "Redevance communale des mines - Or"
+  input:
+    nature:
+      2019: or
+      2018: or
+    quantite:
+      2019: 1000
+      2018: 1000
+  output:
+    redevance_communale_des_mines:
+      2020: 149700
+      2019: 145300
+
+- name: "Redevance départamentale + communale des mines - Or"
+  input:
+    nature:
+      2019: or
+      2018: or
+    quantite:
+      2019: 1000
+      2018: 1000
+  output:
+    redevance_totale_des_mines:
+      2020: 179600
+      2019: 174300
