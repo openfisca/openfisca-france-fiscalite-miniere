@@ -7,3 +7,5 @@ class Societe(entities.Entity):
 
 
 societe = Societe("société", "sociétés", "Société")
+
+entities = [societe]
