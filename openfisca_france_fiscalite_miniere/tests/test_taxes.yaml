@@ -1,0 +1,61 @@
+- name: "Taxe perçue pour la région de Guyane - PME"
+  input:
+    categorie:
+      2019: pme
+      2018: pme
+    quantite:
+      2019: 1000
+      2018: 1000
+  output:
+    taxe_guyane:
+      2020: 345230
+      2019: 358300
+
+- name: "Taxe perçue pour la région de Guyane - Autres entreprises"
+  input:
+    categorie:
+      2019: autre
+      2018: autre
+    quantite:
+      2019: 1000
+      2018: 1000
+  output:
+    taxe_guyane:
+      2020: 690470
+      2019: 716600
+
+- name: "Taxe perçue pour la région de Guyane - Déduction des investissements <= 45% de la taxe et <= 5 000 €"
+  input:
+    categorie:
+      2019: pme
+    quantite:
+      2019: 10
+    investissement:
+      2018: 1000.0
+  output:
+    taxe_guyane:
+      2020: 2452.3
+
+- name: "Taxe perçue pour la région de Guyane - Déduction des investissements > 45% de la taxe et <= 5 000 €"
+  input:
+    categorie:
+      2019: pme
+    quantite:
+      2019: 30
+    investissement:
+      2018: 5000.0
+  output:
+    taxe_guyane:
+      2020: 5696.3
+
+- name: "Taxe perçue pour la région de Guyane - Déduction des investissements <= 45% de la taxe et > 5 000 €"
+  input:
+    categorie:
+      2019: pme
+    quantite:
+      2019: 50
+    investissement:
+      2018: 7500.0
+  output:
+    taxe_guyane:
+      2020: 12261.5
