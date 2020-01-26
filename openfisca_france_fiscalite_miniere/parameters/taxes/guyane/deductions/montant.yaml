@@ -1,0 +1,8 @@
+metadata:
+  unit: currency-EUR
+
+values:
+  2009-01-01:
+    value: 5000.0
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2009-01-01

@@ -1,23 +1,35 @@
 import numpy
 
+from openfisca_core import indexed_enums
 from openfisca_core import periods
 from openfisca_core import variables
 
 from openfisca_france_fiscalite_miniere import entities
 
 
-class quantite(variables.Variable):
-    value_type = float
+class NatureEnum(indexed_enums.Enum):
+    aurifere = "Or contenu dans les minerais aurifères"
+    uranium = "Uranium contenu dans les minerais d'uranium"
+    tungstene = "Oxyde de tungstène (WO3) contenu dans les minerais de tungstène"
+    argentifères = "Argent contenu dans les minerais argentifères"
+    bauxite = "Bauxite"
+    fluorine = "Fluorine"
+
+
+class nature(variables.Variable):
+    value_type = indexed_enums.Enum
+    possible_values = NatureEnum
+    default_value = NatureEnum.aurifere
     entity = entities.societe
-    label = "Kilogrammes extraits, dont l'imposition est prévue par la loi"
+    label = "Substances dont l'imposition est prévue par la loi"
     reference = "https://bofip.impots.gouv.fr/bofip/264-PGP"
     definition_period = periods.YEAR
 
 
-class nature(variables.Variable):
-    value_type = str
+class quantite(variables.Variable):
+    value_type = float
     entity = entities.societe
-    label = "Substances dont l'imposition est prévue par la loi"
+    label = "Kilogrammes extraits, dont l'imposition est prévue par la loi"
     reference = "https://bofip.impots.gouv.fr/bofip/264-PGP"
     definition_period = periods.YEAR
 
@@ -30,7 +42,7 @@ class redevance_departamentale_des_mines(variables.Variable):
     definition_period = periods.YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
-        return _redevances_des_mines(societes, period, parameters, "departamentale")
+        return _redevances_des_mines(societes, period, parameters, "departamentales")
 
 
 class redevance_communale_des_mines(variables.Variable):
@@ -41,7 +53,7 @@ class redevance_communale_des_mines(variables.Variable):
     definition_period = periods.YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
-        return _redevances_des_mines(societes, period, parameters, "communale")
+        return _redevances_des_mines(societes, period, parameters, "communales")
 
 
 class redevance_totale_des_mines(variables.Variable):
@@ -58,8 +70,9 @@ class redevance_totale_des_mines(variables.Variable):
 
 def _redevances_des_mines(societes, period, parameters, perimetre) -> numpy.ndarray:
     annee_imposable = period.last_year
-    redevances = parameters(annee_imposable).redevances[perimetre]
+    params = parameters(annee_imposable).redevances[perimetre]
     quantites = societes("quantite", annee_imposable)
     natures = societes("nature", annee_imposable)
-    tarifs = tuple(redevances[nature] for nature in natures)
+    tarifs = (params[nature.name] for nature in natures.decode())
+    tarifs = numpy.fromiter(tarifs, dtype = float)
     return numpy.round(quantites * tarifs, decimals = 2)
