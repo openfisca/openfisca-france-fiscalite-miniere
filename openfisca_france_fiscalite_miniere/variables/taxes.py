@@ -25,7 +25,7 @@ class categorie(variables.Variable):
 class investissement(variables.Variable):
     value_type = float
     entity = entities.societe
-    label = "Investissements our la réduction des impacts de l'exploitation de l'or sur l'environnement"  # noqa: E501
+    label = "Investissements pour la réduction des impacts de l'exploitation de l'or sur l'environnement"  # noqa: E501
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
     definition_period = periods.YEAR
 

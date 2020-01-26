@@ -72,8 +72,8 @@ def _redevances_des_mines(societes, period, parameters, perimetre) -> numpy.ndar
     annee_imposable = period.last_year
     params = parameters(annee_imposable).redevances[perimetre]
     quantites = societes("quantite", annee_imposable)
-    natures = societes("nature", annee_imposable)
-    tarifs = (params[nature.name] for nature in natures.decode())
+    natures = societes("nature", annee_imposable).decode()
+    tarifs = (params[nature.name] for nature in natures)
     tarifs = numpy.fromiter(tarifs, dtype = float)
 
     return numpy.round(quantites * tarifs, decimals = 2)
