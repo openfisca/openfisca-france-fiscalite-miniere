@@ -1,0 +1,16 @@
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 141.20
+    metadata:
+      reference: https://www.legifrance.gouv.fr/affichCode.do;jsessionid=A704355998953570ACB83E8718235B23.tplgfr35s_3?idSectionTA=LEGISCTA000006191913&cidTexte=LEGITEXT000006069577&dateTexte=20180101
+  2018-01-01:
+    value: 145.30
+    metadata:
+      reference: https://www.legifrance.gouv.fr/affichCode.do;jsessionid=599BC490744BE95513BBF20EFA78D258.tplgfr35s_3?idSectionTA=LEGISCTA000006162672&cidTexte=LEGITEXT000006069577&dateTexte=20190101
+  2019-01-01:
+    value: 149.70
+    metadata:
+      reference: https://www.legifrance.gouv.fr/affichCode.do;jsessionid=A704355998953570ACB83E8718235B23.tplgfr35s_3?idSectionTA=LEGISCTA000006191913&cidTexte=LEGITEXT000006069577&dateTexte=20200101

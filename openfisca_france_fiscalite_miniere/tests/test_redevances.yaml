@@ -1,0 +1,18 @@
+- name: "Redevance des mines - Or"
+  input:
+    nature:
+      2019: aurifere
+      2018: aurifere
+    quantite:
+      2019: 1000
+      2018: 1000
+  output:
+    redevance_departamentale_des_mines:
+      2020: 29900
+      2019: 29000
+    redevance_communale_des_mines:
+      2020: 149700
+      2019: 145300
+    redevance_totale_des_mines:
+      2020: 179600
+      2019: 174300
