@@ -57,15 +57,14 @@ class taxe_guyane_deduction(variables.Variable):
 
     def formula(societes, period, parameters) -> numpy.ndarray:
         annee_imposable = period.last_year
-        annee_investissement = annee_imposable.last_year
         params = parameters(period).taxes.guyane
-        investissements = societes("investissement", annee_investissement)
+        investissements = societes("investissement", annee_imposable)
         taxes_brutes = societes("taxe_guyane_brute", period)
-        taux = params.deductions.taux
-        montant = params.deductions.montant
+        taux_deduction = params.deductions.taux
+        montant_deduction_max = params.deductions.montant
 
         return numpy.round(
-            numpy.amin([investissements, taxes_brutes * taux, montant]),
+            numpy.minimum(montant_deduction_max, numpy.minimum(investissements, taxes_brutes * taux_deduction)),
             decimals = 2,
             )
 
