@@ -38,10 +38,10 @@ class taxe_guyane_brute(variables.Variable):
     definition_period = periods.YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
-        annee_imposable = period.last_year
-        params = parameters(annee_imposable).taxes.guyane
-        quantites = societes("quantite", annee_imposable)
-        categories = societes("categorie", annee_imposable).decode()
+        annee_production = period.last_year
+        params = parameters(period).taxes.guyane
+        quantites = societes("quantite", annee_production)
+        categories = societes("categorie", annee_production).decode()
         tarifs = (params.categories[categorie.name] for categorie in categories)
         tarifs = numpy.fromiter(tarifs, dtype = float)
 
@@ -56,15 +56,18 @@ class taxe_guyane_deduction(variables.Variable):
     definition_period = periods.YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
-        annee_imposable = period.last_year
+        annee_production = period.last_year
         params = parameters(period).taxes.guyane
-        investissements = societes("investissement", annee_imposable)
+        investissements = societes("investissement", annee_production)
         taxes_brutes = societes("taxe_guyane_brute", period)
         taux_deduction = params.deductions.taux
         montant_deduction_max = params.deductions.montant
 
         return numpy.round(
-            numpy.minimum(montant_deduction_max, numpy.minimum(investissements, taxes_brutes * taux_deduction)),
+            numpy.minimum(
+                montant_deduction_max,
+                numpy.minimum(investissements, taxes_brutes * taux_deduction),
+                ),
             decimals = 2,
             )
 
