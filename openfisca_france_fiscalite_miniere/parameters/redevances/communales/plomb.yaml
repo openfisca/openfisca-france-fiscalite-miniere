@@ -1,0 +1,17 @@
+description: Minerais de plomb (par centaine de tonnes de plomb contenu)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 582.80
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 599.70
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 617.70
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01
