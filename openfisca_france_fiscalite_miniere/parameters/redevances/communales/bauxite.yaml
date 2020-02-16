@@ -1,0 +1,17 @@
+description: Bauxite (par millier de tonnes nettes livrées)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 540.30
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 556.00
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 572.70
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01
