@@ -1,0 +1,17 @@
+description: Essence de dégazolinage (par tonne nette livrée)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 7.30
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 7.50
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 7.70
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01
