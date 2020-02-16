@@ -1,0 +1,17 @@
+description: Minerais argentifères (par centaine de kilogrammes d'argent contenu)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 229.40
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 236.10
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 243.20
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01
