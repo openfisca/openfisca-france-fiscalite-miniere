@@ -1,0 +1,17 @@
+description: Minerais d'uranium (par centaine de kilogrammes d'uranium contenu)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 274.80
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 282.80
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2019-01-01:
+    value: 291.30
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01
