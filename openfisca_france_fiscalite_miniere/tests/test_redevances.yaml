@@ -1,22 +1,22 @@
 - name: "Minerais aurifères (par kilogramme d'or contenu)"
   input:
-    quantite:
+    quantite_aurifere_kg:
       2018: 100
       2017: 100
   output:
-    redevance_communale_des_mines_aurifères_kg:
+    redevance_communale_des_mines_aurifere_kg:
       2019: 14970
       2018: 14530
-    redevance_departamentale_des_mines_aurifères_kg:
+    redevance_departamentale_des_mines_aurifere_kg:
       2019: 2990
       2018: 2900
-    redevance_totale_des_mines_aurifères_kg:
+    redevance_totale_des_mines_aurifere_kg:
       2019: 17960
       2018: 17430
 
 - name: "Minerais d'uranium (par centaine de kilogrammes d'uranium contenu)"
   input:
-    quantite:
+    quantite_uranium_q:
       2018: 100
       2017: 100
   output:
@@ -32,7 +32,7 @@
 
 - name: "Minerais de tungstène (par tonne d'oxyde de tungstène WO3 contenu)"
   input:
-    quantite:
+    quantite_tungstene_t:
       2018: 100
       2017: 100
   output:
@@ -48,23 +48,23 @@
 
 - name: "Minerais argentifères (par centaine de kilogrammes d'argent contenu)"
   input:
-    quantite:
+    quantite_argentifere_q:
       2018: 100
       2017: 100
   output:
-    redevance_communale_des_mines_argentiferes_q:
+    redevance_communale_des_mines_argentifere_q:
       2019: 24320
       2018: 23610
-    redevance_departamentale_des_mines_argentiferes_q:
+    redevance_departamentale_des_mines_argentifere_q:
       2019: 4840
       2018: 4700
-    redevance_totale_des_mines_argentiferes_q:
+    redevance_totale_des_mines_argentifere_q:
       2019: 29160
       2018: 28310
 
 - name: "Bauxite (par millier de tonnes nettes livrées)"
   input:
-    quantite:
+    quantite_bauxite_kt:
       2018: 100
       2017: 100
   output:
@@ -80,7 +80,7 @@
 
 - name: "Fluorine (par millier de tonnes nettes livrées)"
   input:
-    quantite:
+    quantite_fluorine_kt:
       2018: 100
       2017: 100
   output:
@@ -96,7 +96,7 @@
 
 - name: "Chlorure de sodium : sel extrait par abattage (par millier de tonnes nettes livrées)"
   input:
-    quantite:
+    quantite_sel_abattage_kt:
       2018: 100
       2017: 100
   output:
@@ -112,7 +112,7 @@
 
 - name: "Chlorure de sodium : sel extrait en dissolution par sondage livré raffiné (par millier de tonnes nettes livrées)"
   input:
-    quantite:
+    quantite_sel_raffine_kt:
       2018: 100
       2017: 100
   output:
@@ -128,7 +128,7 @@
 
 - name: "Chlorure de sodium : sel extrait en dissolution par sondage livré en dissolution (par millier de tonnes de NaCl contenu)"
   input:
-    quantite:
+    quantite_sel_dissolution_kt:
       2018: 100
       2017: 100
   output:
@@ -143,135 +143,136 @@
       2018: 16680
 
 - name: "Charbon (par centaine de tonnes nettes extraites)"
-    quantite:
+  input:
+    quantite_charbon_ct:
       2018: 100
       2017: 100
-      output:
-        redevance_communale_des_mines_charbon_ct:
-          2019: 22870
-          2018: 222
-        redevance_departamentale_des_mines_charbon_ct:
-          2019: 11100
-          2018: 10780
-        redevance_totale_des_mines_charbon_ct:
-          2019: 33970
-          2018: 32980
+    output:
+      redevance_communale_des_mines_charbon_ct:
+        2019: 22870
+        2018: 222
+      redevance_departamentale_des_mines_charbon_ct:
+        2019: 11100
+        2018: 10780
+      redevance_totale_des_mines_charbon_ct:
+        2019: 33970
+        2018: 32980
 
 - name: "Propane (par tonne nette livrée)"
-      input:
-    quantite:
-      2018: 100
-      2017: 100
-      output:
-        redevance_communale_des_mines_propane_t:
-          2019: 840
-          2018: 820
-        redevance_departamentale_des_mines_propane_t:
-          2019: 650
-          2018: 630
-        redevance_totale_des_mines_propane_t:
-          2019: 1490
-          2018: 1450
-
-- name: "Butane (par tonne nette livrée)"
-      input:
-    quantite:
-      2018: 100
-      2017: 100
-      output:
-        redevance_communale_des_mines_butane_t:
-          2019: 840
-          2018: 820
-        redevance_departamentale_des_mines_butane_t:
-          2019: 650
-          2018: 630
-        redevance_totale_des_mines_butane_t:
-          2019: 1490
-          2018: 1450
-
-- name: "Essence de dégazolinage (par tonne nette livrée)"
-      input:
-    quantite:
-      2018: 100
-      2017: 100
-      output:
-        redevance_communale_des_mines_degazolinage_t:
-          2019: 770
-          2018: 750
-        redevance_departamentale_des_mines_degazolinage_t:
-          2019: 580
-          2018: 560
-        redevance_totale_des_mines_degazolinage_t:
-          2019: 1350
-          2018: 1310
-
-- name: "Minerais de soufre autres que les pyrites de fer (par tonne de soufre contenu)"
-      input:
-    quantite:
-      2018: 100
-      2017: 100
-      output:
-        redevance_communale_des_mines_soufre_t:
-          2019: 280
-          2018: 270
-        redevance_departamentale_des_mines_soufre_t:
-          2019: 160
-          2018: 160
-        redevance_totale_des_mines_soufre_t:
-          2019: 440
-          2018: 430
-
-- name: "Lignites d'un pouvoir calorifique égal ou supérieur à 13 MJ/kg (par millier de tonnes nettes livrées)"
-      input:
-    quantite:
-      2018: 100
-      2017: 100
-      output:
-        redevance_communale_des_mines_lignites_sup_13_kt:
-          2019: 87550
-          2018: 85000
-        redevance_departamentale_des_mines_lignites_sup_13_kt:
-          2019: 17330
-          2018: 16830
-        redevance_totale_des_mines_lignites_sup_13_kt:
-          2019: 104880
-          2018: 101830
-
-- name: "Lignites d'un pouvoir calorifique inférieur à 13 MJ/kg (par millier de tonnes nettes livrées)"
-      input:
-    quantite:
-      2018: 100
-      2017: 100
-      output:
-        redevance_communale_des_mines_lignites_inf_13_kt:
-          2019: 21270
-          2018: 20650
-        redevance_departamentale_des_mines_lignites_inf_13_kt:
-          2019: 4720
-          2018: 4580
-        redevance_totale_des_mines_lignites_inf_13_kt:
-          2019: 25990
-          2018: 25230
-
-- name: "Gaz carbonique (par 100 000 m3  extraits à 1 bar et 15°C)"
   input:
-    quantite:
+    quantite_propane_t:
       2018: 100
       2017: 100
   output:
-    redevance_communale_des_mines_gaz_carbonique_m3:
+    redevance_communale_des_mines_propane_t:
+      2019: 840
+      2018: 820
+    redevance_departamentale_des_mines_propane_t:
+      2019: 650
+      2018: 630
+    redevance_totale_des_mines_propane_t:
+      2019: 1490
+      2018: 1450
+
+- name: "Butane (par tonne nette livrée)"
+  input:
+    quantite_butane_t:
+      2018: 100
+      2017: 100
+  output:
+    redevance_communale_des_mines_butane_t:
+      2019: 840
+      2018: 820
+    redevance_departamentale_des_mines_butane_t:
+      2019: 650
+      2018: 630
+    redevance_totale_des_mines_butane_t:
+      2019: 1490
+      2018: 1450
+
+- name: "Essence de dégazolinage (par tonne nette livrée)"
+  input:
+    quantite_degazolinage_t:
+      2018: 100
+      2017: 100
+  output:
+    redevance_communale_des_mines_degazolinage_t:
+      2019: 770
+      2018: 750
+    redevance_departamentale_des_mines_degazolinage_t:
+      2019: 580
+      2018: 560
+    redevance_totale_des_mines_degazolinage_t:
+      2019: 1350
+      2018: 1310
+
+- name: "Minerais de soufre autres que les pyrites de fer (par tonne de soufre contenu)"
+  input:
+    quantite_soufre_t:
+      2018: 100
+      2017: 100
+  output:
+    redevance_communale_des_mines_soufre_t:
+      2019: 280
+      2018: 270
+    redevance_departamentale_des_mines_soufre_t:
+      2019: 160
+      2018: 160
+    redevance_totale_des_mines_soufre_t:
+      2019: 440
+      2018: 430
+
+- name: "Lignites d'un pouvoir calorifique égal ou supérieur à 13 MJ/kg (par millier de tonnes nettes livrées)"
+  input:
+    quantite_lignites_ge_13_kt:
+      2018: 100
+      2017: 100
+  output:
+    redevance_communale_des_mines_lignites_ge_13_kt:
+      2019: 87550
+      2018: 85000
+    redevance_departamentale_des_mines_lignites_ge_13_kt:
+      2019: 17330
+      2018: 16830
+    redevance_totale_des_mines_lignites_ge_13_kt:
+      2019: 104880
+      2018: 101830
+
+- name: "Lignites d'un pouvoir calorifique inférieur à 13 MJ/kg (par millier de tonnes nettes livrées)"
+  input:
+    quantite_lignites_lt_13_kt:
+      2018: 100
+      2017: 100
+  output:
+    redevance_communale_des_mines_lignites_lt_13_kt:
+      2019: 21270
+      2018: 20650
+    redevance_departamentale_des_mines_lignites_lt_13_kt:
+      2019: 4720
+      2018: 4580
+    redevance_totale_des_mines_lignites_lt_13_kt:
+      2019: 25990
+      2018: 25230
+
+- name: "Gaz carbonique (par 100 000 m3  extraits à 1 bar et 15°C)"
+  input:
+    quantite_gaz_carbonique_cmm3:
+      2018: 100
+      2017: 100
+  output:
+    redevance_communale_des_mines_gaz_carbonique_cmm3:
       2019: 32060
       2018: 31130
-    redevance_departamentale_des_mines_gaz_carbonique_m3:
+    redevance_departamentale_des_mines_gaz_carbonique_cmm3:
       2019: 6550
       2018: 6360
-    redevance_totale_des_mines_gaz_carbonique_m3:
+    redevance_totale_des_mines_gaz_carbonique_cmm3:
       2019: 38610
       2018: 37490
 
 - name: "Calcaires et grès bitumineux ou asphaltiques non destinés à la distillation pour production d'huiles ou d'essences (par millier de tonnes nettes livrées)"
   input:
-    quantite:
+    quantite_bitume_non_distillation_kt:
       2018: 100
       2017: 100
   output:
@@ -287,7 +288,7 @@
 
 - name: "Schistes carbobitumineux et schistes bitumineux à traiter par distillation pour en extraire des huiles et des essences (par millier de tonnes nettes livrées)"
   input:
-    quantite:
+    quantite_bitume_distillation_kt:
       2018: 100
       2017: 100
   output:
@@ -303,23 +304,23 @@
 
 - name: "Pyrite de fer (par millier de tonnes nettes livrées)"
   input:
-    quantite:
+    quantite_fer_pyrite_kt:
       2018: 100
       2017: 100
   output:
-    redevance_communale_des_mines_pyrite_kt:
+    redevance_communale_des_mines_fer_pyrite_kt:
       2019: 49070
       2018: 47640
-    redevance_departamentale_des_mines_pyrite_kt:
+    redevance_departamentale_des_mines_fer_pyrite_kt:
       2019: 10030
       2018: 9740
-    redevance_totale_des_mines_pyrite_kt:
+    redevance_totale_des_mines_fer_pyrite_kt:
       2019: 59100
       2018: 57380
 
 - name: "Minerais de fer (par millier de tonnes nettes livrées)"
   input:
-    quantite:
+    quantite_fer_kt:
       2018: 100
       2017: 100
   output:
@@ -335,7 +336,7 @@
 
 - name: "Minerais d'antimoine (par tonne d'antimoine contenu)"
   input:
-    quantite:
+    quantite_antimoine_t:
       2018: 100
       2017: 100
   output:
@@ -351,7 +352,7 @@
 
 - name: "Minerais de plomb (par centaine de tonnes de plomb contenu)"
   input:
-    quantite:
+    quantite_plomb_ct:
       2018: 100
       2017: 100
   output:
@@ -367,7 +368,7 @@
 
 - name: "Minerais de zinc (par centaine de tonnes de zinc contenu)"
   input:
-    quantite:
+    quantite_zinc_ct:
       2018: 100
       2017: 100
   output:
@@ -383,7 +384,7 @@
 
 - name: "Minerais d'étain (par tonne d'étain contenu)"
   input:
-    quantite:
+    quantite_etain_t:
       2018: 100
       2017: 100
   output:
@@ -399,7 +400,7 @@
 
 - name: "Minerais de cuivre (par tonne de cuivre contenu)"
   input:
-    quantite:
+    quantite_cuivre_t:
       2018: 100
       2017: 100
   output:
@@ -415,7 +416,7 @@
 
 - name: "Minerais d'arsenic (par millier de tonnes d'arsenic contenu)"
   input:
-    quantite:
+    quantite_arsenic_kt:
       2018: 100
       2017: 100
   output:
@@ -431,7 +432,7 @@
 
 - name: "Minerais de bismuth (par tonne de bismuth contenu)"
   input:
-    quantite:
+    quantite_bismuth_t:
       2018: 100
       2017: 100
   output:
@@ -447,7 +448,7 @@
 
 - name: "Minerais de manganèse (par centaine de tonnes de manganèse contenu)"
   input:
-    quantite:
+    quantite_manganese_ct:
       2018: 100
       2017: 100
   output:
@@ -463,23 +464,23 @@
 
 - name: "Minerais de molybdène (par tonne de molybdène contenu)"
   input:
-    quantite:
+    quantite_molybdene_t:
       2018: 100
       2017: 100
   output:
-    redevance_communale_des_mines_molybdene_ct:
+    redevance_communale_des_mines_molybdene_t:
       2019: 24320
       2018: 23610
-    redevance_departamentale_des_mines_molybdene_ct:
+    redevance_departamentale_des_mines_molybdene_t:
       2019: 4900
       2018: 4760
-    redevance_totale_des_mines_molybdene_ct:
+    redevance_totale_des_mines_molybdene_t:
       2019: 29220
       2018: 28370
 
 - name: "Minerais de lithium (par tonne de Li2O contenu)"
   input:
-    quantite:
+    quantite_lithium_t:
       2018: 100
       2017: 100
   output:
@@ -493,12 +494,9 @@
       2019: 5900
       2018: 5730
 
-
-
-
 - name: "Sels de potassium (par centaine de tonnes de K2O contenu)"
   input:
-    quantite:
+    quantite_potassium_ct:
       2018: 100
       2017: 100
   output:
@@ -514,23 +512,23 @@
 
 - name: "Gaz naturel (par 100 000 m3  extraits à 1 bar et 15°C)"
   input:
-    quantite:
+    quantite_gaz_naturel_cmm3:
       2018: 100
       2017: 100
   output:
-    redevance_communale_des_mines_gaz_naturel_mm3:
+    redevance_communale_des_mines_gaz_naturel_cmm3:
       2019: 31630
       2018: 30710
-    redevance_departamentale_des_mines_gaz_naturel_mm3:
+    redevance_departamentale_des_mines_gaz_naturel_cmm3:
       2019: 46170
       2018: 44830
-    redevance_totale_des_mines_gaz_naturel_mm3:
+    redevance_totale_des_mines_gaz_naturel_cmm3:
       2019: 77800
       2018: 75540
 
 - name: "Pétrole brut (par centaine de tonnes nettes extraites)"
   input:
-    quantite:
+    quantite_petrole_brut_ct:
       2018: 100
       2017: 100
   output:
