@@ -1,17 +1,17 @@
-description: Minerais d'antimoine (par tonne d'antimoine contenu)
+description: minerais d'antimoine (tonne d'antimoine contenu)
 metadata:
-  unit: currency-EUR
+unit: currency-EUR
 
 values:
-  2017-01-01:
-    value: 11.20
-    metadata:
-      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
-  2018-01-01:
-    value: 11.50
-    metadata:
-      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
-  2019-01-01:
-    value: 11.80
-    metadata:
-      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01
+	2017-01-01:
+	value: 2.50    
+	metadata:
+	reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2018-01-01/
+	2018-01-01:
+	value: 2.60    
+	metadata:
+	reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2019-01-01/
+	2019-01-01:
+	value: 2.70    
+	metadata:
+	reference: https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01/

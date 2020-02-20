@@ -1,17 +1,17 @@
-description: Minerais de fer (par millier de tonnes nettes livrées)
+description: minerais de fer (millier de tonnes nettes livrées)
 metadata:
-  unit: currency-EUR
+unit: currency-EUR
 
 values:
-  2017-01-01:
-    value: 319.00
-    metadata:
-      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
-  2018-01-01:
-    value: 328.30
-    metadata:
-      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
-  2019-01-01:
-    value: 338.10
-    metadata:
-      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01
+	2017-01-01:
+	value: 66.40   
+	metadata:
+	reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2018-01-01/
+	2018-01-01:
+	value: 68.30   
+	metadata:
+	reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2019-01-01/
+	2019-01-01:
+	value: 70.30   
+	metadata:
+	reference: https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01/
