@@ -1,0 +1,17 @@
+description: Minerais d'étain (par tonne d'étain contenu)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 112.40
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 115.70
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 119.20
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01

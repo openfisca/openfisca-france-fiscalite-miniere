@@ -1,0 +1,17 @@
+description: Schistes carbobitumineux et schistes bitumineux à traiter par distillation pour en extraire des huiles et des essences (par millier de tonnes nettes livrées)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 46.40
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 47.60
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 49.00
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01

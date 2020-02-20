@@ -7,30 +7,11 @@ from openfisca_core import variables
 from openfisca_france_fiscalite_miniere import entities
 
 
-class NatureEnum(indexed_enums.Enum):
-    aurifere = "Or contenu dans les minerais aurifères"
-    uranium = "Uranium contenu dans les minerais d'uranium"
-    tungstene = "Oxyde de tungstène (WO3) contenu dans les minerais de tungstène"
-    argentifères = "Argent contenu dans les minerais argentifères"
-    bauxite = "Bauxite"
-    fluorine = "Fluorine"
-
-
-class nature(variables.Variable):
-    value_type = indexed_enums.Enum
-    possible_values = NatureEnum
-    default_value = NatureEnum.aurifere
-    entity = entities.societe
-    label = "Substances dont l'imposition est prévue par la loi"
-    reference = "https://bofip.impots.gouv.fr/bofip/264-PGP"
-    definition_period = periods.YEAR
-
-
-class quantite(variables.Variable):
+class quantite_aurifere_kg(variables.Variable):
     value_type = float
     entity = entities.societe
-    label = "Kilogrammes extraits, dont l'imposition est prévue par la loi"
-    reference = "https://bofip.impots.gouv.fr/bofip/264-PGP"
+    label = "Minerais aurifères (par kilogramme d'or contenu)"
+    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"
     definition_period = periods.YEAR
 
 
@@ -45,15 +26,19 @@ class redevance_departamentale_des_mines(variables.Variable):
         return _redevances_des_mines(societes, period, parameters, "departamentales")
 
 
-class redevance_communale_des_mines(variables.Variable):
+class redevance_communale_des_mines_aurifere_kg(variables.Variable):
     value_type = float
     entity = entities.societe
-    label = "Redevance communale des mines"
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
+    label = "Redevance communale des_mines pour le minerais aurifères"
+    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01"  # noqa: E501
     definition_period = periods.YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
-        return _redevances_des_mines(societes, period, parameters, "communales")
+        annee_production = period.last_year
+        taux = parameters(period).redevances.communales.aurifere
+        quantites = societes("quantite_aurifere_kg", annee_production)
+
+        return numpy.round(quantites * taux, decimals = 2)
 
 
 class redevance_totale_des_mines(variables.Variable):

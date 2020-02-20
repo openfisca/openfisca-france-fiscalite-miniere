@@ -1,0 +1,17 @@
+description: "Chlorure de sodium : sel extrait en dissolution par sondage livré en dissolution (par millier de tonnes de NaCl contenu)"
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 135.80
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 139.70
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 143.90
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01

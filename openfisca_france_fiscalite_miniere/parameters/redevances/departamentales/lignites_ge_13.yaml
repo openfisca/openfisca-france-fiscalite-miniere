@@ -1,0 +1,17 @@
+description: Lignites d'un pouvoir calorifique égal ou supérieur à 13 MJ/kg (par millier de tonnes nettes livrées)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 826.00
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 850.00
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 875.50
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01

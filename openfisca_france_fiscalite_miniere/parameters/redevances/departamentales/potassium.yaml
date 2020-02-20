@@ -1,0 +1,17 @@
+description: Sels de potassium (par centaine de tonnes de K2O contenu)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 243.30
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 250.40
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 257.90
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01

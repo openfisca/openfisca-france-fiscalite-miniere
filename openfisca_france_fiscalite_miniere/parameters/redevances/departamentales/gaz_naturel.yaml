@@ -1,0 +1,17 @@
+description: Gaz naturel (par 100 000 m3  extraits à 1 bar et 15°C)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 298.40
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 307.10
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 316.30
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01

@@ -1,0 +1,17 @@
+description: Minerais de soufre autres que les pyrites de fer (par tonne de soufre contenu)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 2.60
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 2.70
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 2.80
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01
