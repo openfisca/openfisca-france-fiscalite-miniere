@@ -35,11 +35,25 @@ class redevance_communale_des_mines_aurifere_kg(variables.Variable):
 
     def formula(societes, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
-        taux = parameters(period).redevances.communales.aurifere
+        taux = parameters(period).redevances.departementales.aurifere
         quantites = societes("quantite_aurifere_kg", annee_production)
 
         return numpy.round(quantites * taux, decimals = 2)
 
+
+class redevance_departementale_des_mines_aurifere_kg(variables.Variable):
+    value_type = float
+    entity = entities.societe
+    label = "Redevance départementale des_mines pour le minerais aurifères"
+    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01"  # noqa: E501
+    definition_period = periods.YEAR
+
+    def formula(societes, period, parameters) -> numpy.ndarray:
+        annee_production = period.last_year
+        taux = parameters(period).redevances.communales.aurifere
+        quantites = societes("quantite_aurifere_kg", annee_production)
+
+        return numpy.round(quantites * taux, decimals = 2)
 
 class redevance_totale_des_mines(variables.Variable):
     value_type = float

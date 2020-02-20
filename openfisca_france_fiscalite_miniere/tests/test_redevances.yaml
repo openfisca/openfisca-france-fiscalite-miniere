@@ -7,9 +7,9 @@
     redevance_communale_des_mines_aurifere_kg:
       2019: 14970
       2018: 14530
-    # redevance_departamentale_des_mines_aurifere_kg:
-    #   2019: 2990
-    #   2018: 2900
+    redevance_departementale_des_mines_aurifere_kg:
+      2019: 2990
+      2018: 2900
     # redevance_totale_des_mines_aurifere_kg:
     #   2019: 17960
     #   2018: 17430
@@ -23,7 +23,7 @@
 #     redevance_communale_des_mines_uranium_q:
 #       2019: 29130
 #       2018: 28280
-#     redevance_departamentale_des_mines_uranium_q:
+#     redevance_departementale_des_mines_uranium_q:
 #       2019: 5790
 #       2018: 5620
 #     redevance_totale_des_mines_uranium_q:
@@ -39,7 +39,7 @@
 #     redevance_communale_des_mines_tungstene_t:
 #       2019: 13380
 #       2018: 12990
-#     redevance_departamentale_des_mines_tungstene_t:
+#     redevance_departementale_des_mines_tungstene_t:
 #       2019: 2620
 #       2018: 2540
 #     redevance_totale_des_mines_tungstene_t:
@@ -55,7 +55,7 @@
 #     redevance_communale_des_mines_argentifere_q:
 #       2019: 24320
 #       2018: 23610
-#     redevance_departamentale_des_mines_argentifere_q:
+#     redevance_departementale_des_mines_argentifere_q:
 #       2019: 4840
 #       2018: 4700
 #     redevance_totale_des_mines_argentifere_q:
@@ -71,7 +71,7 @@
 #     redevance_communale_des_mines_bauxite_kt:
 #       2019: 57270
 #       2018: 55600
-#     redevance_departamentale_des_mines_bauxite_kt:
+#     redevance_departementale_des_mines_bauxite_kt:
 #       2019: 11440
 #       2018: 11110
 #     redevance_totale_des_mines_bauxite_kt:
@@ -87,7 +87,7 @@
 #     redevance_communale_des_mines_fluorine_kt:
 #       2019: 74450
 #       2018: 72280
-#     redevance_departamentale_des_mines_fluorine_kt:
+#     redevance_departementale_des_mines_fluorine_kt:
 #       2019: 15130
 #       2018: 14690
 #     redevance_totale_des_mines_fluorine_kt:
@@ -103,7 +103,7 @@
     redevance_communale_des_mines_sel_abattage_kt:
       2019: 70800
       2018: 68740
-    redevance_departamentale_des_mines_sel_abattage_kt:
+    redevance_departementale_des_mines_sel_abattage_kt:
       2019: 14390
       2018: 13970
     redevance_totale_des_mines_sel_abattage_kt:
@@ -119,7 +119,7 @@
     redevance_communale_des_mines_sel_raffine_kt:
       2019: 43100
       2018: 41840
-    redevance_departamentale_des_mines_sel_raffine_kt:
+    redevance_departementale_des_mines_sel_raffine_kt:
       2019: 8500
       2018: 8250
     redevance_totale_des_mines_sel_raffine_kt:
@@ -135,7 +135,7 @@
     redevance_communale_des_mines_sel_dissolution_kt:
       2019: 14390
       2018: 13970
-    # redevance_departamentale_des_mines_sel_dissolution_kt:
+    # redevance_departementale_des_mines_sel_dissolution_kt:
     #   2019: 2790
     #   2018: 2710
     # redevance_totale_des_mines_sel_dissolution_kt:
@@ -151,7 +151,7 @@
 #       redevance_communale_des_mines_charbon_ct:
 #         2019: 22870
 #         2018: 222
-#       redevance_departamentale_des_mines_charbon_ct:
+#       redevance_departementale_des_mines_charbon_ct:
 #         2019: 11100
 #         2018: 10780
 #       redevance_totale_des_mines_charbon_ct:
@@ -167,7 +167,7 @@
 #     redevance_communale_des_mines_propane_t:
 #       2019: 840
 #       2018: 820
-#     redevance_departamentale_des_mines_propane_t:
+#     redevance_departementale_des_mines_propane_t:
 #       2019: 650
 #       2018: 630
 #     redevance_totale_des_mines_propane_t:
@@ -183,7 +183,7 @@
 #     redevance_communale_des_mines_butane_t:
 #       2019: 840
 #       2018: 820
-#     redevance_departamentale_des_mines_butane_t:
+#     redevance_departementale_des_mines_butane_t:
 #       2019: 650
 #       2018: 630
 #     redevance_totale_des_mines_butane_t:
@@ -199,7 +199,7 @@
 #     redevance_communale_des_mines_degazolinage_t:
 #       2019: 770
 #       2018: 750
-#     redevance_departamentale_des_mines_degazolinage_t:
+#     redevance_departementale_des_mines_degazolinage_t:
 #       2019: 580
 #       2018: 560
 #     redevance_totale_des_mines_degazolinage_t:
@@ -215,7 +215,7 @@
 #     redevance_communale_des_mines_soufre_t:
 #       2019: 280
 #       2018: 270
-#     redevance_departamentale_des_mines_soufre_t:
+#     redevance_departementale_des_mines_soufre_t:
 #       2019: 160
 #       2018: 160
 #     redevance_totale_des_mines_soufre_t:
@@ -231,7 +231,7 @@
 #     redevance_communale_des_mines_lignites_ge_13_kt:
 #       2019: 87550
 #       2018: 85000
-#     redevance_departamentale_des_mines_lignites_ge_13_kt:
+#     redevance_departementale_des_mines_lignites_ge_13_kt:
 #       2019: 17330
 #       2018: 16830
 #     redevance_totale_des_mines_lignites_ge_13_kt:
@@ -247,7 +247,7 @@
 #     redevance_communale_des_mines_lignites_lt_13_kt:
 #       2019: 21270
 #       2018: 20650
-#     redevance_departamentale_des_mines_lignites_lt_13_kt:
+#     redevance_departementale_des_mines_lignites_lt_13_kt:
 #       2019: 4720
 #       2018: 4580
 #     redevance_totale_des_mines_lignites_lt_13_kt:
@@ -263,7 +263,7 @@
 #     redevance_communale_des_mines_gaz_carbonique_cmm3:
 #       2019: 32060
 #       2018: 31130
-#     redevance_departamentale_des_mines_gaz_carbonique_cmm3:
+#     redevance_departementale_des_mines_gaz_carbonique_cmm3:
 #       2019: 6550
 #       2018: 6360
 #     redevance_totale_des_mines_gaz_carbonique_cmm3:
@@ -279,7 +279,7 @@
 #     redevance_communale_des_mines_bitume_non_distillation_kt:
 #       2019: 147150
 #       2018: 142860
-#     redevance_departamentale_des_mines_bitume_non_distillation_kt:
+#     redevance_departementale_des_mines_bitume_non_distillation_kt:
 #       2019: 29290
 #       2018: 28440
 #     redevance_totale_des_mines_bitume_non_distillation_kt:
@@ -295,7 +295,7 @@
 #     redevance_communale_des_mines_bitume_distillation_kt:
 #       2019: 4900
 #       2018: 4760
-#     redevance_departamentale_des_mines_bitume_distillation_kt:
+#     redevance_departementale_des_mines_bitume_distillation_kt:
 #       2019: 1010
 #       2018: 980
 #     redevance_totale_des_mines_bitume_distillation_kt:
@@ -311,7 +311,7 @@
 #     redevance_communale_des_mines_fer_pyrite_kt:
 #       2019: 49070
 #       2018: 47640
-#     redevance_departamentale_des_mines_fer_pyrite_kt:
+#     redevance_departementale_des_mines_fer_pyrite_kt:
 #       2019: 10030
 #       2018: 9740
 #     redevance_totale_des_mines_fer_pyrite_kt:
@@ -327,7 +327,7 @@
 #     redevance_communale_des_mines_fer_kt:
 #       2019: 33810
 #       2018: 32830
-#     redevance_departamentale_des_mines_fer_kt:
+#     redevance_departementale_des_mines_fer_kt:
 #       2019: 7030
 #       2018: 6830
 #     redevance_totale_des_mines_fer_kt:
@@ -343,7 +343,7 @@
 #     redevance_communale_des_mines_antimoine_t:
 #       2019: 1180
 #       2018: 1150
-#     redevance_departamentale_des_mines_antimoine_t:
+#     redevance_departementale_des_mines_antimoine_t:
 #       2019: 270
 #       2018: 260
 #     redevance_totale_des_mines_antimoine_t:
@@ -359,7 +359,7 @@
 #     redevance_communale_des_mines_plomb_ct:
 #       2019: 61770
 #       2018: 59970
-#     redevance_departamentale_des_mines_plomb_ct:
+#     redevance_departementale_des_mines_plomb_ct:
 #       2019: 11920
 #       2018: 11570
 #     redevance_totale_des_mines_plomb_ct:
@@ -375,7 +375,7 @@
 #     redevance_communale_des_mines_zinc_ct:
 #       2019: 49070
 #       2018: 47640
-#     redevance_departamentale_des_mines_zinc_ct:
+#     redevance_departementale_des_mines_zinc_ct:
 #       2019: 10030
 #       2018: 9740
 #     redevance_totale_des_mines_zinc_ct:
@@ -391,7 +391,7 @@
 #     redevance_communale_des_mines_etain_t:
 #       2019: 11920
 #       2018: 11570
-#     redevance_departamentale_des_mines_etain_t:
+#     redevance_departementale_des_mines_etain_t:
 #       2019: 2360
 #       2018: 2290
 #     redevance_totale_des_mines_etain_t:
@@ -407,7 +407,7 @@
 #     redevance_communale_des_mines_cuivre_t:
 #       2019: 1920
 #       2018: 1860
-#     redevance_departamentale_des_mines_cuivre_t:
+#     redevance_departementale_des_mines_cuivre_t:
 #       2019: 390
 #       2018: 380
 #     redevance_totale_des_mines_cuivre_t:
@@ -423,7 +423,7 @@
 #     redevance_communale_des_mines_arsenic_kt:
 #       2019: 65850
 #       2018: 63930
-#     redevance_departamentale_des_mines_arsenic_kt:
+#     redevance_departementale_des_mines_arsenic_kt:
 #       2019: 13380
 #       2018: 12990
 #     redevance_totale_des_mines_arsenic_kt:
@@ -439,7 +439,7 @@
 #     redevance_communale_des_mines_bismuth_t:
 #       2019: 5770
 #       2018: 5600
-#     redevance_departamentale_des_mines_bismuth_t:
+#     redevance_departementale_des_mines_bismuth_t:
 #       2019: 1170
 #       2018: 1140
 #     redevance_totale_des_mines_bismuth_t:
@@ -455,7 +455,7 @@
 #     redevance_communale_des_mines_manganese_ct:
 #       2019: 36570
 #       2018: 35500
-#     redevance_departamentale_des_mines_manganese_ct:
+#     redevance_departementale_des_mines_manganese_ct:
 #       2019: 7400
 #       2018: 7180
 #     redevance_totale_des_mines_manganese_ct:
@@ -471,7 +471,7 @@
 #     redevance_communale_des_mines_molybdene_t:
 #       2019: 24320
 #       2018: 23610
-#     redevance_departamentale_des_mines_molybdene_t:
+#     redevance_departementale_des_mines_molybdene_t:
 #       2019: 4900
 #       2018: 4760
 #     redevance_totale_des_mines_molybdene_t:
@@ -487,7 +487,7 @@
 #     redevance_communale_des_mines_lithium_t:
 #       2019: 4900
 #       2018: 4760
-#     redevance_departamentale_des_mines_lithium_t:
+#     redevance_departementale_des_mines_lithium_t:
 #       2019: 1000
 #       2018: 970
 #     redevance_totale_des_mines_lithium_t:
@@ -503,7 +503,7 @@
 #     redevance_communale_des_mines_potassium_ct:
 #       2019: 25790
 #       2018: 25040
-#     redevance_departamentale_des_mines_potassium_ct:
+#     redevance_departementale_des_mines_potassium_ct:
 #       2019: 5140
 #       2018: 4990
 #     redevance_totale_des_mines_potassium_ct:
@@ -519,7 +519,7 @@
 #     redevance_communale_des_mines_gaz_naturel_cmm3:
 #       2019: 31630
 #       2018: 30710
-#     redevance_departamentale_des_mines_gaz_naturel_cmm3:
+#     redevance_departementale_des_mines_gaz_naturel_cmm3:
 #       2019: 46170
 #       2018: 44830
 #     redevance_totale_des_mines_gaz_naturel_cmm3:
@@ -535,7 +535,7 @@
 #     redevance_communale_des_mines_petrole_brut_ct:
 #       2019: 113080
 #       2018: 106700
-#     redevance_departamentale_des_mines_petrole_brut_ct:
+#     redevance_departementale_des_mines_petrole_brut_ct:
 #       2019: 145310
 #       2018: 137100
 #     redevance_totale_des_mines_petrole_brut_ct:
