@@ -1,17 +1,17 @@
-description: pétrole brut (centaine de tonnes nettes extraites)
+description: pétrole brut gisements en mer (centaine de tonnes nettes extraites)
 metadata:
 unit: currency-EUR
 
 values:
 	2017-01-01:
-	value: 1371   
+	value: 111
 	metadata:
 	reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2018-01-01/
 	2018-01-01:
-	value: 1371   
+	value: 111
 	metadata:
 	reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2019-01-01/
 	2019-01-01:
-	value: 1412.10    
+	value: 111
 	metadata:
 	reference: https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01/
