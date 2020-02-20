@@ -1,17 +1,17 @@
 - name: "Frais de gestion de la fiscalité directe locale"
   input:
     categorie:
-      2019: pme
+      2018: pme
     nature:
-      2019: aurifere
+      2018: aurifere
     quantite:
-      2019: 10
+      2018: 10
     investissement:
       2018: 1000.0
   output:
     redevance_totale_des_mines:
-      2020: 1796.0
+      2019: 1796.0
     taxe_guyane:
-      2020: 2452.3
+      2019: 2452.3
     fiscalite_frais_de_gestion_guyane:
-      2020: 339.86
+      2019: 339.86

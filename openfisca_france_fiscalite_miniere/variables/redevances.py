@@ -69,10 +69,10 @@ class redevance_totale_des_mines(variables.Variable):
 
 
 def _redevances_des_mines(societes, period, parameters, perimetre) -> numpy.ndarray:
-    annee_imposable = period.last_year
-    params = parameters(annee_imposable).redevances[perimetre]
-    quantites = societes("quantite", annee_imposable)
-    natures = societes("nature", annee_imposable).decode()
+    annee_production = period.last_year
+    params = parameters(period).redevances[perimetre]
+    quantites = societes("quantite", annee_production)
+    natures = societes("nature", period).decode()
     tarifs = (params[nature.name] for nature in natures)
     tarifs = numpy.fromiter(tarifs, dtype = float)
 
