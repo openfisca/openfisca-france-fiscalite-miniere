@@ -1,0 +1,17 @@
+description: Pétrole brut en mer(par centaine de tonnes nettes extraites)
+metadata:
+  unit: currency-EUR
+
+values:
+  2017-01-01:
+    value: 81.1
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
+  2018-01-01:
+    value: 81.1
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
+  2019-01-01:
+    value: 86.1
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01
