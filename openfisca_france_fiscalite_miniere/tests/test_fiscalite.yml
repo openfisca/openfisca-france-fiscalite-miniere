@@ -2,9 +2,7 @@
   input:
     categorie:
       2018: pme
-    nature:
-      2018: aurifere
-    quantite:
+    quantite_aurifere_kg:
       2018: 10
     investissement:
       2018: 1000.0
