@@ -175,6 +175,37 @@ class redevance_communale_des_mines_sel_dissolution_kt(Variable):
         return numpy.round(quantites * taux, decimals = 2)
 
 
+class redevance_departementale_des_mines_sel_dissolution_kt(Variable):
+    value_type = float
+    entity = entities.societe
+    label = "Redevance départementale du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
+    # reference ?
+    definition_period = YEAR
+
+    def formula(societes, period, parameters) -> numpy.ndarray:
+        annee_production = period.last_year
+        taux = parameters(period).redevances.departementales.sel_dissolution
+        quantites = societes("quantite_sel_dissolution_kt", annee_production)
+
+        return numpy.round(quantites * taux, decimals = 2)
+
+
+class redevance_totale_des_mines_sel_dissolution_kt(Variable):
+    value_type = float
+    entity = entities.societe
+    label = "Redevance départamentale + communale des mines du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
+    definition_period = YEAR
+
+    def formula(societes, period) -> numpy.ndarray:
+        departementale = societes(
+            "redevance_departementale_des_mines_sel_dissolution_kt",
+            period)
+        communale = societes(
+            "redevance_communale_des_mines_sel_dissolution_kt",
+            period)
+        return departementale + communale
+
+
 class redevance_totale_des_mines(Variable):
     value_type = float
     entity = entities.societe
@@ -182,10 +213,10 @@ class redevance_totale_des_mines(Variable):
     definition_period = YEAR
 
     def formula(societes, period) -> numpy.ndarray:
-        departamentale = societes(
+        departementale = societes(
             "redevance_departementale_des_mines_aurifere_kg",
             period)
         communale = societes(
             "redevance_communale_des_mines_aurifere_kg",
             period)
-        return departamentale + communale
+        return departementale + communale

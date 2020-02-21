@@ -135,12 +135,12 @@
     redevance_communale_des_mines_sel_dissolution_kt:
       2019: 14390
       2018: 13970
-    # redevance_departementale_des_mines_sel_dissolution_kt:
-    #   2019: 2790
-    #   2018: 2710
-    # redevance_totale_des_mines_sel_dissolution_kt:
-    #   2019: 17180"
-    #   2018: 16680
+    redevance_departementale_des_mines_sel_dissolution_kt:
+      2019: 2790
+      2018: 2710
+    redevance_totale_des_mines_sel_dissolution_kt:
+      2019: 17180
+      2018: 16680
 
 # - name: "Charbon (par centaine de tonnes nettes extraites)"
 #   input:
