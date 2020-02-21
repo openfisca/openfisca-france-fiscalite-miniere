@@ -41,7 +41,7 @@ class quantite_sel_dissolution_kt(Variable):
 class redevance_communale_des_mines_aurifere_kg(Variable):
     value_type = float
     entity = entities.societe
-    label = "Redevance communale des_mines pour le minerais aurifères"
+    label = "Redevance communale des mines pour le minerais aurifères"
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
@@ -66,6 +66,52 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
         quantites = societes("quantite_aurifere_kg", annee_production)
 
         return numpy.round(quantites * taux, decimals = 2)
+
+
+class redevance_communale_des_mines_sel_abattage_kt(Variable):
+    value_type = float
+    entity = entities.societe
+    label = "Redevance communale du sel d'abattage"
+    # reference ?
+    definition_period = YEAR
+
+    def formula(societes, period, parameters) -> numpy.ndarray:
+        annee_production = period.last_year
+        taux = parameters(period).redevances.communales.sel_abattage
+        quantites = societes("quantite_sel_abattage_kt", annee_production)
+
+        return numpy.round(quantites * taux, decimals = 2)
+
+
+class redevance_departementale_des_mines_sel_abattage_kt(Variable):
+    value_type = float
+    entity = entities.societe
+    label = "Redevance départementale du sel d'abattage"
+    # reference ?
+    definition_period = YEAR
+
+    def formula(societes, period, parameters) -> numpy.ndarray:
+        annee_production = period.last_year
+        taux = parameters(period).redevances.departementales.sel_abattage
+        quantites = societes("quantite_sel_abattage_kt", annee_production)
+
+        return numpy.round(quantites * taux, decimals = 2)
+
+
+class redevance_totale_des_mines_sel_abattage_kt(Variable):
+    value_type = float
+    entity = entities.societe
+    label = "Redevance départamentale + communale des mines de sel d'abattage (par millier de tonnes)"  # noqa: E501
+    definition_period = YEAR
+
+    def formula(societes, period) -> numpy.ndarray:
+        departementale = societes(
+            "redevance_departementale_des_mines_sel_abattage_kt",
+            period)
+        communale = societes(
+            "redevance_communale_des_mines_sel_abattage_kt",
+            period)
+        return departementale + communale
 
 
 class redevance_totale_des_mines(Variable):
