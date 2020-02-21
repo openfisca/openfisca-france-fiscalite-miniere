@@ -14,6 +14,30 @@ class quantite_aurifere_kg(Variable):
     definition_period = YEAR
 
 
+class quantite_sel_abattage_kt(Variable):
+    value_type = float
+    entity = entities.societe
+    label = "Quantité de sel d'abattage (par millier de tonnes)"
+    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
+    definition_period = YEAR
+
+
+class quantite_sel_raffine_kt(Variable):
+    value_type = float
+    entity = entities.societe
+    label = "Quantité de sel raffiné (par millier de tonnes)"
+    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
+    definition_period = YEAR
+
+
+class quantite_sel_dissolution_kt(Variable):
+    value_type = float
+    entity = entities.societe
+    label = "Quantité de sel de dissolution (par millier de tonnes)"
+    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
+    definition_period = YEAR
+
+
 class redevance_communale_des_mines_aurifere_kg(Variable):
     value_type = float
     entity = entities.societe
