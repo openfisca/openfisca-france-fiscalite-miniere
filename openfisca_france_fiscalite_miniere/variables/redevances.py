@@ -33,7 +33,7 @@ class quantite_sel_raffine_kt(Variable):
 class quantite_sel_dissolution_kt(Variable):
     value_type = float
     entity = entities.societe
-    label = "Quantité de sel de dissolution (par millier de tonnes)"
+    label = "Quantité de sel de dissolution (par millier de tonnes de NaCl contenu)"
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
@@ -101,7 +101,7 @@ class redevance_departementale_des_mines_sel_abattage_kt(Variable):
 class redevance_totale_des_mines_sel_abattage_kt(Variable):
     value_type = float
     entity = entities.societe
-    label = "Redevance départamentale + communale des mines de sel d'abattage (par millier de tonnes)"  # noqa: E501
+    label = "Redevance départamentale + communale des mines de sel d'abattage"
     definition_period = YEAR
 
     def formula(societes, period) -> numpy.ndarray:
@@ -147,7 +147,7 @@ class redevance_departementale_des_mines_sel_raffine_kt(Variable):
 class redevance_totale_des_mines_sel_raffine_kt(Variable):
     value_type = float
     entity = entities.societe
-    label = "Redevance départamentale + communale des mines de sel raffiné (par millier de tonnes)"  # noqa: E501
+    label = "Redevance départamentale + communale des mines de sel raffiné"  # noqa: E501
     definition_period = YEAR
 
     def formula(societes, period) -> numpy.ndarray:
@@ -158,6 +158,21 @@ class redevance_totale_des_mines_sel_raffine_kt(Variable):
             "redevance_communale_des_mines_sel_raffine_kt",
             period)
         return departementale + communale
+
+
+class redevance_communale_des_mines_sel_dissolution_kt(Variable):
+    value_type = float
+    entity = entities.societe
+    label = "Redevance communale du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
+    # reference ?
+    definition_period = YEAR
+
+    def formula(societes, period, parameters) -> numpy.ndarray:
+        annee_production = period.last_year
+        taux = parameters(period).redevances.communales.sel_dissolution
+        quantites = societes("quantite_sel_dissolution_kt", annee_production)
+
+        return numpy.round(quantites * taux, decimals = 2)
 
 
 class redevance_totale_des_mines(Variable):
