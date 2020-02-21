@@ -206,7 +206,7 @@ class redevance_totale_des_mines_sel_dissolution_kt(Variable):
         return departementale + communale
 
 
-class redevance_totale_des_mines(Variable):
+class redevance_totale_des_mines_aurifere_kg(Variable):
     value_type = float
     entity = entities.societe
     label = "Redevance départamentale + communale des mines"
