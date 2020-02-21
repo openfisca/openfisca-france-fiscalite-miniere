@@ -1,6 +1,5 @@
 import numpy
 
-from openfisca_core import indexed_enums
 from openfisca_core import periods
 from openfisca_core import variables
 
@@ -11,7 +10,7 @@ class quantite_aurifere_kg(variables.Variable):
     value_type = float
     entity = entities.societe
     label = "Minerais aurifères (par kilogramme d'or contenu)"
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"
+    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = periods.YEAR
 
 
@@ -54,6 +53,7 @@ class redevance_departementale_des_mines_aurifere_kg(variables.Variable):
         quantites = societes("quantite_aurifere_kg", annee_production)
 
         return numpy.round(quantites * taux, decimals = 2)
+
 
 class redevance_totale_des_mines(variables.Variable):
     value_type = float
