@@ -1,17 +1,17 @@
 description: minerais aurifères (kilogramme d'or contenu)
 metadata:
-unit: currency-EUR
+  unit: currency-EUR
 
 values:
-	2017-01-01:
-	value: 28.20   
-	metadata:
-	reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2018-01-01/
-	2018-01-01:
-	value: 29  
-	metadata:
-	reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2019-01-01/
-	2019-01-01:
-	value: 29.90   
-	metadata:
-	reference: https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01/
+  2017-01-01:
+    value: 28.20
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2018-01-01/
+  2018-01-01:
+    value: 29
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2019-01-01/
+  2019-01-01:
+    value: 29.90
+    metadata:
+      reference: https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01/
