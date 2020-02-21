@@ -8,7 +8,7 @@ from openfisca_france_fiscalite_miniere import entities
 
 
 class CategorieEnum(indexed_enums.Enum):
-    pme = "PME"
+    pme = "Petites et Moyennes Entreprises"
     autre = "Autre entreprise"
 
 
