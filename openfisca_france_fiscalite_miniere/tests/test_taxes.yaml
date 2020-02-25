@@ -3,7 +3,7 @@
     categorie:
       2018: pme
       2017: pme
-    quantite:
+    quantite_aurifere_kg:
       2018: 1000
       2017: 1000
   output:
@@ -16,7 +16,7 @@
     categorie:
       2018: autre
       2017: autre
-    quantite:
+    quantite_aurifere_kg:
       2018: 1000
       2017: 1000
   output:
@@ -28,7 +28,7 @@
   input:
     categorie:
       2018: pme
-    quantite:
+    quantite_aurifere_kg:
       2018: 10
     investissement:
       2018: 1000.0
@@ -44,7 +44,7 @@
   input:
     categorie:
       2018: pme
-    quantite:
+    quantite_aurifere_kg:
       2018: 30
     investissement:
       2018: 5000.0
@@ -60,7 +60,7 @@
   input:
     categorie:
       2018: pme
-    quantite:
+    quantite_aurifere_kg:
       2018: 50
     investissement:
       2018: 7500.0

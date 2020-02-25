@@ -8,7 +8,7 @@ from openfisca_france_fiscalite_miniere import entities
 
 
 class CategorieEnum(indexed_enums.Enum):
-    pme = "PME"
+    pme = "Petites et Moyennes Entreprises"
     autre = "Autre entreprise"
 
 
@@ -33,14 +33,14 @@ class investissement(variables.Variable):
 class taxe_guyane_brute(variables.Variable):
     value_type = float
     entity = entities.societe
-    label = "Taxe perçue pour la région de Guyane, avant déduction des investissements"
+    label = "Taxe perçue pour la production aurifère en Guyane, avant déduction des investissements"  # noqa: E501
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
     definition_period = periods.YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
-        quantites = societes("quantite", annee_production)
+        quantites = societes("quantite_aurifere_kg", annee_production)
         categories = societes("categorie", annee_production).decode()
         tarifs = (params.categories[categorie.name] for categorie in categories)
         tarifs = numpy.fromiter(tarifs, dtype = float)

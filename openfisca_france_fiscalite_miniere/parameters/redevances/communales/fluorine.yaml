@@ -1,17 +1,17 @@
-description: Minerais aurifères (par kilogramme d'or contenu)
+description: Fluorine (par millier de tonnes nettes livrées)
 metadata:
   unit: currency-EUR
 
 values:
   2017-01-01:
-    value: 141.20
+    value: 702.40
     metadata:
       reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
   2018-01-01:
-    value: 145.30
+    value: 722.80
     metadata:
       reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
   2019-01-01:
-    value: 149.70
+    value: 744.50
     metadata:
       reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01

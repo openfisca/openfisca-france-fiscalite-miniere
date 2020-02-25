@@ -1,5 +1,12 @@
 # Changelog
 
+# 1.0.0 [#6](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/6)
+
+* Évolution du système socio-fiscal.
+* Périodes concernées : toutes.
+* Détails :
+  - Permet le calcul des redevances du sel.
+
 ### 0.1.2 [#4](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/4)
 
 * Correction d'un crash.

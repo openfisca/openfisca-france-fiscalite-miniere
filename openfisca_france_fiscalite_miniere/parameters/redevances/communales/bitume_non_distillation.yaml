@@ -1,17 +1,17 @@
-description: Minerais aurifères (par kilogramme d'or contenu)
+description: Calcaires et grès bitumineux ou asphaltiques non destinés à la distillation pour production d'huiles ou d'essences (par millier de tonnes nettes livrées)
 metadata:
   unit: currency-EUR
 
 values:
   2017-01-01:
-    value: 141.20
+    value: 1388.30
     metadata:
       reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
   2018-01-01:
-    value: 145.30
+    value: 1428.60
     metadata:
       reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
   2019-01-01:
-    value: 149.70
+    value: 1471.50
     metadata:
       reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01

@@ -2,14 +2,12 @@
   input:
     categorie:
       2018: pme
-    nature:
-      2018: aurifere
-    quantite:
+    quantite_aurifere_kg:
       2018: 10
     investissement:
       2018: 1000.0
   output:
-    redevance_totale_des_mines:
+    redevance_totale_des_mines_aurifere_kg:
       2019: 1796.0
     taxe_guyane:
       2019: 2452.3

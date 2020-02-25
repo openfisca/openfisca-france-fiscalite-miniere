@@ -1,17 +1,17 @@
-description: Minerais aurifères (par kilogramme d'or contenu)
+description: Butane (par tonne nette livrée)
 metadata:
   unit: currency-EUR
 
 values:
   2017-01-01:
-    value: 141.20
+    value: 8.00
     metadata:
       reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2018-01-01
   2018-01-01:
-    value: 145.30
+    value: 8.20
     metadata:
       reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2019-01-01
   2019-01-01:
-    value: 149.70
+    value: 8.40
     metadata:
       reference: https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01
