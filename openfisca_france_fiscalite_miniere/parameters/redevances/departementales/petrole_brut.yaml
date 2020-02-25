@@ -6,11 +6,9 @@ values:
   2017-01-01:
     value: 1371
     metadata:
-      reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2018-01-01/
-  2018-01-01:
-    value: 1371
-    metadata:
-      reference: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2019-01-01/
+      reference: 
+        2017-01-01: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2018-01-01/
+        2018-01-01: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2019-01-01/
   2019-01-01:
     value: 1412.10
     metadata:
