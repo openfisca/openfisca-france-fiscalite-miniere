@@ -142,6 +142,26 @@
       2019: 17180
       2018: 16680
 
+
+- name: "Chlorure de sodium : redevance totale communale"
+  input:
+    societes:
+      societe_1:
+        redevance_communale_des_mines_sel_abattage_kt: 
+          2019: 5
+      societe_2:
+        redevance_communale_des_mines_sel_abattage_kt: 
+          2019: 10
+    communes:
+      commune_1:
+        societes: 
+        - societe_1
+        - societe_2
+  output:
+    redevance_communale_totale_sel: 
+      2019: 15    
+
+
 # - name: "Charbon (par centaine de tonnes nettes extraites)"
 #   input:
 #     quantite_charbon_ct:
