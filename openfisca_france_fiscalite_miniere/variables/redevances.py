@@ -190,6 +190,30 @@ class redevance_departementale_des_mines_sel_dissolution_kt(Variable):
         return numpy.round(quantites * taux, decimals = 2)
 
 
+class redevance_communale_totale_sel(Variable):
+    value_type = float
+    entity = entities.Commune
+    label = "Redevance communale tous types de sels"
+    definition_period = YEAR
+
+    def formula(communes, period) -> numpy.ndarray:
+        redevance_communale_des_mines_sel_abattage_kt = communes.members(
+            "redevance_communale_des_mines_sel_abattage_kt",
+            period)
+        redevance_communale_des_mines_sel_raffine_kt = communes.members(
+            "redevance_communale_des_mines_sel_raffine_kt",
+            period)
+        redevance_communale_des_mines_sel_dissolution_kt = communes.members(
+            "redevance_communale_des_mines_sel_dissolution_kt",
+            period)
+
+        return communes.sum(
+            redevance_communale_des_mines_sel_abattage_kt
+            + redevance_communale_des_mines_sel_raffine_kt
+            + redevance_communale_des_mines_sel_dissolution_kt
+            )
+
+
 class redevance_totale_des_mines_sel_dissolution_kt(Variable):
     value_type = float
     entity = entities.Societe
