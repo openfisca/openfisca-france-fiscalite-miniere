@@ -8,7 +8,7 @@ from openfisca_france_fiscalite_miniere import entities
 
 class quantite_aurifere_kg(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Minerais aurifères (par kilogramme d'or contenu)"
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -16,7 +16,7 @@ class quantite_aurifere_kg(Variable):
 
 class quantite_sel_abattage_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Quantité de sel d'abattage (par millier de tonnes)"
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -24,7 +24,7 @@ class quantite_sel_abattage_kt(Variable):
 
 class quantite_sel_raffine_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Quantité de sel raffiné (par millier de tonnes)"
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -32,7 +32,7 @@ class quantite_sel_raffine_kt(Variable):
 
 class quantite_sel_dissolution_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Quantité de sel de dissolution (par millier de tonnes de NaCl contenu)"
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -40,7 +40,7 @@ class quantite_sel_dissolution_kt(Variable):
 
 class redevance_communale_des_mines_aurifere_kg(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance communale des mines pour le minerais aurifères"
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -55,7 +55,7 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
 
 class redevance_departementale_des_mines_aurifere_kg(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance départementale des_mines pour le minerais aurifères"
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -70,7 +70,7 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
 
 class redevance_communale_des_mines_sel_abattage_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance communale du sel d'abattage"
     # reference ?
     definition_period = YEAR
@@ -85,7 +85,7 @@ class redevance_communale_des_mines_sel_abattage_kt(Variable):
 
 class redevance_departementale_des_mines_sel_abattage_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance départementale du sel d'abattage"
     # reference ?
     definition_period = YEAR
@@ -100,7 +100,7 @@ class redevance_departementale_des_mines_sel_abattage_kt(Variable):
 
 class redevance_totale_des_mines_sel_abattage_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance départamentale + communale des mines de sel d'abattage"
     definition_period = YEAR
 
@@ -116,7 +116,7 @@ class redevance_totale_des_mines_sel_abattage_kt(Variable):
 
 class redevance_communale_des_mines_sel_raffine_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance communale du sel raffiné"
     # reference ?
     definition_period = YEAR
@@ -131,7 +131,7 @@ class redevance_communale_des_mines_sel_raffine_kt(Variable):
 
 class redevance_departementale_des_mines_sel_raffine_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance départementale du sel raffiné"
     # reference ?
     definition_period = YEAR
@@ -146,7 +146,7 @@ class redevance_departementale_des_mines_sel_raffine_kt(Variable):
 
 class redevance_totale_des_mines_sel_raffine_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance départamentale + communale des mines de sel raffiné"  # noqa: E501
     definition_period = YEAR
 
@@ -162,7 +162,7 @@ class redevance_totale_des_mines_sel_raffine_kt(Variable):
 
 class redevance_communale_des_mines_sel_dissolution_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance communale du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
     # reference ?
     definition_period = YEAR
@@ -177,7 +177,7 @@ class redevance_communale_des_mines_sel_dissolution_kt(Variable):
 
 class redevance_departementale_des_mines_sel_dissolution_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance départementale du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
     # reference ?
     definition_period = YEAR
@@ -192,7 +192,7 @@ class redevance_departementale_des_mines_sel_dissolution_kt(Variable):
 
 class redevance_totale_des_mines_sel_dissolution_kt(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance départamentale + communale des mines du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
     definition_period = YEAR
 
@@ -208,7 +208,7 @@ class redevance_totale_des_mines_sel_dissolution_kt(Variable):
 
 class redevance_totale_des_mines_aurifere_kg(Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Redevance départamentale + communale des mines"
     definition_period = YEAR
 

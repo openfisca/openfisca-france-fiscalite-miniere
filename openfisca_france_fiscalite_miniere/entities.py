@@ -1,11 +1,25 @@
-from openfisca_core import entities
+from openfisca_core.entities import build_entity
 
 
-class Societe(entities.Entity):
-    def __init__(self, key: str, plural: str, label: str, doc: str = "") -> None:
-        super().__init__(key, plural, label, doc)
+Societe = build_entity(
+    key = "societe",
+    plural = "societes",
+    label = 'Société',
+    is_person = True  # = est entité pivot
+    )
 
 
-societe = Societe("société", "sociétés", "Société")
+Commune = build_entity(
+    key = "communes",
+    plural = "communes",
+    label = 'Commune',
+    roles = [
+        {
+            'key': 'societe',
+            'plural': 'societes',
+            'label': 'Sociétés',
+            }
+        ]
+    )
 
-entities = [societe]
+entities = [Societe, Commune]
