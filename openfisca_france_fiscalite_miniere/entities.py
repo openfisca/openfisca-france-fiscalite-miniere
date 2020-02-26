@@ -10,14 +10,14 @@ Societe = build_entity(
 
 
 Commune = build_entity(
-    key = "communes",
+    key = "commune",
     plural = "communes",
     label = 'Commune',
     roles = [
         {
             'key': 'societe',
             'plural': 'societes',
-            'label': 'Sociétés',
+            'label': 'Sociétés'
             }
         ]
     )
