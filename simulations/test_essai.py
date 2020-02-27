@@ -1,28 +1,29 @@
-import numpy as np
-import pandas  # TODO pip install pandas
+# INSTALL : make install; pip install pandas
 import re
 
-from openfisca_core.simulation_builder import SimulationBuilder
+import numpy as np  # noqa: I201
+import pandas  # noqa: I201
+
+from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 
 from openfisca_france_fiscalite_miniere import FranceFiscaliteMiniereTaxBenefitSystem
-from openfisca_france_fiscalite_miniere.reforms.essai import reforme_repartition
 
 
 # CONFIGURATION
 # -------------
 
-path_data_titres = './data_activites.csv'
-path_data_activites = './data_titres.csv'
-
+path_data_titres = './data_titres.csv'
+path_data_activites = './data_activites.csv'
 
 # LECTURE DES DONNEES
 # -------------------
 
+
 def separe_commune_surface(commune_surface):
     '''Transforme [('Commune1 ', '0.123')] en { 'Commune1': 0.123 }'''
 
-    match = re.match("(.*)\((.*)\)", commune_surface)
-    return { match.group(1).strip(): match.group(2).strip() }
+    match = re.match("(.*)\((.*)\)", commune_surface)  # noqa: W605
+    return {match.group(1).strip(): match.group(2).strip()}
 
 
 # DONNEES TITRES
@@ -30,7 +31,6 @@ def separe_commune_surface(commune_surface):
 
 titres = pandas.read_csv(path_data_titres)
 # pour un titre, communes et leurs surfaces couvertes
-# print(titres.columns)
 # ['id', 'nom', 'type', 'domaine', 'date_debut', 'date_fin',
 #        'date_demande', 'statut', 'volume', 'volume_unite', 'substances',
 #        'surface_km2', 'communes', 'departements', 'regions',
@@ -42,11 +42,10 @@ titres_ids = titres.id
 titres_multicommunes = titres.communes  # "Commune1 (0.123);Commune2 (0.456)"
 
 communes_ids = []
-# Pour chaque titre, parse le contenu de la colonne 'communes' 
+# Pour chaque titre, parse le contenu de la colonne 'communes'
 # et le rempace par un dictionnaire
-for index, communes_surfaces in titres_multicommunes.iteritems():
+for index, communes_surfaces in titres_multicommunes.items():
     liste_communes_surfaces = communes_surfaces.split(';')
-    # print(liste_communes_surfaces)
     dict_communes_surfaces = {}
     for i in liste_communes_surfaces:
         dict_communes_surfaces.update(separe_commune_surface(i))
@@ -62,12 +61,10 @@ communes_ids = np.unique(communes_ids)
 
 activites = pandas.read_csv(path_data_activites)
 # productions
-# print(activites.columns)
 # ["id","titre_id","type","statut","annee","periode","frequence_periode_id",
 #  "renseignements_selh","renseignements_selg","complement_texte"]
-## print(activites)
 
-# [DOCUMENTATION] 
+# DOCUMENTATION
 # noms code minier = noms dans le décret des taux de redevances
 # selh = sel en dissolution (en référence à H2O)
 # selr = sel raffiné
@@ -76,16 +73,19 @@ activites = pandas.read_csv(path_data_activites)
 
 filtre_selh = activites['renseignements_selh'] != ""
 activites_selh = activites[filtre_selh]
-## print(activites_selh.head(5))
 
 filtre_2018 = activites_selh['annee'] == 2018
 activites_selh_2018 = activites_selh[filtre_2018]
-## print(activites_selh_2018.titre_id)
-## print(titres_ids)
 
-activite_selh_2018_par_titre = pandas.merge(titres, activites_selh_2018, left_on="id", right_on="titre_id")
+activite_selh_2018_par_titre = pandas.merge(
+    titres,
+    activites_selh_2018,
+    left_on="id",
+    right_on="titre_id")
 activite_selh_2018_par_titre['renseignements_selh'].fillna(0, inplace=True)
-print(activite_selh_2018_par_titre[['id_x', 'communes', 'renseignements_selh', 'annee']])
+print(activite_selh_2018_par_titre[[  # noqa: T001
+    'id_x', 'communes', 'renseignements_selh', 'annee'
+    ]])
 
 
 # SIMULATION : CAS ACTUEL
@@ -99,35 +99,39 @@ simulation_builder.create_entities(tax_benefit_system)
 simulation_builder.declare_person_entity('societe', titres_ids)
 
 simulation = simulation_builder.build(tax_benefit_system)
-# simulation.trace = True
+simulation.set_input(
+    'quantite_sel_dissolution_kt', '2018',
+    activite_selh_2018_par_titre['renseignements_selh']
+    )
 
-simulation.set_input('quantite_sel_dissolution_kt', '2018', activite_selh_2018_par_titre['renseignements_selh'])
-
-redevance_communale_des_mines_sel_dissolution_kt = simulation.calculate('redevance_communale_des_mines_sel_dissolution_kt', period)
-print("redevance_communale_des_mines_sel_dissolution_kt ?")
-print(redevance_communale_des_mines_sel_dissolution_kt)
-# simulation.tracer.print_computation_log()
+redevance_communale_des_mines_sel_dissolution_kt = simulation.calculate(
+    'redevance_communale_des_mines_sel_dissolution_kt', period
+    )
+print("redevance_communale_des_mines_sel_dissolution_kt ?")  # noqa: T001
+print(redevance_communale_des_mines_sel_dissolution_kt)  # noqa: T001
 
 
 # SIMULATION : ESSAI REFORME
 # --------------------------
 
 # Si j’ai le titre Choupinou sur les communes A et B.
-# Sachant que le titre Choupinou est géographiquement situé sur x Km2 de A et y Km2 de B.
-# Si le titre de le titre Choupinou paie :moneybag: aujourd’hui à l’Etat, 
+# Sachant qu'il est géographiquement situé sur x Km2 de A et y Km2 de B.
+# Si le titre de le titre Choupinou paie :moneybag: aujourd’hui à l’Etat,
 # demain il pourrait payer : :moneybag: * x / (x+y) à A et :moneybag: * y / (x+y) à B.
 
 for index, row in activite_selh_2018_par_titre.iterrows():
-    print("\n", row.id_x)
+    print("\n", row.id_x)  # noqa: T001
     titre_communes = row.communes
-    
+
     titre_surface_totale = sum(map(float, titre_communes.values()))
-    print(titre_surface_totale, " = ", titre_communes)
+    print(titre_surface_totale, " = ", titre_communes)  # noqa: T001
 
     redevance_actuelle = redevance_communale_des_mines_sel_dissolution_kt[index]
-    print("redevance actuelle totale pour le titre", redevance_actuelle, "€")
+    print("/titre", redevance_actuelle, "€")  # noqa: T001
 
     for commune in titre_communes:
-        print(titre_communes[commune])
-        nouvelle_redevance_commune = redevance_actuelle * float(titre_communes[commune]) / titre_surface_totale
-        print("nouvelle redevance commune", commune, nouvelle_redevance_commune, "€")
+        print(titre_communes[commune])  # noqa: T001
+        nouvelle_redevance_commune = (
+            redevance_actuelle * float(titre_communes[commune]) / titre_surface_totale
+            )
+        print("/commune", commune, nouvelle_redevance_commune)  # noqa: T001
