@@ -8,14 +8,14 @@ from openfisca_france_fiscalite_miniere import FranceFiscaliteMiniereTaxBenefitS
 from openfisca_france_fiscalite_miniere.reforms.essai import reforme_repartition
 
 
-path_data_titres = '../../../../camino/20200226-16h02-camino-titres-sel-test.csv'
-path_data_activites = '../../../../camino/20200214-16h15-camino-activites-annuel-sel-test.csv'
-# path_data_titres = './data_activites.csv'
-# path_data_activites = './data_titres.csv'
+# CONFIGURATION
+# -------------
+
+path_data_titres = './data_activites.csv'
+path_data_activites = './data_titres.csv'
 
 
-period = '2019'
-tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
+
 
 
 def separe_commune_surface(commune_surface):
@@ -58,29 +58,42 @@ communes_ids = np.unique(communes_ids)
 activites = pandas.read_csv(path_data_activites)
 # productions
 # print(activites.columns)
-# ['id', 'titre_id', 'type', 'statut', 'annee', 'periode', 'frequence_periode_id', 'renseignements_orNet', 'complement_texte']
+# ["id","titre_id","type","statut","annee","periode","frequence_periode_id",
+#  "renseignements_selh","renseignements_selg","complement_texte"]
 ## print(activites)
 
+# [DOCUMENTATION] 
+# noms code minier = noms dans le décret des taux de redevances
 # selh = sel en dissolution (en référence à H2O)
 # selr = sel raffiné
+# selg = sel par abattage (en référence au sol gemme extrait par abattage)
 
-
-activites_selh = activites.loc[activites['renseignements_orNet'].str.startswith('selh', na=False)]
-# filtre_selh = activites['renseignements_orNet'] == 'selh'
-# activites_selh = activites[filtre_selh]
+filtre_selh = activites['renseignements_selh'] != ""
+activites_selh = activites[filtre_selh]
 ## print(activites_selh.head(5))
 
 filtre_2018 = activites_selh['annee'] == 2018
 activites_selh_2018 = activites_selh[filtre_2018]
-## print(activites_selh_2018)
+print(activites_selh_2018.titre_id)
+print(titres_ids)
 
+activite_selh_2018_par_titre = pandas.merge(titres, activites_selh_2018, left_on="id", right_on="titre_id")
+activite_selh_2018_par_titre['renseignements_selh'].fillna(0, inplace=True)
+print(activite_selh_2018_par_titre[['id_x', 'renseignements_selh', 'annee']])
+
+
+# SIMULATION
+# ----------
+
+period = '2018'
+tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
 
 simulation_builder = SimulationBuilder()
 # simulation_builder.create_entities(tax_benefit_system)
 # simulation_builder.declare_person_entity('societe', titres_ids)
 simulation = simulation_builder.build_default_simulation(tax_benefit_system, count=len(titres_ids))
 
-# simulation.set_input('quantite_sel_dissolution_kt', period, activites_selh_2018)
+simulation.set_input('quantite_sel_dissolution_kt', period, activite_selh_2018_par_titre['renseignements_selh'])
 
 
 redevance_communale_des_mines_sel_dissolution_kt = simulation.calculate('redevance_communale_des_mines_sel_dissolution_kt', period)
