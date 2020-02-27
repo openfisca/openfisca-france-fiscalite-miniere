@@ -8,11 +8,13 @@ from openfisca_france_fiscalite_miniere import FranceFiscaliteMiniereTaxBenefitS
 from openfisca_france_fiscalite_miniere.reforms.essai import reforme_repartition
 
 
+path_data_titres = '../../../../camino/20200226-16h02-camino-titres-sel-test.csv'
+path_data_activites = '../../../../camino/20200214-16h15-camino-activites-annuel-sel-test.csv'
 # path_data_titres = './data_activites.csv'
 # path_data_activites = './data_titres.csv'
 
 
-period = '2020'
+period = '2019'
 tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
 
 
@@ -57,16 +59,20 @@ activites = pandas.read_csv(path_data_activites)
 # productions
 # print(activites.columns)
 # ['id', 'titre_id', 'type', 'statut', 'annee', 'periode', 'frequence_periode_id', 'renseignements_orNet', 'complement_texte']
-print(activites)
+## print(activites)
 
 # selh = sel en dissolution (en référence à H2O)
 # selr = sel raffiné
 
-filtre_selh = activites['renseignements_orNet'] == 'selh'
-activites_selh = activites[filtre_selh]
-print(activites_selh)
 
-print(activites.loc[activites['renseignements_orNet'].str.startswith('selh', na=False)])
+activites_selh = activites.loc[activites['renseignements_orNet'].str.startswith('selh', na=False)]
+# filtre_selh = activites['renseignements_orNet'] == 'selh'
+# activites_selh = activites[filtre_selh]
+## print(activites_selh.head(5))
+
+filtre_2018 = activites_selh['annee'] == 2018
+activites_selh_2018 = activites_selh[filtre_2018]
+## print(activites_selh_2018)
 
 
 simulation_builder = SimulationBuilder()
@@ -74,10 +80,8 @@ simulation_builder = SimulationBuilder()
 # simulation_builder.declare_person_entity('societe', titres_ids)
 simulation = simulation_builder.build_default_simulation(tax_benefit_system, count=len(titres_ids))
 
-
-# simulation.set_input('quantite_sel_dissolution_kt', period, activites.renseignements_orNet)
+# simulation.set_input('quantite_sel_dissolution_kt', period, activites_selh_2018)
 
 
 redevance_communale_des_mines_sel_dissolution_kt = simulation.calculate('redevance_communale_des_mines_sel_dissolution_kt', period)
 print(redevance_communale_des_mines_sel_dissolution_kt)
-
