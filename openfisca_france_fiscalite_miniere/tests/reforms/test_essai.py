@@ -15,14 +15,17 @@ path_data_titres = './data_activites.csv'
 path_data_activites = './data_titres.csv'
 
 
-
-
+# LECTURE DES DONNEES
+# -------------------
 
 def separe_commune_surface(commune_surface):
     '''Transforme [('Commune1 ', '0.123')] en { 'Commune1': 0.123 }'''
 
     match = re.match("(.*)\((.*)\)", commune_surface)
     return { match.group(1).strip(): match.group(2).strip() }
+
+
+# DONNEES TITRES
 
 
 titres = pandas.read_csv(path_data_titres)
@@ -37,7 +40,6 @@ titres = pandas.read_csv(path_data_titres)
 #        'reference_DEB', 'reference_RNTM']
 titres_ids = titres.id
 titres_multicommunes = titres.communes  # "Commune1 (0.123);Commune2 (0.456)"
-
 
 communes_ids = []
 # Pour chaque titre, parse le contenu de la colonne 'communes' 
@@ -55,6 +57,9 @@ for index, communes_surfaces in titres_multicommunes.iteritems():
 communes_ids = np.unique(communes_ids)
 
 
+# DONNEES ACTIVITES
+
+
 activites = pandas.read_csv(path_data_activites)
 # productions
 # print(activites.columns)
@@ -68,14 +73,16 @@ activites = pandas.read_csv(path_data_activites)
 # selr = sel raffiné
 # selg = sel par abattage (en référence au sol gemme extrait par abattage)
 
+
+
 filtre_selh = activites['renseignements_selh'] != ""
 activites_selh = activites[filtre_selh]
 ## print(activites_selh.head(5))
 
 filtre_2018 = activites_selh['annee'] == 2018
 activites_selh_2018 = activites_selh[filtre_2018]
-print(activites_selh_2018.titre_id)
-print(titres_ids)
+## print(activites_selh_2018.titre_id)
+## print(titres_ids)
 
 activite_selh_2018_par_titre = pandas.merge(titres, activites_selh_2018, left_on="id", right_on="titre_id")
 activite_selh_2018_par_titre['renseignements_selh'].fillna(0, inplace=True)
@@ -85,16 +92,20 @@ print(activite_selh_2018_par_titre[['id_x', 'renseignements_selh', 'annee']])
 # SIMULATION
 # ----------
 
-period = '2018'
+period = '2019'
 tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
 
 simulation_builder = SimulationBuilder()
-# simulation_builder.create_entities(tax_benefit_system)
-# simulation_builder.declare_person_entity('societe', titres_ids)
-simulation = simulation_builder.build_default_simulation(tax_benefit_system, count=len(titres_ids))
+simulation_builder.create_entities(tax_benefit_system)
+simulation_builder.declare_person_entity('societe', titres_ids)
 
-simulation.set_input('quantite_sel_dissolution_kt', period, activite_selh_2018_par_titre['renseignements_selh'])
+simulation = simulation_builder.build(tax_benefit_system)
+# simulation = simulation_builder.build_default_simulation(tax_benefit_system, count=len(titres_ids))
+simulation.trace = True
 
+simulation.set_input('quantite_sel_dissolution_kt', '2018', activite_selh_2018_par_titre['renseignements_selh'])
 
 redevance_communale_des_mines_sel_dissolution_kt = simulation.calculate('redevance_communale_des_mines_sel_dissolution_kt', period)
+print("redevance_communale_des_mines_sel_dissolution_kt ?")
 print(redevance_communale_des_mines_sel_dissolution_kt)
+# simulation.tracer.print_computation_log()
