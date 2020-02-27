@@ -86,11 +86,11 @@ activites_selh_2018 = activites_selh[filtre_2018]
 
 activite_selh_2018_par_titre = pandas.merge(titres, activites_selh_2018, left_on="id", right_on="titre_id")
 activite_selh_2018_par_titre['renseignements_selh'].fillna(0, inplace=True)
-print(activite_selh_2018_par_titre[['id_x', 'renseignements_selh', 'annee']])
+print(activite_selh_2018_par_titre[['id_x', 'communes', 'renseignements_selh', 'annee']])
 
 
-# SIMULATION
-# ----------
+# SIMULATION : CAS ACTUEL
+# -----------------------
 
 period = '2019'
 tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
@@ -100,8 +100,7 @@ simulation_builder.create_entities(tax_benefit_system)
 simulation_builder.declare_person_entity('societe', titres_ids)
 
 simulation = simulation_builder.build(tax_benefit_system)
-# simulation = simulation_builder.build_default_simulation(tax_benefit_system, count=len(titres_ids))
-simulation.trace = True
+# simulation.trace = True
 
 simulation.set_input('quantite_sel_dissolution_kt', '2018', activite_selh_2018_par_titre['renseignements_selh'])
 
@@ -109,3 +108,27 @@ redevance_communale_des_mines_sel_dissolution_kt = simulation.calculate('redevan
 print("redevance_communale_des_mines_sel_dissolution_kt ?")
 print(redevance_communale_des_mines_sel_dissolution_kt)
 # simulation.tracer.print_computation_log()
+
+
+# SIMULATION : ESSAI REFORME
+# --------------------------
+
+# Si j’ai le titre Choupinou sur les communes A et B.
+# Sachant que le titre Choupinou est géographiquement situé sur x Km2 de A et y Km2 de B.
+# Si le titre de le titre Choupinou paie :moneybag: aujourd’hui à l’Etat, 
+# demain il pourrait payer : :moneybag: * x / (x+y) à A et :moneybag: * y / (x+y) à B.
+
+for index, row in activite_selh_2018_par_titre.iterrows():
+    print("\n", row.id_x)
+    titre_communes = row.communes
+    
+    titre_surface_totale = sum(map(float, titre_communes.values()))
+    print(titre_surface_totale, " = ", titre_communes)
+
+    redevance_actuelle = redevance_communale_des_mines_sel_dissolution_kt[index]
+    print("redevance actuelle", redevance_actuelle, "€")
+
+    for commune in titre_communes:
+        print(titre_communes[commune])
+        nouvelle_redevance_commune = redevance_actuelle * float(titre_communes[commune]) / titre_surface_totale
+        print("nouvelle redevance commune", commune, nouvelle_redevance_commune, "€")
