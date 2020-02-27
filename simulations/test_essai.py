@@ -74,7 +74,6 @@ activites = pandas.read_csv(path_data_activites)
 # selg = sel par abattage (en référence au sol gemme extrait par abattage)
 
 
-
 filtre_selh = activites['renseignements_selh'] != ""
 activites_selh = activites[filtre_selh]
 ## print(activites_selh.head(5))
@@ -126,7 +125,7 @@ for index, row in activite_selh_2018_par_titre.iterrows():
     print(titre_surface_totale, " = ", titre_communes)
 
     redevance_actuelle = redevance_communale_des_mines_sel_dissolution_kt[index]
-    print("redevance actuelle", redevance_actuelle, "€")
+    print("redevance actuelle totale pour le titre", redevance_actuelle, "€")
 
     for commune in titre_communes:
         print(titre_communes[commune])
