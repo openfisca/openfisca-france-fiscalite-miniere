@@ -1,4 +1,4 @@
-# INSTALL : make install; pip install pandas
+ # INSTALL : make install; pip install pandas
 import re
 
 import numpy as np  # noqa: I201
@@ -6,7 +6,7 @@ import pandas  # noqa: I201
 
 from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 
-from openfisca_france_fiscalite_miniere import FranceFiscaliteMiniereTaxBenefitSystem
+from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as FranceFiscaliteMiniereTaxBenefitSystem
 
 
 # CONFIGURATION
