@@ -12,8 +12,8 @@ from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as France
 # CONFIGURATION
 # -------------
 
-path_data_titres = '../../camino/20200226-16h02-camino-titres-sel-test.csv'
-path_data_activites = '../../camino/20200214-16h15-camino-activites-annuel-sel-test.csv'
+path_data_titres = './data_titres.csv'
+path_data_activites = './data_activites.csv'
 
 # LECTURE DES DONNEES
 # -------------------
