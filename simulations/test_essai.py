@@ -12,8 +12,8 @@ from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as France
 # CONFIGURATION
 # -------------
 
-path_data_titres = './data_titres.csv'
-path_data_activites = './data_activites.csv'
+path_data_titres = '../../camino/20200226-16h02-camino-titres-sel-test.csv'
+path_data_activites = '../../camino/20200214-16h15-camino-activites-annuel-sel-test.csv'
 
 # LECTURE DES DONNEES
 # -------------------
@@ -119,6 +119,13 @@ print(redevance_communale_des_mines_sel_dissolution_kt)  # noqa: T001
 # Si le titre de le titre Choupinou paie :moneybag: aujourd’hui à l’Etat,
 # demain il pourrait payer : :moneybag: * x / (x+y) à A et :moneybag: * y / (x+y) à B.
 
+
+# "Commune", "redevance communale totale pour la commune", 
+# "[titreA (redevance communale pour toutes les subsrance de ce titre sur cette commune); 
+#   titreB (redevance communale pour toutes les substance de cet autre titre) ]"
+data_reforme = []
+colonnes = ['commune', 'redevance communale totale', 'titre', 'redevance communale par titre']
+
 for index, row in activite_selh_2018_par_titre.iterrows():
     print("\n", row.id_x)  # noqa: T001
     titre_communes = row.communes
@@ -135,3 +142,8 @@ for index, row in activite_selh_2018_par_titre.iterrows():
             redevance_actuelle * float(titre_communes[commune]) / titre_surface_totale
             )
         print("/commune", commune, nouvelle_redevance_commune)  # noqa: T001
+        ligne_resultat = (commune, redevance_actuelle, row.id_x, nouvelle_redevance_commune)
+        data_reforme.append(ligne_resultat)
+
+resultat = pandas.DataFrame(data_reforme, columns = colonnes)
+resultat.to_csv('toto.csv', index=False)
