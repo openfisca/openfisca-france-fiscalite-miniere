@@ -1,6 +1,6 @@
 import numpy
 
-from openfisca_core.period import YEAR
+from openfisca_core.periods import YEAR
 from openfisca_core.reforms import Reform
 from openfisca_core.variables import Variable
 
