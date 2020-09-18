@@ -1,5 +1,18 @@
 # Changelog
 
+
+# [#8](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/8)
+
+* Évolution du système socio-fiscal.
+* Périodes concernées : toutes.
+* Détails :
+  - Ajoute une entité `Commune`
+  - Ajoute la variable `redevance_communale_totale_sel` (tous types de sel)
+  - Ajoute dans `simulations/` les réformes de répartition communale de la Redevance Communale des Mines (RCM) pour le sel en dissolution (`test_essai_selh.py`) et le sel par abattage (`test_essai_selg.pu`)
+    - Réformes évaluées pour la fiscalité du sel au Grand Est en 2019 sur la base de données de déclaration de production de 2018
+    - Colonnes des fichiers de données de production de la réforme décrits en `data_activites.csv` et `data_titres.csv` (format d'export de [Camino](https://camino.beta.gouv.fr))
+
+
 # 1.0.0 [#6](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/6)
 
 * Évolution du système socio-fiscal.
