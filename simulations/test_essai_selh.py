@@ -9,6 +9,12 @@ from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as FranceFiscaliteMiniereTaxBenefitSystem  # noqa: E501
 
 
+# Simulation d'une réforme de répartition communale de la Redevance Communale
+# des Mines (RCM) pour les exploitations de sel en dissolution :
+# pour chaque concession (titre) d'une mine, évaluation de la distribution
+# de la production et du produit de la taxe au prorata de la surface du titre
+# sur chaque commune.
+
 # CONFIGURATION
 # -------------
 
@@ -68,7 +74,7 @@ activites = pandas.read_csv(path_data_activites)
 # noms code minier = noms dans le décret des taux de redevances
 # selh = sel en dissolution (en référence à H2O)
 # selr = sel raffiné
-# selg = sel par abattage (en référence au sol gemme extrait par abattage)
+# selg = sel par abattage (en référence au sel gemme extrait par abattage)
 
 
 filtre_selh = activites['renseignements_selh'] != ""
@@ -116,7 +122,7 @@ print(redevance_communale_des_mines_sel_dissolution_kt)  # noqa: T001
 
 # Si j’ai le titre Choupinou sur les communes A et B.
 # Sachant qu'il est géographiquement situé sur x Km2 de A et y Km2 de B.
-# Si le titre de le titre Choupinou paie :moneybag: aujourd’hui à l’Etat,
+# Si le titre Choupinou paie :moneybag: aujourd’hui à l’Etat,
 # demain il pourrait payer : :moneybag: * x / (x+y) à A et :moneybag: * y / (x+y) à B.
 
 
