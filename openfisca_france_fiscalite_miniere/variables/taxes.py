@@ -19,7 +19,7 @@ class categorie(Variable):
     default_value = CategorieEnum.pme
     entity = Societe
     label = "Catégorie d'entreprises, dont l'imposition est prévue par la loi"
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
+    reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
 
@@ -27,7 +27,7 @@ class investissement(Variable):
     value_type = float
     entity = Societe
     label = "Investissements pour la réduction des impacts de l'exploitation de l'or sur l'environnement"  # noqa: E501
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
+    reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
 
@@ -35,7 +35,7 @@ class taxe_guyane_brute(Variable):
     value_type = float
     entity = Societe
     label = "Taxe perçue pour la production aurifère en Guyane, avant déduction des investissements"  # noqa: E501
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
+    reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
@@ -53,7 +53,7 @@ class taxe_guyane_deduction(Variable):
     value_type = float
     entity = Societe
     label = "Investissements déductibles de la taxe perçue pour la région de Guyane"
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
+    reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
@@ -77,7 +77,7 @@ class taxe_guyane(Variable):
     value_type = float
     entity = Societe
     label = "Taxe perçue pour la région de Guyane"
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
+    reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
