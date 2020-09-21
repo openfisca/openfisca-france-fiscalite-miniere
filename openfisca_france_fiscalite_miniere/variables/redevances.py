@@ -10,15 +10,24 @@ class quantite_aurifere_kg(Variable):
     value_type = float
     entity = entities.Societe
     label = "Minerais aurifères (par kilogramme d'or contenu)"
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
+    reference = [
+        "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01",
+        "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293412/1987-08-09"
+        ]  # noqa: E501
     definition_period = YEAR
+    documentation = '''
+    Pour les minerais aurifères, l'évaluation des tonnages nets des produits
+    extraits chaque année et d'après lesquels sera calculée l'année suivante
+    la redevance communale des mines a pour base la quantité de métal précieux
+    effectivement extraite par le traitement métallurgique.
+    '''
 
 
 class quantite_sel_abattage_kt(Variable):
     value_type = float
     entity = entities.Societe
     label = "Quantité de sel d'abattage (par millier de tonnes)"
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
+    reference = "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
 
@@ -26,7 +35,7 @@ class quantite_sel_raffine_kt(Variable):
     value_type = float
     entity = entities.Societe
     label = "Quantité de sel raffiné (par millier de tonnes)"
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
+    reference = "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
 
@@ -34,7 +43,7 @@ class quantite_sel_dissolution_kt(Variable):
     value_type = float
     entity = entities.Societe
     label = "Quantité de sel de dissolution (par millier de tonnes de NaCl contenu)"
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
+    reference = "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
 
@@ -42,7 +51,7 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
     value_type = float
     entity = entities.Societe
     label = "Redevance communale des mines pour le minerais aurifères"
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01"  # noqa: E501
+    reference = "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
@@ -57,7 +66,7 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
     value_type = float
     entity = entities.Societe
     label = "Redevance départementale des_mines pour le minerais aurifères"
-    reference = "https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01"  # noqa: E501
+    reference = "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
