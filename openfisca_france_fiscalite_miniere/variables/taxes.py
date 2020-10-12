@@ -16,7 +16,7 @@ class categorie(variables.Variable):
     value_type = indexed_enums.Enum
     possible_values = CategorieEnum
     default_value = CategorieEnum.pme
-    entity = entities.societe
+    entity = entities.Societe
     label = "Catégorie d'entreprises, dont l'imposition est prévue par la loi"
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
     definition_period = periods.YEAR
@@ -24,7 +24,7 @@ class categorie(variables.Variable):
 
 class investissement(variables.Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Investissements pour la réduction des impacts de l'exploitation de l'or sur l'environnement"  # noqa: E501
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
     definition_period = periods.YEAR
@@ -32,7 +32,7 @@ class investissement(variables.Variable):
 
 class taxe_guyane_brute(variables.Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Taxe perçue pour la production aurifère en Guyane, avant déduction des investissements"  # noqa: E501
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
     definition_period = periods.YEAR
@@ -50,7 +50,7 @@ class taxe_guyane_brute(variables.Variable):
 
 class taxe_guyane_deduction(variables.Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Investissements déductibles de la taxe perçue pour la région de Guyane"
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
     definition_period = periods.YEAR
@@ -74,7 +74,7 @@ class taxe_guyane_deduction(variables.Variable):
 
 class taxe_guyane(variables.Variable):
     value_type = float
-    entity = entities.societe
+    entity = entities.Societe
     label = "Taxe perçue pour la région de Guyane"
     reference = "https://beta.legifrance.gouv.fr/codes/id/LEGISCTA000020058694/2020-01-01"  # noqa: E501
     definition_period = periods.YEAR

@@ -4,3 +4,6 @@
 .mypy_cache
 build
 dist
+
+data_titres.csv
+data_activites.csv
