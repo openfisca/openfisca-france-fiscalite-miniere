@@ -1,7 +1,7 @@
 # Changelog
 
 
-# [#8](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/8)
+# 1.1.0 [#8](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/8)
 
 * Évolution du système socio-fiscal.
 * Périodes concernées : toutes.
