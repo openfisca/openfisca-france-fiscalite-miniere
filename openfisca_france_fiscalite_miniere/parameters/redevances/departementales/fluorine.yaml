@@ -14,4 +14,8 @@ values:
   2019-01-01:
     value: 151.30
     metadata:
-      reference: https://beta.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01/
+      reference: https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2019-06-08/
+  2020-01-01:
+    value: 155.20
+    metadata:
+      reference: https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042159975/2020-07-25/
