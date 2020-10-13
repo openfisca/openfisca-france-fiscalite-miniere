@@ -70,7 +70,10 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
     value_type = float
     entity = entities.Societe
     label = "Redevance départementale des_mines pour le minerais aurifères"
-    reference = "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01"  # noqa: E501
+    reference = [
+        "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01",  # noqa: E501
+        "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501
+    ]
     definition_period = YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
@@ -100,7 +103,7 @@ class redevance_departementale_des_mines_sel_abattage_kt(Variable):
     value_type = float
     entity = entities.Societe
     label = "Redevance départementale du sel d'abattage"
-    # reference ?
+    reference = "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501
     definition_period = YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
@@ -146,7 +149,7 @@ class redevance_departementale_des_mines_sel_raffine_kt(Variable):
     value_type = float
     entity = entities.Societe
     label = "Redevance départementale du sel raffiné"
-    # reference ?
+    reference = "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501
     definition_period = YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
@@ -192,7 +195,7 @@ class redevance_departementale_des_mines_sel_dissolution_kt(Variable):
     value_type = float
     entity = entities.Societe
     label = "Redevance départementale du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
-    # reference ?
+    reference = "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501
     definition_period = YEAR
 
     def formula(societes, period, parameters) -> numpy.ndarray:
