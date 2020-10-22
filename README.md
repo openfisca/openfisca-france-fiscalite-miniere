@@ -79,10 +79,24 @@ cd ./openfisca_france_fiscalite_miniere/examples
 curl -X POST http://localhost:5000/calculate -H 'Content-Type: application/json' -d @societe.json
 ```
 
+## Simulations
+
+Rassemblées dans le répertoire `./simulations` :
+
+* `test_essai_selg.py` est dédié au sel par abattage
+* `test_essai_selh.py` est dédié au sel en dissolution
+
+Simulations d'une réforme de répartition communale de la Redevance Communale
+des Mines (RCM) pour les exploitations de chaque type de sel :
+pour chaque concession (titre) d'une mine, évaluation de la distribution
+de la production et du produit de la taxe au prorata de la surface du titre
+sur chaque commune.
+
 ## Lexique
 
 * RCM = Redevance Communale des Mines
 * RDM = Redevance Départementale des Mines
+* Substances M = Substances non énergétiques (métaux, minéraux)
 
 ## Références législatives complémentaires
 
