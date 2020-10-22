@@ -31,3 +31,18 @@ simulation = simulation_builder.build(tax_benefit_system)
 
 for k, v in production_par_titre_keys.items():
     simulation.set_input(k, data_period, simulation_data[v])
+
+taxe_guyane_brute = simulation.calculate('taxe_guyane_brute', simulation_period)
+
+# SIMULATION OUTPUT
+
+colonnes = ['titre_id', 'renseignements_orBrut', 'taxe_guyane_brute']
+estimations = titres_ids
+
+resultat = pandas.DataFrame(estimations, columns = colonnes)
+
+resultat['renseignements_orBrut'] = simulation_data.renseignements_orBrut
+resultat['taxe_guyane_brute'] = taxe_guyane_brute
+
+
+resultat.to_csv('estimation.csv', index=False)
