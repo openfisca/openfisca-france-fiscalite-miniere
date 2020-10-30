@@ -1,5 +1,13 @@
 # Changelog
 
+###
+
+* Évolution du système socio-fiscal.
+* Périodes concernées : à partir du 01/01/2020.
+* Détails :
+  - Revalorise la taxe minière sur l'or en Guyane pour 2020.
+  - Revalorise les tarifs RCM tous produits pour 2020.
+  - Revalorise les tarifs RDM tous produits pour 2020.
 
 # 1.1.0 [#8](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/8)
 
