@@ -1,6 +1,8 @@
-description: Pétrole brut en mer(par centaine de tonnes nettes extraites)
+description: Pétrole brut en mer (par centaine de tonnes nettes extraites)
 metadata:
   unit: currency-EUR
+documentation: |
+  Non revalorisé en 2020.
 
 values:
   2017-01-01:
