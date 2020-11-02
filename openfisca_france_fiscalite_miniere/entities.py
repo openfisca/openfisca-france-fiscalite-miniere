@@ -2,7 +2,7 @@ from openfisca_core.entities import build_entity
 
 
 Societe = build_entity(
-    key = "societe",
+    key = "societe",  # TODO Renommer en titre minier ?
     plural = "societes",
     label = 'Société',
     is_person = True  # = est entité pivot
