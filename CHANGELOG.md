@@ -1,6 +1,6 @@
 # Changelog
 
-###
+### 1.1.1 [#9](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/9)
 
 * Évolution du système socio-fiscal.
 * Périodes concernées : à partir du 01/01/2020.
@@ -9,7 +9,7 @@
   - Revalorise les tarifs RCM tous produits pour 2020.
   - Revalorise les tarifs RDM tous produits pour 2020.
 
-# 1.1.0 [#8](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/8)
+## 1.1.0 [#8](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/8)
 
 * Évolution du système socio-fiscal.
 * Périodes concernées : toutes.
