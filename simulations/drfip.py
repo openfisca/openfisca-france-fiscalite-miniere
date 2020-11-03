@@ -1,4 +1,4 @@
-# Template/Matrice 1121
+# Template MATRICE 1121
 # REDEVANCE DÉPARTEMENTALE ET COMMUNALE DES MINES 
 # (articles 1519 et 1587 à 1589 du Code général des impôts)
 # TAXE MINIÈRE SUR L'OR DE GUYANE
@@ -33,9 +33,10 @@ colonnes_1121 = [
     "Service de la Direction générale des Finances publiques en charge du recouvrement",  # [col. 17]
     "Numéro de l’article du rôle",  # [col. 18]
     "Observations, précisions"  # [col. 19]
-]
+]  # une ligne par titre
 
-# Template/Matrice 1122
+
+# Template ÉTAT ANNEXE À LA MATRICE 1122
 # REDEVANCE DÉPARTEMENTALE ET COMMUNALE DES MINES 
 # TAXE MINIÈRE SUR L'OR DE GUYANE
 # ÉTAT ANNEXE À LA MATRICE
