@@ -1,4 +1,5 @@
-description: minerais aurifères (kilogramme d'or contenu)
+description: Montant du tarif de la redevance départementale des mines
+  pour les minerais aurifères (par kilogramme d'or contenu)
 metadata:
   unit: currency-EUR
 
