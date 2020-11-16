@@ -1,10 +1,12 @@
 # OpenFisca France — Fiscalité Minière
 
-Système de fiscalité minière française pour OpenFisca
+Système de fiscalité minière française modélisé avec OpenFisca
 
-## Feuille de route
+## Installation
 
-![roadmap](https://user-images.githubusercontent.com/329236/74548103-845d3b00-4f4d-11ea-9b99-a56b08c1f932.jpg)
+Ce paquet requiert [Python 3.7](https://www.python.org/downloads/release/python-370/) et [pip](https://pip.pypa.io/en/stable/installing/).
+
+Il est recommandé d'utiliser un [environnement virtuel](https://virtualenv.pypa.io/en/stable/) (_virtualenv_) avec un gestionnaire de _virtualenv_ tel que [Pew](https://github.com/berdario/pew).
 
 ## Lexique
 
