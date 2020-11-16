@@ -1,3 +1,6 @@
+
+API_PORT=5000
+
 all: test
 
 uninstall:
@@ -15,6 +18,9 @@ install: deps
 	@# `make install` installs the editable version of OpenFisca-France.
 	@# This allows contributors to test as they code.
 	pip install --editable .[dev] --upgrade
+
+install-api: deps
+	pip install openfisca-core[web-api]
 
 build: clean deps
 	@# Install OpenFisca-France-Fiscalite-Miniere for deployment and publishing.
@@ -37,3 +43,6 @@ check-types:
 
 test: clean check-syntax-errors check-style check-types
 	openfisca test openfisca_france_fiscalite_miniere/tests --country-package openfisca_france_fiscalite_miniere
+
+serve:
+	openfisca serve --country-package openfisca_france_fiscalite_miniere -p ${API_PORT}
