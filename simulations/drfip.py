@@ -11,6 +11,7 @@ colonnes_1121 = [
         # [col. 3]
         # (lorsqu’il s’agit d’une mine amodiée, porter à l’encre rouge la désignation
         # et l’adresse de l’exploitant au-dessous de celle du concessionnaire)
+        # > Camino : adresse de l'amodiataire ou, à défaut, le titulaire.
     "Nature des substances extraites",  # [col. 4]
     # Base des redevances :
     "Nature",  # [col. 5]
@@ -26,7 +27,9 @@ colonnes_1121 = [
     # Taxe minière sur l'or de Guyane :
     "PME",  # [col. 12] Tarifs par kg extrait pour les...
     "Autres entreprises",  # [col. 13] Tarifs par kg extrait pour les...
-    "Montant des investissements déduits",  # [col. 14]
+    "Montant des investissements déduits",
+    # [col. 14]
+    # > Camino : somme des 4 rapports trimestriels année N-1.
     "Montant net de taxe minière sur l'or de Guyane", # [col. 15] (col.6 x col.12)-col.14 ou (col.6 x col.13)-col.14
     # ---
     "Frais de gestion de la fiscalité directe locale",  # [col. 16] (col.11 + col.15) x 8%
