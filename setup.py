@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-France-Fiscalite-Miniere",
-    version="1.1.1",
+    version="1.1.2",
     author="OpenFisca Team",
     author_email = "contact@openfisca.fr",
     classifiers=[
