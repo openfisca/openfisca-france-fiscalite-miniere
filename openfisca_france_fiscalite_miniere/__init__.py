@@ -13,7 +13,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.add_variables_from_directory(os.path.join(COUNTRY_DIR, 'variables'))
         self.load_parameters(os.path.join(COUNTRY_DIR, 'parameters'))
         self.open_api_config = {
-            "variable_example": "redevance_communale_des_mines",
+            "variable_example": "redevance_communale_des_mines_aurifere_kg",
             "parameter_example": "redevances.communales.aurifere",
             "simulation_example": examples.societe,
             }
