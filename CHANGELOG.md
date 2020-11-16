@@ -1,5 +1,14 @@
 # Changelog
 
+### 1.1.2 [#11](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/11)
+
+* Correction d'un crash.
+* Périodes concernées : toutes.
+* Zones impactées : `openfisca_france_fiscalite_miniere/__init__.py`.
+* Détails :
+  - Corrige le démarrage de l'API Web OpenFisca.
+  - Ajoute et documente les commandes d'installation, de test pour le développement et d'exécution de l'API Web.
+
 ### 1.1.1 [#9](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/9)
 
 * Évolution du système socio-fiscal.

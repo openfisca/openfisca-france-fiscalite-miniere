@@ -1,15 +1,11 @@
 {
-    "sociétés": {
-        "Mau Corp.": {
-            "nature": {
-                "2019": "aurifere",
-                "2018": "aurifere"
-            },
-            "quantite": {
+    "societes": {
+        "un_titre_exemple": {
+            "quantite_aurifere_kg": {
                 "2019": 1000,
                 "2018": 1000
             },
-            "redevance_communale_des_mines": {
+            "redevance_communale_des_mines_aurifere_kg": {
                 "2020": null,
                 "2019": null
             }
