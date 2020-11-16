@@ -19,6 +19,9 @@ install: deps
 	@# This allows contributors to test as they code.
 	pip install --editable .[dev] --upgrade
 
+install-prod:
+	pip install openfisca-france-fiscalite-miniere
+
 install-api: deps
 	pip install openfisca-core[web-api]
 

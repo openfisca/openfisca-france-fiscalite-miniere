@@ -22,6 +22,12 @@ make install
 
 Pour en savoir plus sur cette commande, consulter le tag `install` et ses dépendances dans le fichier `./Makefile`.
 
+### Installation pour la production
+
+```sh
+make install-prod
+```
+
 ## Tester et vérifier une installation
 
 Les tests du module `OpenFisca-France-Fiscalite-Miniere` peuvent être vérifiés par la commande suivante :
