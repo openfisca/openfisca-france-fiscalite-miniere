@@ -10,7 +10,10 @@ from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as France
 data_period = 2019
 # Camino, export Titres miniers et autorisations :
 csv_communes = "/Volumes/Transcend2/beta/camino_2020/20201103-12h35-camino-titres-66.csv"
-# Camino, export Activités, statut "déposé".
+# Camino, export Activités
+# substance "or", tout type de titre, tout statut de titre
+# tout type de rapport, statut "déposé" uniquement
+# année N-1
 csv_activites = "/Volumes/Transcend2/beta/camino_2020/20201103-12h42-camino-activites-53.csv"
 
 # ADAPT INPUT DATA
