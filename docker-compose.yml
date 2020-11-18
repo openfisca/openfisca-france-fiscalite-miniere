@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  openfisca-api:
+    container_name: openfisca_api
+    build: .
+    networks:
+      - nginx-proxy
+    restart: unless-stopped
+
+networks:
+  nginx-proxy:
+    external: true
