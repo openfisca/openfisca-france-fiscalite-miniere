@@ -7,10 +7,10 @@ Societe = build_entity(
     label = 'Société',
     is_person = True,  # = est entité pivot
     doc = '''
-    Société = titre minier à ce stade.
-    Un titre peut aussi être sur plusieurs communes.
-    L'une des communes du titre est le lieu principal d'exploitation.
-    Il y a une substance extraite par titre.
+        Société = titre minier à ce stade.
+        Un titre peut aussi être sur plusieurs communes.
+        L'une des communes du titre est le lieu principal d'exploitation.
+        Il y a une substance extraite par titre.
     '''
     )
 
