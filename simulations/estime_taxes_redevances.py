@@ -8,17 +8,18 @@ from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as France
 # CONFIGURATION
 
 data_period = 2019
+
 # Camino, export Titres miniers et autorisations :
-csv_communes = "/Volumes/Transcend2/beta/camino_2020/20201103-12h35-camino-titres-66.csv"
+csv_titres = "/Volumes/Transcend2/beta/camino_2020/20201116-22h32-camino-titres-1878.csv"
 # Camino, export Activités
 # substance "or", tout type de titre, tout statut de titre
 # tout type de rapport, statut "déposé" uniquement
 # année N-1
-csv_activites = "/Volumes/Transcend2/beta/camino_2020/20201103-12h42-camino-activites-53.csv"
+csv_activites = "/Volumes/Transcend2/beta/camino_2020/20201116-22h30-camino-activites-573.csv"
 
 # ADAPT INPUT DATA
 
-communes_par_titre : pandas.DataFrame = pandas.read_csv(csv_communes)
+communes_par_titre : pandas.DataFrame = pandas.read_csv(csv_titres)
 activite_par_titre : pandas.DataFrame = pandas.read_csv(csv_activites)
 
 filtre_annee_activite = activite_par_titre['annee'] == data_period
@@ -26,17 +27,18 @@ activites_data = activite_par_titre[filtre_annee_activite]
 titres_ids = activites_data.titre_id
 
 # selection des communes des titres pour lesquels nous avons des activités
-# 'titre_id' des exports d'activités (csv_activites) = 'id' des exports de titres (csv_communes)
+# 'titre_id' des exports d'activités (csv_activites) = 'id' des exports de titres (csv_titres)
 filtre_titres = communes_par_titre['id'].isin(titres_ids.tolist())
-communes_data = communes_par_titre[filtre_titres][
-  ['id', 'substances',
-  'titulaires_noms', 'titulaires_adresses',
-  'communes', 'departements'
+titres_data = communes_par_titre[filtre_titres][
+  ['id', 'domaine', 'substances',
+    'communes', 'departements', 'administrations_noms',
+    'titulaires_noms', 'titulaires_adresses', 'titulaires_categorie',
+    'amodiataires_noms', 'amodiataires_adresses', 'amodiataires_categorie'
   ]
 ]
-communes_ids = communes_data.communes
+communes_ids = titres_data.communes
 
-# simulation_data = pandas.merge(activites_data, communes_data, on=['id'])
+# simulation_data = pandas.merge(activites_data, titres_data, on=['id'])
 # print(simulation_data)
 
 # SIMULATION
@@ -102,9 +104,9 @@ colonnes = [
 estimations = titres_ids
 resultat = pandas.DataFrame(estimations, columns = colonnes)
 
-resultat['communes'] = communes_data.communes
-resultat['titulaires_noms'] = communes_data.titulaires_noms
-resultat['titulaires_adresses'] = communes_data.titulaires_adresses
+resultat['communes'] = titres_data.communes
+resultat['titulaires_noms'] = titres_data.titulaires_noms
+resultat['titulaires_adresses'] = titres_data.titulaires_adresses
 # Base des redevances :
 resultat['renseignements_orNet'] = activites_data.renseignements_orNet
 # Redevance départementale :
