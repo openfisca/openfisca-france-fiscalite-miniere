@@ -23,10 +23,20 @@ communes_par_titre : pandas.DataFrame = pandas.read_csv(csv_titres)
 activite_par_titre : pandas.DataFrame = pandas.read_csv(csv_activites)
 
 filtre_annee_activite = activite_par_titre['annee'] == data_period
-activites_data = activite_par_titre[filtre_annee_activite]
-titres_ids = activites_data.titre_id
+activites_data = activite_par_titre[filtre_annee_activite][
+  ['titre_id', 'annee', 'periode',
+    'renseignements_orBrut', 'renseignements_orNet',
+    'renseignements_environnement',
+    'complement_texte'
+  ]
+]
 
-# selection des communes des titres pour lesquels nous avons des activités
+
+titres_ids = activites_data.titre_id
+print("ACTIVITES")
+print(activites_data[['titre_id', 'annee']].head())
+
+# selection des titres pour lesquels nous avons des activités
 # 'titre_id' des exports d'activités (csv_activites) = 'id' des exports de titres (csv_titres)
 filtre_titres = communes_par_titre['id'].isin(titres_ids.tolist())
 titres_data = communes_par_titre[filtre_titres][
@@ -37,9 +47,13 @@ titres_data = communes_par_titre[filtre_titres][
   ]
 ]
 communes_ids = titres_data.communes
+print("TITRES")
+print(titres_data[['id', 'communes']].head())
+print(titres_data.columns)
 
-# simulation_data = pandas.merge(activites_data, titres_data, on=['id'])
-# print(simulation_data)
+simulation_data = pandas.merge(activites_data, titres_data, left_on='titre_id', right_on='id').drop(columns=['id'])  # en doublon avec 'titre_id'
+print("SIMULATION DATA")
+print(simulation_data.columns)
 
 # SIMULATION
 
@@ -121,4 +135,4 @@ resultat['taxe_tarif_autres'] = taxe_tarif_autres_entreprises
 resultat['taxe_guyane_brute'] = taxe_guyane_brute
 
 timestamp = time.strftime("%Y%m%d-%H%M%S")
-resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
+### resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
