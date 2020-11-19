@@ -24,7 +24,7 @@ activite_par_titre : pandas.DataFrame = pandas.read_csv(csv_activites)
 
 filtre_annee_activite = activite_par_titre['annee'] == data_period
 activites_data = activite_par_titre[filtre_annee_activite][
-  ['titre_id', 'annee', 'periode',
+  ['titre_id', 'annee', 'periode', 'type',
     'renseignements_orBrut', 'renseignements_orNet',
     'renseignements_environnement',
     'complement_texte'
@@ -33,7 +33,7 @@ activites_data = activite_par_titre[filtre_annee_activite][
 
 
 titres_ids = activites_data.titre_id
-print("ACTIVITES")
+print(len(activites_data), "ACTIVITES")
 print(activites_data[['titre_id', 'annee']].head())
 
 # selection des titres pour lesquels nous avons des activités
@@ -47,13 +47,17 @@ titres_data = communes_par_titre[filtre_titres][
   ]
 ]
 communes_ids = titres_data.communes
-print("TITRES")
+print(len(titres_data), "TITRES")
 print(titres_data[['id', 'communes']].head())
-print(titres_data.columns)
 
-simulation_data = pandas.merge(activites_data, titres_data, left_on='titre_id', right_on='id').drop(columns=['id'])  # en doublon avec 'titre_id'
-print("SIMULATION DATA")
-print(simulation_data.columns)
+simulation_data = pandas.merge(
+  activites_data, titres_data, left_on='titre_id', right_on='id'
+  ).drop(columns=['id'])  # en doublon avec 'titre_id'
+
+print(len(simulation_data), "SIMULATION DATA")
+print(simulation_data[['titre_id', 'periode', 'communes']].head())
+# print(simulation_data.loc[simulation_data['titre_id'] == 'm-ax-berge-conrad-2016'][['periode', 'renseignements_environnement']])
+
 
 # SIMULATION
 
@@ -71,19 +75,31 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
   return simulation_builder.build(tax_benefit_system)
 
 
-def set_simulation_inputs(simulation, openfisca_to_data_keys):
+def set_simulation_inputs(simulation, data, openfisca_to_data_keys):
   for k, v in activite_par_titre_keys.items():
-    simulation.set_input(k, data_period, activites_data[v])
+    input_data = data[v].fillna(0.)
+    simulation.set_input(k, data_period, input_data)
   return simulation
 
 
 simulation_period = '2020'
 tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
 current_parameters = tax_benefit_system.parameters(simulation_period)
-simulation = build_simulation(tax_benefit_system, simulation_period, titres_ids, communes_ids)
+
+# simulation_data.to_csv(f'simulation_data_{time.strftime("%Y%m%d-%H%M%S")}.csv', index=False)
+
+une_ligne_par_titre = simulation_data[simulation_data.periode == 'année']
+
+print(len(une_ligne_par_titre), "une_ligne_par_titre (via année)")
+print(une_ligne_par_titre.head())
+
+simulation = build_simulation(
+  tax_benefit_system, simulation_period,
+  une_ligne_par_titre.titre_id, une_ligne_par_titre.communes
+  )
 
 activite_par_titre_keys = {'quantite_aurifere_kg': 'renseignements_orNet'}
-simulation = set_simulation_inputs(simulation, activite_par_titre_keys)
+simulation = set_simulation_inputs(simulation, une_ligne_par_titre, activite_par_titre_keys)
 
 rdm_tarif_aurifere = current_parameters.redevances.departementales.aurifere
 rcm_tarif_aurifere = current_parameters.redevances.communales.aurifere
