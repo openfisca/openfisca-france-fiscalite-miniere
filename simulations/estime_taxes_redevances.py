@@ -19,48 +19,91 @@ csv_activites = "/Volumes/Transcend2/beta/camino_2020/20201116-22h30-camino-acti
 
 # ADAPT INPUT DATA
 
-communes_par_titre : pandas.DataFrame = pandas.read_csv(csv_titres)
-activite_par_titre : pandas.DataFrame = pandas.read_csv(csv_activites)
+def get_activites_data(csv_activites):
+    activite_par_titre : pandas.DataFrame = pandas.read_csv(csv_activites)
 
-filtre_annee_activite = activite_par_titre['annee'] == data_period
-activites_data = activite_par_titre[filtre_annee_activite][
-  ['titre_id', 'annee', 'periode', 'type',
-    'renseignements_orBrut', 'renseignements_orNet',
-    'renseignements_environnement',
-    'complement_texte'
-  ]
-]
+    filtre_annee_activite = activite_par_titre['annee'] == data_period
+    activites_data = activite_par_titre[filtre_annee_activite][
+        ['titre_id', 'annee', 'periode', 'type',
+          'renseignements_orBrut', 'renseignements_orNet',
+          'renseignements_environnement',
+          'complement_texte'
+        ]
+    ]
+
+    print(len(activites_data), "ACTIVITES")
+    print(activites_data[['titre_id', 'annee']].head())
+
+    return activites_data
 
 
-titres_ids = activites_data.titre_id
-print(len(activites_data), "ACTIVITES")
-print(activites_data[['titre_id', 'annee']].head())
+# titres_ids = titres pour lesquels nous avons des activités
+def get_titres_data(csv_titres, titres_ids):
+    communes_par_titre : pandas.DataFrame = pandas.read_csv(csv_titres)
 
-# selection des titres pour lesquels nous avons des activités
-# 'titre_id' des exports d'activités (csv_activites) = 'id' des exports de titres (csv_titres)
-filtre_titres = communes_par_titre['id'].isin(titres_ids.tolist())
-titres_data = communes_par_titre[filtre_titres][
-  ['id', 'domaine', 'substances',
-    'communes', 'departements', 'administrations_noms',
-    'titulaires_noms', 'titulaires_adresses', 'titulaires_categorie',
-    'amodiataires_noms', 'amodiataires_adresses', 'amodiataires_categorie'
-  ]
-]
-communes_ids = titres_data.communes
-print(len(titres_data), "TITRES")
-print(titres_data[['id', 'communes']].head())
+    # 'titre_id' des exports d'activités (csv_activites) = 'id' des exports de titres (csv_titres)
+    filtre_titres = communes_par_titre['id'].isin(titres_ids.tolist())
+    titres_data = communes_par_titre[filtre_titres][
+        ['id', 'domaine', 'substances',
+          'communes', 'departements', 'administrations_noms',
+          'titulaires_noms', 'titulaires_adresses', 'titulaires_categorie',
+          'amodiataires_noms', 'amodiataires_adresses', 'amodiataires_categorie'
+        ]
+    ]
 
-simulation_data = pandas.merge(
-  activites_data, titres_data, left_on='titre_id', right_on='id'
-  ).drop(columns=['id'])  # en doublon avec 'titre_id'
+    print(len(titres_data), "TITRES")
+    print(titres_data[['id', 'communes']].head())
 
-print(len(simulation_data), "SIMULATION DATA")
-print(simulation_data[['titre_id', 'periode', 'communes']].head())
-# print(simulation_data.loc[simulation_data['titre_id'] == 'm-ax-berge-conrad-2016'][['periode', 'renseignements_environnement']])
+    return titres_data
+
+
+def get_simulation_full_data(titres_data, activites_data):
+    full_data : pandas.DataFrame = pandas.merge(
+        activites_data, titres_data, left_on='titre_id', right_on='id'
+        ).drop(columns=['id'])  # on supprime la colonne 'id' en doublon avec 'titre_id'
+
+    print(len(full_data), "SIMULATION DATA")
+    print(full_data[['titre_id', 'periode', 'communes']].head())
+
+    # print(full_data.loc[full_data['titre_id'] == 'm-ax-berge-conrad-2016'][['periode', 'renseignements_environnement']])
+    # full_data.to_csv(f'full_data_{time.strftime("%Y%m%d-%H%M%S")}.csv', index=False)
+
+    return full_data
+
+
+def clean_data(data):
+    une_ligne_par_titre = data[
+        # supprime les rapports trimestriels
+        (data.periode == 'année')
+        # supprime les rapports qui n'ont pas pour objet la production
+        & (data.renseignements_orNet is not None)
+        ]
+
+    # print(len(une_ligne_par_titre), "une_ligne_par_titre (via année)")
+    # print(une_ligne_par_titre.head())
+
+    quantites_chiffrees = une_ligne_par_titre
+    quantites_chiffrees.renseignements_orNet = une_ligne_par_titre.renseignements_orNet.fillna(0.)
+
+    print(len(quantites_chiffrees), "CLEANED DATA")
+    print(quantites_chiffrees[['titre_id', 'periode', 'communes', 'renseignements_orNet']].head())
+    # quantites_chiffrees.to_csv(f'data_{time.strftime("%Y%m%d-%H%M%S")}.csv', index=False)
+
+    return quantites_chiffrees
+
+
+activites_data = get_activites_data(csv_activites)
+titres_ids = activites_data.titre_id  # selection des titres pour lesquels nous avons des activités
+titres_data = get_titres_data(csv_titres, titres_ids)
+
+full_data = get_simulation_full_data(titres_data, activites_data)
+data = clean_data(full_data)  # titres ayant des rapports annuels d'activité citant la production
+cleaned_titres_ids = data.titre_id
 
 
 # SIMULATION
 
+# TODO communes_ids éclatés sans doublons
 def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
   simulation_builder = SimulationBuilder()
   simulation_builder.create_entities(tax_benefit_system)
@@ -68,7 +111,7 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
 
   # associer communes et titres
   commune_instance = simulation_builder.declare_entity('commune', communes_ids)
-  titres_des_communes = communes_ids  # un id par titre existant
+  titres_des_communes = communes_ids  # un id par titre existant dans l'ordre de titres_ids
   titres_communes_roles = ['societe'] * len(titres_des_communes)  # role de chaque titre dans la commune = societe
   simulation_builder.join_with_persons(commune_instance, titres_des_communes, roles = titres_communes_roles)
 
@@ -77,8 +120,7 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
 
 def set_simulation_inputs(simulation, data, openfisca_to_data_keys):
   for k, v in activite_par_titre_keys.items():
-    input_data = data[v].fillna(0.)
-    simulation.set_input(k, data_period, input_data)
+    simulation.set_input(k, data_period, data[v])
   return simulation
 
 
@@ -86,20 +128,13 @@ simulation_period = '2020'
 tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
 current_parameters = tax_benefit_system.parameters(simulation_period)
 
-# simulation_data.to_csv(f'simulation_data_{time.strftime("%Y%m%d-%H%M%S")}.csv', index=False)
-
-une_ligne_par_titre = simulation_data[simulation_data.periode == 'année']
-
-print(len(une_ligne_par_titre), "une_ligne_par_titre (via année)")
-print(une_ligne_par_titre.head())
-
 simulation = build_simulation(
   tax_benefit_system, simulation_period,
-  une_ligne_par_titre.titre_id, une_ligne_par_titre.communes
+  data.titre_id, data.communes
   )
 
 activite_par_titre_keys = {'quantite_aurifere_kg': 'renseignements_orNet'}
-simulation = set_simulation_inputs(simulation, une_ligne_par_titre, activite_par_titre_keys)
+simulation = set_simulation_inputs(simulation, data, activite_par_titre_keys)
 
 rdm_tarif_aurifere = current_parameters.redevances.departementales.aurifere
 rcm_tarif_aurifere = current_parameters.redevances.communales.aurifere
@@ -131,8 +166,8 @@ colonnes = [
   'taxe_guyane_brute'
   ]
 
-estimations = titres_ids
-resultat = pandas.DataFrame(estimations, columns = colonnes)
+# cleaned_titres_ids = simulation.populations['societe'].ids
+resultat = pandas.DataFrame(data, columns = colonnes)
 
 resultat['communes'] = titres_data.communes
 resultat['titulaires_noms'] = titres_data.titulaires_noms
@@ -140,10 +175,10 @@ resultat['titulaires_adresses'] = titres_data.titulaires_adresses
 # Base des redevances :
 resultat['renseignements_orNet'] = activites_data.renseignements_orNet
 # Redevance départementale :
-resultat['tarifs_rdm'] = [rdm_tarif_aurifere] * len(titres_ids)
+resultat['tarifs_rdm'] = [rdm_tarif_aurifere] * len(cleaned_titres_ids)
 resultat['redevance_departementale_des_mines_aurifere_kg'] = redevance_departementale_des_mines_aurifere_kg
 # Redevance communale :
-resultat['tarifs_rcm'] = [rcm_tarif_aurifere] * len(titres_ids)
+resultat['tarifs_rcm'] = [rcm_tarif_aurifere] * len(cleaned_titres_ids)
 resultat['redevance_communale_des_mines_aurifere_kg'] = redevance_communale_des_mines_aurifere_kg
 # Taxe minière sur l'or de Guyane :
 resultat['taxe_tarif_pme'] = taxe_tarif_pme
@@ -151,4 +186,5 @@ resultat['taxe_tarif_autres'] = taxe_tarif_autres_entreprises
 resultat['taxe_guyane_brute'] = taxe_guyane_brute
 
 timestamp = time.strftime("%Y%m%d-%H%M%S")
-### resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
+resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
+# TODO Vérifier quels titres du fichier CSV en entrée ne sont pas dans le rapport final.
