@@ -1,4 +1,5 @@
 import pandas  # noqa: I201
+import numpy
 import time
 import re
 
@@ -64,7 +65,7 @@ def get_simulation_full_data(titres_data, activites_data):
         ).drop(columns=['id'])  # on supprime la colonne 'id' en doublon avec 'titre_id'
 
     print(len(full_data), "SIMULATION DATA")
-    print(full_data[['titre_id', 'periode', 'communes']].head())
+    # print(full_data[['titre_id', 'periode', 'communes']].head())
 
     # print(full_data.loc[full_data['titre_id'] == 'm-ax-berge-conrad-2016'][['periode', 'renseignements_environnement']])
     # full_data.to_csv(f'full_data_{time.strftime("%Y%m%d-%H%M%S")}.csv', index=False)
@@ -109,7 +110,7 @@ def clean_data(data):
         # supprime les rapports trimestriels
         (data.periode == 'année')
         # supprime les rapports qui n'ont pas pour objet la production
-        & (data.renseignements_orNet is not None)
+        & (data.renseignements_orNet.notnull())
         ]
 
     # print(len(une_ligne_par_titre), "une_ligne_par_titre (via année)")
@@ -119,7 +120,7 @@ def clean_data(data):
     quantites_chiffrees.renseignements_orNet = une_ligne_par_titre.renseignements_orNet.fillna(0.)
 
     print(len(quantites_chiffrees), "CLEANED DATA")
-    print(quantites_chiffrees[['titre_id', 'periode', 'communes', 'renseignements_orNet']].head())
+    # print(quantites_chiffrees[['titre_id', 'periode', 'communes', 'renseignements_orNet']].head())
 
     quantites_chiffrees.communes = quantites_chiffrees.communes.str.split(pat=';')
     une_commune_par_titre = quantites_chiffrees.explode("communes")
@@ -138,13 +139,12 @@ cleaned_titres_ids = data.titre_id
 
 # SIMULATION
 
-# TODO communes_ids éclatés sans doublons
 def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
   simulation_builder = SimulationBuilder()
   simulation_builder.create_entities(tax_benefit_system)
-  simulation_builder.declare_person_entity('societe', titres_ids)
+  simulation_builder.declare_person_entity('societe', titres_ids)  # TODO titres sans doublons ?
 
-  # associer communes et titres
+  # associer les communes aux titres
   commune_instance = simulation_builder.declare_entity('commune', communes_ids)
   titres_des_communes = communes_ids  # un id par titre existant dans l'ordre de titres_ids
   titres_communes_roles = ['societe'] * len(titres_des_communes)  # role de chaque titre dans la commune = societe
@@ -167,6 +167,15 @@ simulation = build_simulation(
   tax_benefit_system, simulation_period,
   data.titre_id, data.communes
   )
+
+# cleaned_titres_ids = simulation.populations['societe'].ids
+simulation_societes = simulation.populations['societe'].ids
+simulation_communes = simulation.populations['commune'].ids
+
+# print(len(simulation_societes))
+# print(numpy.unique(simulation_societes, return_counts=True))
+# print(len(simulation_communes))
+# print(numpy.unique(simulation_communes, return_counts=True))
 
 activite_par_titre_keys = {'quantite_aurifere_kg': 'renseignements_orNet'}
 simulation = set_simulation_inputs(simulation, data, activite_par_titre_keys)
@@ -201,7 +210,6 @@ colonnes = [
   'taxe_guyane_brute'
   ]
 
-# cleaned_titres_ids = simulation.populations['societe'].ids
 resultat = pandas.DataFrame(data, columns = colonnes)
 
 resultat['communes'] = titres_data.communes
