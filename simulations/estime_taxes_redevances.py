@@ -1,5 +1,6 @@
 import pandas  # noqa: I201
 import time
+import re
 
 from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as FranceFiscaliteMiniereTaxBenefitSystem  # noqa: E501
@@ -10,12 +11,12 @@ from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as France
 data_period = 2019
 
 # Camino, export Titres miniers et autorisations :
-csv_titres = "/Volumes/Transcend2/beta/camino_2020/20201116-22h32-camino-titres-1878.csv"
+csv_titres = "/Volumes/Transcend2/beta/camino_2020/data/20201116-22h32-camino-titres-1878.csv"
 # Camino, export Activités
 # substance "or", tout type de titre, tout statut de titre
 # tout type de rapport, statut "déposé" uniquement
 # année N-1
-csv_activites = "/Volumes/Transcend2/beta/camino_2020/20201116-22h30-camino-activites-573.csv"
+csv_activites = "/Volumes/Transcend2/beta/camino_2020/data/20201116-22h30-camino-activites-573.csv"
 
 # ADAPT INPUT DATA
 
@@ -71,6 +72,38 @@ def get_simulation_full_data(titres_data, activites_data):
     return full_data
 
 
+def multi_communes(communes_value):
+    return communes_value.str.contains(r';')
+
+
+def separe_commune_surface(commune_surface):
+    '''Transforme ('Commune1 ', '0.123') en 'Commune1', 0.123'''
+    match = re.match("(.*)\((.*)\)", commune_surface)  # noqa: W605
+    return match.group(1).strip(), match.group(2).strip()
+
+
+def detect_communes_surfaces(communes_surfaces):
+    # titres_multicommunes = titres.communes  # "Commune1 (0.123);Commune2 (0.456)"
+    # communes_ids = []
+    # # Pour chaque titre, parse le contenu de la colonne 'communes'
+    # # et le rempace par un dictionnaire
+    # for index, communes_surfaces in titres_multicommunes.items():
+    #     liste_communes_surfaces = communes_surfaces.split(';')
+    #     dict_communes_surfaces = {}
+    #     for i in liste_communes_surfaces:
+    #         dict_communes_surfaces.update(separe_commune_surface(i))
+    #     titres.communes.at[index] = dict_communes_surfaces
+    #     communes_ids.extend(dict_communes_surfaces.keys())
+
+    communes_surfaces_list = communes_surfaces.split(';')
+    communes_surfaces_dict = {}
+    for item in communes_surfaces_list:
+        k, v = separe_commune_surface(item)
+        communes_surfaces_dict.update({k: v})
+
+    return communes_surfaces_dict
+
+
 def clean_data(data):
     une_ligne_par_titre = data[
         # supprime les rapports trimestriels
@@ -89,6 +122,28 @@ def clean_data(data):
     print(quantites_chiffrees[['titre_id', 'periode', 'communes', 'renseignements_orNet']].head())
     # quantites_chiffrees.to_csv(f'data_{time.strftime("%Y%m%d-%H%M%S")}.csv', index=False)
 
+    # titres_multicommunes = quantites_chiffrees[multi_communes(quantites_chiffrees.communes)]
+    # for count, row in titres_multicommunes.iterrows():
+    #     # print(row.communes)
+    #     communes_dict = detect_communes_surfaces(row.communes)
+    #     for commune, surface in communes_dict.items():
+    #         new_row = row.copy()
+    #         new_row.titre_id = row.titre_id + "+" + commune
+    #         new_row.communes = commune  # TODO garder la surface ?
+    #         titres_multicommunes = titres_multicommunes.append(new_row)
+    #         print(titres_multicommunes[['titre_id', 'communes']].tail())
+    # 
+    #     titres_multicommunes = titres_multicommunes.drop(row)
+    # print(len(titres_multicommunes))
+    print(quantites_chiffrees[quantites_chiffrees.titre_id == 'm-cx-camp-caiman-2004'][['titre_id', 'periode', 'communes']])
+    quantites_chiffrees.communes = quantites_chiffrees.communes.str.split(pat=';')
+    print(quantites_chiffrees[quantites_chiffrees.titre_id == 'm-cx-camp-caiman-2004'][['titre_id', 'periode', 'communes']])
+    une_commune_par_titre = quantites_chiffrees.explode("communes")
+    print(une_commune_par_titre[une_commune_par_titre.titre_id == 'm-cx-camp-caiman-2004'][['titre_id', 'periode', 'communes']])
+    print(len(une_commune_par_titre))
+    
+
+    # print(detect_communes_surfaces(data[data.titre_id == 'm-cx-camp-caiman-2004'][['communes']].iloc[0].item()))
     return quantites_chiffrees
 
 
@@ -186,5 +241,5 @@ resultat['taxe_tarif_autres'] = taxe_tarif_autres_entreprises
 resultat['taxe_guyane_brute'] = taxe_guyane_brute
 
 timestamp = time.strftime("%Y%m%d-%H%M%S")
-resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
+# resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
 # TODO Vérifier quels titres du fichier CSV en entrée ne sont pas dans le rapport final.
