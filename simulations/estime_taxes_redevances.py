@@ -120,31 +120,11 @@ def clean_data(data):
 
     print(len(quantites_chiffrees), "CLEANED DATA")
     print(quantites_chiffrees[['titre_id', 'periode', 'communes', 'renseignements_orNet']].head())
-    # quantites_chiffrees.to_csv(f'data_{time.strftime("%Y%m%d-%H%M%S")}.csv', index=False)
 
-    # titres_multicommunes = quantites_chiffrees[multi_communes(quantites_chiffrees.communes)]
-    # for count, row in titres_multicommunes.iterrows():
-    #     # print(row.communes)
-    #     communes_dict = detect_communes_surfaces(row.communes)
-    #     for commune, surface in communes_dict.items():
-    #         new_row = row.copy()
-    #         new_row.titre_id = row.titre_id + "+" + commune
-    #         new_row.communes = commune  # TODO garder la surface ?
-    #         titres_multicommunes = titres_multicommunes.append(new_row)
-    #         print(titres_multicommunes[['titre_id', 'communes']].tail())
-    # 
-    #     titres_multicommunes = titres_multicommunes.drop(row)
-    # print(len(titres_multicommunes))
-    print(quantites_chiffrees[quantites_chiffrees.titre_id == 'm-cx-camp-caiman-2004'][['titre_id', 'periode', 'communes']])
     quantites_chiffrees.communes = quantites_chiffrees.communes.str.split(pat=';')
-    print(quantites_chiffrees[quantites_chiffrees.titre_id == 'm-cx-camp-caiman-2004'][['titre_id', 'periode', 'communes']])
     une_commune_par_titre = quantites_chiffrees.explode("communes")
-    print(une_commune_par_titre[une_commune_par_titre.titre_id == 'm-cx-camp-caiman-2004'][['titre_id', 'periode', 'communes']])
-    print(len(une_commune_par_titre))
-    
 
-    # print(detect_communes_surfaces(data[data.titre_id == 'm-cx-camp-caiman-2004'][['communes']].iloc[0].item()))
-    return quantites_chiffrees
+    return une_commune_par_titre
 
 
 activites_data = get_activites_data(csv_activites)
