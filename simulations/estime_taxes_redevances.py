@@ -84,18 +84,6 @@ def separe_commune_surface(commune_surface):
 
 
 def detect_communes_surfaces(communes_surfaces):
-    # titres_multicommunes = titres.communes  # "Commune1 (0.123);Commune2 (0.456)"
-    # communes_ids = []
-    # # Pour chaque titre, parse le contenu de la colonne 'communes'
-    # # et le rempace par un dictionnaire
-    # for index, communes_surfaces in titres_multicommunes.items():
-    #     liste_communes_surfaces = communes_surfaces.split(';')
-    #     dict_communes_surfaces = {}
-    #     for i in liste_communes_surfaces:
-    #         dict_communes_surfaces.update(separe_commune_surface(i))
-    #     titres.communes.at[index] = dict_communes_surfaces
-    #     communes_ids.extend(dict_communes_surfaces.keys())
-
     communes_surfaces_list = communes_surfaces.split(';')
     communes_surfaces_dict = {}
     for item in communes_surfaces_list:
@@ -103,6 +91,23 @@ def detect_communes_surfaces(communes_surfaces):
         communes_surfaces_dict.update({k: v})
 
     return communes_surfaces_dict
+
+
+def rename_titres_multicommunes(data):
+    titres_names, titres_occurrences = numpy.unique(data.titre_id, return_counts=True)
+    for index, occurrence_titre in enumerate(titres_occurrences):
+        if occurrence_titre > 1:
+            titre_multicommunes = titres_names[index]
+            print("🔴 ", titre_multicommunes)
+            titre_multicommunes_df = data[data.titre_id == titre_multicommunes]
+            
+            for j, row in titre_multicommunes_df.iterrows():
+                # row_to_update = data.loc[j]
+                print(data.loc[j, 'titre_id'])
+                commune, surface = separe_commune_surface(row.communes)
+                print(commune)
+                data.loc[j, 'titre_id'] += "+" + commune
+                print("après", data.loc[j, 'titre_id'])
 
 
 def clean_data(data):
@@ -122,9 +127,12 @@ def clean_data(data):
     print(len(quantites_chiffrees), "CLEANED DATA")
     # print(quantites_chiffrees[['titre_id', 'periode', 'communes', 'renseignements_orNet']].head())
 
+    # on éclate les titres multicommunaux en une ligne par titre+commune unique
+    # attention : on refait l'index du dataframe pour distinguer les lignes résultat.
     quantites_chiffrees.communes = quantites_chiffrees.communes.str.split(pat=';')
-    une_commune_par_titre = quantites_chiffrees.explode("communes")
+    une_commune_par_titre = quantites_chiffrees.explode("communes", ignore_index=True)  # ! pandas v 1.1.0+
 
+    rename_titres_multicommunes(une_commune_par_titre)
     return une_commune_par_titre
 
 
@@ -173,7 +181,10 @@ simulation_societes = simulation.populations['societe'].ids
 simulation_communes = simulation.populations['commune'].ids
 
 # print(len(simulation_societes))
-# print(numpy.unique(simulation_societes, return_counts=True))
+# societes_names, societes_occurrences = numpy.unique(simulation_societes, return_counts=True)
+# for index, item in enumerate(societes_occurrences):
+#   if item > 1:
+#     print("societe en doublon", societes_names[index])
 # print(len(simulation_communes))
 # print(numpy.unique(simulation_communes, return_counts=True))
 
