@@ -78,7 +78,7 @@ def multi_communes(communes_value):
 
 
 def separe_commune_surface(commune_surface):
-    '''Transforme ('Commune1 ', '0.123') en 'Commune1', 0.123'''
+    '''Transforme 'Commune1 (0.123)' en 'Commune1', 0.123'''
     match = re.match("(.*)\((.*)\)", commune_surface)  # noqa: W605
     return match.group(1).strip(), match.group(2).strip()
 
@@ -93,21 +93,16 @@ def detect_communes_surfaces(communes_surfaces):
     return communes_surfaces_dict
 
 
-def rename_titres_multicommunes(data):
+def rename_titres_multicommunes(data):  # modifie directement l'instance 'data'
     titres_names, titres_occurrences = numpy.unique(data.titre_id, return_counts=True)
     for index, occurrence_titre in enumerate(titres_occurrences):
         if occurrence_titre > 1:
             titre_multicommunes = titres_names[index]
-            print("🔴 ", titre_multicommunes)
             titre_multicommunes_df = data[data.titre_id == titre_multicommunes]
             
             for j, row in titre_multicommunes_df.iterrows():
-                # row_to_update = data.loc[j]
-                print(data.loc[j, 'titre_id'])
                 commune, surface = separe_commune_surface(row.communes)
-                print(commune)
                 data.loc[j, 'titre_id'] += "+" + commune
-                print("après", data.loc[j, 'titre_id'])
 
 
 def clean_data(data):
@@ -131,8 +126,10 @@ def clean_data(data):
     # attention : on refait l'index du dataframe pour distinguer les lignes résultat.
     quantites_chiffrees.communes = quantites_chiffrees.communes.str.split(pat=';')
     une_commune_par_titre = quantites_chiffrees.explode("communes", ignore_index=True)  # ! pandas v 1.1.0+
-
+    
+    # titre 'toto' devient 'toto+nom_commune_sans_surface'
     rename_titres_multicommunes(une_commune_par_titre)
+
     return une_commune_par_titre
 
 
@@ -180,11 +177,9 @@ simulation = build_simulation(
 simulation_societes = simulation.populations['societe'].ids
 simulation_communes = simulation.populations['commune'].ids
 
+# test santé simulation : ok si pas de doublons sur societes :
 # print(len(simulation_societes))
-# societes_names, societes_occurrences = numpy.unique(simulation_societes, return_counts=True)
-# for index, item in enumerate(societes_occurrences):
-#   if item > 1:
-#     print("societe en doublon", societes_names[index])
+# print(numpy.unique(simulation_societes, return_counts=True))
 # print(len(simulation_communes))
 # print(numpy.unique(simulation_communes, return_counts=True))
 
