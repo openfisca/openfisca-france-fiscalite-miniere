@@ -5,7 +5,7 @@ import re
 
 from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as FranceFiscaliteMiniereTaxBenefitSystem  # noqa: E501
-
+from openfisca_france_fiscalite_miniere.variables.taxes import CategorieEnum
 
 # CONFIGURATION
 
@@ -164,6 +164,17 @@ def set_simulation_inputs(simulation, data, openfisca_to_data_keys):
   return simulation
 
 
+# pour l'or, data['amodiataires_categorie'] entièrement à NaN
+# print("🍒", data[data['amodiataires_categorie'].notnull()])
+# on choisit donc 'titulaires_categorie'
+def get_categories_titres(data):
+    # pour l'or, data['titulaires_categorie'] à ETI, GE ou PME
+    categories = data['titulaires_categorie'].apply(
+        lambda categorie: CategorieEnum.pme if "PME" else CategorieEnum.autre
+        )
+    return categories.to_numpy()
+
+
 simulation_period = '2020'
 tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
 current_parameters = tax_benefit_system.parameters(simulation_period)
@@ -185,6 +196,7 @@ simulation_communes = simulation.populations['commune'].ids
 
 activite_par_titre_keys = {'quantite_aurifere_kg': 'renseignements_orNet'}
 simulation = set_simulation_inputs(simulation, data, activite_par_titre_keys)
+simulation.set_input('categorie', data_period, get_categories_titres(data))  # enums
 
 rdm_tarif_aurifere = current_parameters.redevances.departementales.aurifere
 rcm_tarif_aurifere = current_parameters.redevances.communales.aurifere
@@ -235,5 +247,5 @@ resultat['taxe_tarif_autres'] = taxe_tarif_autres_entreprises
 resultat['taxe_guyane_brute'] = taxe_guyane_brute
 
 timestamp = time.strftime("%Y%m%d-%H%M%S")
-# resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
+resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
 # TODO Vérifier quels titres du fichier CSV en entrée ne sont pas dans le rapport final.
