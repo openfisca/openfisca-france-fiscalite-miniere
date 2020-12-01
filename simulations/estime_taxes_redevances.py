@@ -7,25 +7,12 @@ from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as FranceFiscaliteMiniereTaxBenefitSystem  # noqa: E501
 from openfisca_france_fiscalite_miniere.variables.taxes import CategorieEnum
 
-# CONFIGURATION
-
-data_period = 2019
-
-# Camino, export Titres miniers et autorisations :
-csv_titres = "/Volumes/Transcend2/beta/camino_2020/data/20201116-22h32-camino-titres-1878.csv"
-# Camino, export Activités
-# substance "or", tout type de titre, tout statut de titre
-# tout type de rapport, statut "déposé" uniquement
-# année N-1
-csv_activites = "/Volumes/Transcend2/beta/camino_2020/data/20201116-22h30-camino-activites-573.csv"
 
 # ADAPT INPUT DATA
 
 def get_activites_data(csv_activites):
     activite_par_titre : pandas.DataFrame = pandas.read_csv(csv_activites)
-
-    filtre_annee_activite = activite_par_titre['annee'] == data_period
-    activites_data = activite_par_titre[filtre_annee_activite][
+    activites_data = activite_par_titre[
         ['titre_id', 'annee', 'periode', 'type',
           'renseignements_orBrut', 'renseignements_orNet',
           'renseignements_environnement',
@@ -39,13 +26,9 @@ def get_activites_data(csv_activites):
     return activites_data
 
 
-# titres_ids = titres pour lesquels nous avons des activités
-def get_titres_data(csv_titres, titres_ids):
+def get_titres_data(csv_titres):
     communes_par_titre : pandas.DataFrame = pandas.read_csv(csv_titres)
-
-    # 'titre_id' des exports d'activités (csv_activites) = 'id' des exports de titres (csv_titres)
-    filtre_titres = communes_par_titre['id'].isin(titres_ids.tolist())
-    titres_data = communes_par_titre[filtre_titres][
+    titres_data = communes_par_titre[
         ['id', 'domaine', 'substances',
           'communes', 'departements', 'administrations_noms',
           'titulaires_noms', 'titulaires_adresses', 'titulaires_categorie',
@@ -56,6 +39,28 @@ def get_titres_data(csv_titres, titres_ids):
     print(len(titres_data), "TITRES")
     print(titres_data[['id', 'communes']].head())
 
+    return titres_data
+
+
+def get_activites_annee(activite_par_titre, annee: str):
+    filtre_annee_activite = activite_par_titre['annee'] == annee  # ! annee en chaîne de caractères
+    activites_data = activite_par_titre[filtre_annee_activite]
+    return activites_data
+
+
+def get_titres_annee(communes_par_titre, activites_data):
+    '''
+    Sélectionne les titres de l'année de calcul parmi les données de l'export des titres par communes.
+    L'année étant présente dans un autre export, celui des activités, emploie la liste des identifiants de titres
+    de 'activites_data' déjà filtré à l'année choisie pour la sélection dans l'export des titres par communes.
+
+    Ceci sachant que 'titre_id' des exports d'activités (csv_activites)
+    = 'id' des exports de titres (csv_titres)
+    '''
+
+    titres_ids = activites_data.titre_id  # selection des titres pour lesquels nous avons des activités
+    filtre_titres = communes_par_titre['id'].isin(titres_ids.tolist())
+    titres_data = communes_par_titre[filtre_titres]
     return titres_data
 
 
@@ -93,7 +98,9 @@ def detect_communes_surfaces(communes_surfaces):
     return communes_surfaces_dict
 
 
-def rename_titres_multicommunes(data):  # modifie directement l'instance 'data'
+# modifie directement l'instance 'data'
+# hypothèse : pas de titre à NaN
+def rename_titres_multicommunes(data):
     titres_names, titres_occurrences = numpy.unique(data.titre_id, return_counts=True)
     for index, occurrence_titre in enumerate(titres_occurrences):
         if occurrence_titre > 1:
@@ -106,6 +113,9 @@ def rename_titres_multicommunes(data):  # modifie directement l'instance 'data'
 
 
 def clean_data(data):
+    '''
+    Parmi les colonnes qui nous intéressent, filtrer et adapter le format des valeurs.
+    '''
     une_ligne_par_titre = data[
         # supprime les rapports trimestriels
         (data.periode == 'année')
@@ -117,30 +127,23 @@ def clean_data(data):
     # print(une_ligne_par_titre.head())
 
     quantites_chiffrees = une_ligne_par_titre
-    quantites_chiffrees.renseignements_orNet = une_ligne_par_titre.renseignements_orNet.fillna(0.)
+    quantites_chiffrees.loc['renseignements_orNet'] = une_ligne_par_titre.renseignements_orNet.fillna(0.)
 
     print(len(quantites_chiffrees), "CLEANED DATA")
     # print(quantites_chiffrees[['titre_id', 'periode', 'communes', 'renseignements_orNet']].head())
 
     # on éclate les titres multicommunaux en une ligne par titre+commune unique
     # attention : on refait l'index du dataframe pour distinguer les lignes résultat.
-    quantites_chiffrees.communes = quantites_chiffrees.communes.str.split(pat=';')
-    une_commune_par_titre = quantites_chiffrees.explode("communes", ignore_index=True)  # ! pandas v 1.1.0+
-    
+    quantites_chiffrees['communes'] = quantites_chiffrees.communes.str.split(pat=';')
+    une_commune_par_titre = quantites_chiffrees.explode(
+        "communes",
+        ignore_index=True  # ! pandas v 1.1.0+
+        ).dropna(subset=['titre_id'])  # NaN from exploded empty lists
+    print(une_commune_par_titre[['titre_id', 'periode', 'communes', 'renseignements_orNet']])
     # titre 'toto' devient 'toto+nom_commune_sans_surface'
     rename_titres_multicommunes(une_commune_par_titre)
 
     return une_commune_par_titre
-
-
-activites_data = get_activites_data(csv_activites)
-titres_ids = activites_data.titre_id  # selection des titres pour lesquels nous avons des activités
-titres_data = get_titres_data(csv_titres, titres_ids)
-
-full_data = get_simulation_full_data(titres_data, activites_data)
-# print("renseignements_environnement : ", len(full_data[full_data.renseignements_environnement.notnull()]))
-data = clean_data(full_data)  # titres ayant des rapports annuels d'activité citant la production
-cleaned_titres_ids = data.titre_id
 
 
 # SIMULATION
@@ -166,7 +169,7 @@ def set_simulation_inputs(simulation, data, openfisca_to_data_keys):
 
 
 # pour l'or, data['amodiataires_categorie'] entièrement à NaN
-# print("🍒", data[data['amodiataires_categorie'].notnull()])
+# print("🍒    ", data[data['amodiataires_categorie'].notnull()])
 # on choisit donc 'titulaires_categorie'
 def get_categories_titres(data):
     # pour l'or, data['titulaires_categorie'] à ETI, GE ou PME
@@ -176,83 +179,112 @@ def get_categories_titres(data):
     return categories.to_numpy()
 
 
-simulation_period = '2020'
-tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
-current_parameters = tax_benefit_system.parameters(simulation_period)
+if __name__ == "__main__":
 
-simulation = build_simulation(
-  tax_benefit_system, simulation_period,
-  data.titre_id, data.communes
-  )
+    # CONFIGURATION
+    data_period = 2019
 
-# cleaned_titres_ids = simulation.populations['societe'].ids
-simulation_societes = simulation.populations['societe'].ids
-simulation_communes = simulation.populations['commune'].ids
+    # Camino, export Titres miniers et autorisations :
+    csv_titres = "/Volumes/Transcend2/beta/camino_2020/data/20201116-22h32-camino-titres-1878.csv"
+    # Camino, export Activités
+    # substance "or", tout type de titre, tout statut de titre
+    # tout type de rapport, statut "déposé" uniquement
+    # année N-1
+    csv_activites = "/Volumes/Transcend2/beta/camino_2020/data/20201116-22h30-camino-activites-573.csv"
 
-# test santé simulation : ok si pas de doublons sur societes :
-# print(len(simulation_societes))
-# print(numpy.unique(simulation_societes, return_counts=True))
-# print(len(simulation_communes))
-# print(numpy.unique(simulation_communes, return_counts=True))
+    # ADAPT INPUT DATA
 
-activite_par_titre_keys = {'quantite_aurifere_kg': 'renseignements_orNet'}
-simulation = set_simulation_inputs(simulation, data, activite_par_titre_keys)
-simulation.set_input('categorie', data_period, get_categories_titres(data))  # enums
+    activite_par_titre = get_activites_data(csv_activites)
+    activites_data = get_activites_annee(activite_par_titre, str(data_period))
 
-rdm_tarif_aurifere = current_parameters.redevances.departementales.aurifere
-rcm_tarif_aurifere = current_parameters.redevances.communales.aurifere
+    communes_par_titre = get_titres_data(csv_titres)
+    titres_data = get_titres_annee(communes_par_titre, activites_data)
 
-redevance_departementale_des_mines_aurifere_kg = simulation.calculate('redevance_departementale_des_mines_aurifere_kg', simulation_period)
-redevance_communale_des_mines_aurifere_kg = simulation.calculate('redevance_communale_des_mines_aurifere_kg', simulation_period)
+    full_data = get_simulation_full_data(titres_data, activites_data)
+    # print("renseignements_environnement : ", len(full_data[full_data.renseignements_environnement.notnull()]))
+    data = clean_data(full_data)  # titres ayant des rapports annuels d'activité citant la production
+    cleaned_titres_ids = data.titre_id
 
-print("🍏 redevance_departementale_des_mines_aurifere_kg")
-print(redevance_departementale_des_mines_aurifere_kg)
+    # SIMULATION
 
-taxe_tarif_pme = current_parameters.taxes.guyane.categories.pme
-taxe_tarif_autres_entreprises = current_parameters.taxes.guyane.categories.autre
-taxe_guyane_brute = simulation.calculate('taxe_guyane_brute', simulation_period)
+    simulation_period = '2020'
+    tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
+    current_parameters = tax_benefit_system.parameters(simulation_period)
 
-# SIMULATION OUTPUT
+    simulation = build_simulation(
+      tax_benefit_system, simulation_period,
+      data.titre_id, data.communes
+      )
 
-# TODO ordonnancer par titres
-colonnes = [
-  'titre_id', 'communes',
-  'titulaires_noms', 'titulaires_adresses',
-  # Base des redevances :
-  'substances', 'renseignements_orNet',
-  # Redevance départementale :
-  'tarifs_rdm',
-  'redevance_departementale_des_mines_aurifere_kg',
-  # Redevance communale :
-  'tarifs_rcm',
-  'redevance_communale_des_mines_aurifere_kg',
-  # Taxe minière sur l'or de Guyane :
-  'taxe_tarif_pme',
-  'taxe_tarif_autres',
-  'investissement',
-  'taxe_guyane_brute'
-  ]
+    # cleaned_titres_ids = simulation.populations['societe'].ids
+    simulation_societes = simulation.populations['societe'].ids
+    simulation_communes = simulation.populations['commune'].ids
 
-resultat = pandas.DataFrame(data, columns = colonnes)
+    # test santé simulation : ok si pas de doublons sur societes :
+    # print(len(simulation_societes))
+    # print(numpy.unique(simulation_societes, return_counts=True))
+    # print(len(simulation_communes))
+    # print(numpy.unique(simulation_communes, return_counts=True))
 
-resultat['communes'] = data.communes
-resultat['titulaires_noms'] = data.titulaires_noms
-# ? numpy.where(data.amodiataires_noms, data.amodiataires_noms, data.titulaires_noms)
-resultat['titulaires_adresses'] = titres_data.titulaires_adresses
-# Base des redevances :
-resultat['renseignements_orNet'] = activites_data.renseignements_orNet
-# Redevance départementale :
-resultat['tarifs_rdm'] = [rdm_tarif_aurifere] * len(cleaned_titres_ids)
-resultat['redevance_departementale_des_mines_aurifere_kg'] = redevance_departementale_des_mines_aurifere_kg
-# Redevance communale :
-resultat['tarifs_rcm'] = [rcm_tarif_aurifere] * len(cleaned_titres_ids)
-resultat['redevance_communale_des_mines_aurifere_kg'] = redevance_communale_des_mines_aurifere_kg
-# Taxe minière sur l'or de Guyane :
-resultat['taxe_tarif_pme'] = taxe_tarif_pme
-resultat['taxe_tarif_autres'] = taxe_tarif_autres_entreprises
-resultat['investissement'] = data.renseignements_environnement
-resultat['taxe_guyane_brute'] = taxe_guyane_brute
 
-timestamp = time.strftime("%Y%m%d-%H%M%S")
-# resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
-# TODO Vérifier quels titres du fichier CSV en entrée ne sont pas dans le rapport final.
+    activite_par_titre_keys = {'quantite_aurifere_kg': 'renseignements_orNet'}
+    simulation = set_simulation_inputs(simulation, data, activite_par_titre_keys)
+    simulation.set_input('categorie', data_period, get_categories_titres(data))  # enums
+
+    rdm_tarif_aurifere = current_parameters.redevances.departementales.aurifere
+    rcm_tarif_aurifere = current_parameters.redevances.communales.aurifere
+
+    redevance_departementale_des_mines_aurifere_kg = simulation.calculate('redevance_departementale_des_mines_aurifere_kg', simulation_period)
+    redevance_communale_des_mines_aurifere_kg = simulation.calculate('redevance_communale_des_mines_aurifere_kg', simulation_period)
+
+    print("🍏    redevance_departementale_des_mines_aurifere_kg")
+    print(redevance_departementale_des_mines_aurifere_kg)
+
+    taxe_tarif_pme = current_parameters.taxes.guyane.categories.pme
+    taxe_tarif_autres_entreprises = current_parameters.taxes.guyane.categories.autre
+    taxe_guyane_brute = simulation.calculate('taxe_guyane_brute', simulation_period)
+
+    # SIMULATION OUTPUT
+
+    # TODO ordonnancer par titres
+    colonnes = [
+        'titre_id', 'communes',
+        'titulaires_noms', 'titulaires_adresses',
+        # Base des redevances :
+        'substances', 'renseignements_orNet',
+        # Redevance départementale :
+        'tarifs_rdm',
+        'redevance_departementale_des_mines_aurifere_kg',
+        # Redevance communale :
+        'tarifs_rcm',
+        'redevance_communale_des_mines_aurifere_kg',
+        # Taxe minière sur l'or de Guyane :
+        'taxe_tarif_pme',
+        'taxe_tarif_autres',
+        'investissement',
+        'taxe_guyane_brute'
+        ]
+
+    resultat = pandas.DataFrame(data, columns = colonnes)
+
+    resultat['communes'] = data.communes
+    resultat['titulaires_noms'] = data.titulaires_noms
+    # ? numpy.where(data.amodiataires_noms, data.amodiataires_noms, data.titulaires_noms)
+    resultat['titulaires_adresses'] = titres_data.titulaires_adresses
+    # Base des redevances :
+    resultat['renseignements_orNet'] = activites_data.renseignements_orNet
+    # Redevance départementale :
+    resultat['tarifs_rdm'] = [rdm_tarif_aurifere] * len(cleaned_titres_ids)
+    resultat['redevance_departementale_des_mines_aurifere_kg'] = redevance_departementale_des_mines_aurifere_kg
+    # Redevance communale :
+    resultat['tarifs_rcm'] = [rcm_tarif_aurifere] * len(cleaned_titres_ids)
+    resultat['redevance_communale_des_mines_aurifere_kg'] = redevance_communale_des_mines_aurifere_kg
+    # Taxe minière sur l'or de Guyane :
+    resultat['taxe_tarif_pme'] = taxe_tarif_pme
+    resultat['taxe_tarif_autres'] = taxe_tarif_autres_entreprises
+    resultat['investissement'] = data.renseignements_environnement
+    resultat['taxe_guyane_brute'] = taxe_guyane_brute
+
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
+    # resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
+    # TODO Vérifier quels titres du fichier CSV en entrée ne sont pas dans le rapport final.
