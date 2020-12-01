@@ -138,6 +138,7 @@ titres_ids = activites_data.titre_id  # selection des titres pour lesquels nous 
 titres_data = get_titres_data(csv_titres, titres_ids)
 
 full_data = get_simulation_full_data(titres_data, activites_data)
+# print("renseignements_environnement : ", len(full_data[full_data.renseignements_environnement.notnull()]))
 data = clean_data(full_data)  # titres ayant des rapports annuels d'activité citant la production
 cleaned_titres_ids = data.titre_id
 
@@ -204,6 +205,9 @@ rcm_tarif_aurifere = current_parameters.redevances.communales.aurifere
 redevance_departementale_des_mines_aurifere_kg = simulation.calculate('redevance_departementale_des_mines_aurifere_kg', simulation_period)
 redevance_communale_des_mines_aurifere_kg = simulation.calculate('redevance_communale_des_mines_aurifere_kg', simulation_period)
 
+print("🍏 redevance_departementale_des_mines_aurifere_kg")
+print(redevance_departementale_des_mines_aurifere_kg)
+
 taxe_tarif_pme = current_parameters.taxes.guyane.categories.pme
 taxe_tarif_autres_entreprises = current_parameters.taxes.guyane.categories.autre
 taxe_guyane_brute = simulation.calculate('taxe_guyane_brute', simulation_period)
@@ -225,13 +229,15 @@ colonnes = [
   # Taxe minière sur l'or de Guyane :
   'taxe_tarif_pme',
   'taxe_tarif_autres',
+  'investissement',
   'taxe_guyane_brute'
   ]
 
 resultat = pandas.DataFrame(data, columns = colonnes)
 
-resultat['communes'] = titres_data.communes
-resultat['titulaires_noms'] = titres_data.titulaires_noms
+resultat['communes'] = data.communes
+resultat['titulaires_noms'] = data.titulaires_noms
+# ? numpy.where(data.amodiataires_noms, data.amodiataires_noms, data.titulaires_noms)
 resultat['titulaires_adresses'] = titres_data.titulaires_adresses
 # Base des redevances :
 resultat['renseignements_orNet'] = activites_data.renseignements_orNet
@@ -244,8 +250,9 @@ resultat['redevance_communale_des_mines_aurifere_kg'] = redevance_communale_des_
 # Taxe minière sur l'or de Guyane :
 resultat['taxe_tarif_pme'] = taxe_tarif_pme
 resultat['taxe_tarif_autres'] = taxe_tarif_autres_entreprises
+resultat['investissement'] = data.renseignements_environnement
 resultat['taxe_guyane_brute'] = taxe_guyane_brute
 
 timestamp = time.strftime("%Y%m%d-%H%M%S")
-resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
+# resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
 # TODO Vérifier quels titres du fichier CSV en entrée ne sont pas dans le rapport final.
