@@ -16,6 +16,7 @@ Societe = build_entity(
 
 
 Commune = build_entity(
+    # suppose qu'il n'y a qu'une commune par société/titre ?
     key = "commune",
     plural = "communes",
     label = 'Commune',
