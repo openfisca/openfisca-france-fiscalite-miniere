@@ -1,10 +1,16 @@
 import pytest
+import numpy
 from pandas import DataFrame
+
+from openfisca_france_fiscalite_miniere import (
+    CountryTaxBenefitSystem as FranceFiscaliteMiniereTaxBenefitSystem
+    )
 from simulations.estime_taxes_redevances import (
     get_activites_annee,
     get_titres_annee,
     get_simulation_full_data,
-    clean_data
+    clean_data,
+    build_simulation
     )
 
 
@@ -83,6 +89,19 @@ def titres_data(communes_par_titre, activites_data) -> DataFrame:
     return titres_data
 
 
+@pytest.fixture
+def tax_benefit_system():
+    tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
+    return tax_benefit_system
+
+
+@pytest.fixture
+def simulation_data(titres_data, activites_data):
+    full_data = get_simulation_full_data(titres_data, activites_data)
+    data = clean_data(full_data)
+    return data
+
+
 def test_get_activites_annee(activite_par_titre):
     activites_data = get_activites_annee(activite_par_titre, str(ANNEE_ACTIVITES))
 
@@ -113,3 +132,19 @@ def test_clean_data(titres_data, activites_data):
     data = clean_data(full_data)
 
     assert((data['titre_id'] == ['titre_3+commune_x_p1', 'titre_3+commune_x_p2', 'titre_2']).all())
+
+
+def test_build_simulation(tax_benefit_system, simulation_data):
+    simulation = build_simulation(
+      tax_benefit_system, ANNEE_ACTIVITES,
+      simulation_data.titre_id, simulation_data.communes
+      )
+    
+    simulation_societes = simulation.populations['societe'].ids
+    simulation_communes = simulation.populations['commune'].ids
+
+    # ok si pas de doublons sur societes et communes
+    unique_societes, unique_societes_counts = numpy.unique(simulation_societes, return_counts=True)
+    assert any(count == 1 for count in unique_societes_counts)
+    unique_communes, unique_communes_counts = numpy.unique(simulation_communes, return_counts=True)
+    assert any(count == 1 for count in unique_communes_counts)

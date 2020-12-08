@@ -151,7 +151,7 @@ def clean_data(data):
 def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
   simulation_builder = SimulationBuilder()
   simulation_builder.create_entities(tax_benefit_system)
-  simulation_builder.declare_person_entity('societe', titres_ids)  # TODO titres sans doublons ?
+  simulation_builder.declare_person_entity('societe', titres_ids)  # titres sans doublons via renommage multicommunes
 
   # associer les communes aux titres
   commune_instance = simulation_builder.declare_entity('commune', communes_ids)
@@ -215,17 +215,6 @@ if __name__ == "__main__":
       tax_benefit_system, simulation_period,
       data.titre_id, data.communes
       )
-
-    # cleaned_titres_ids = simulation.populations['societe'].ids
-    simulation_societes = simulation.populations['societe'].ids
-    simulation_communes = simulation.populations['commune'].ids
-
-    # test santé simulation : ok si pas de doublons sur societes :
-    # print(len(simulation_societes))
-    # print(numpy.unique(simulation_societes, return_counts=True))
-    # print(len(simulation_communes))
-    # print(numpy.unique(simulation_communes, return_counts=True))
-
 
     activite_par_titre_keys = {'quantite_aurifere_kg': 'renseignements_orNet'}
     simulation = set_simulation_inputs(simulation, data, activite_par_titre_keys)
