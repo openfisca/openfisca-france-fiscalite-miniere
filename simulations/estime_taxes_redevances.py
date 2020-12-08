@@ -10,15 +10,9 @@ from openfisca_france_fiscalite_miniere.variables.taxes import CategorieEnum
 
 # ADAPT INPUT DATA
 
-def load_csv_data(csv_activites, csv_titres):
+def get_activites_data(csv_activites):
     activite_par_titre : pandas.DataFrame = pandas.read_csv(csv_activites)
-    communes_par_titre : pandas.DataFrame = pandas.read_csv(csv_titres)
-    return activite_par_titre, communes_par_titre
-
-
-def get_activites_data(activite_par_titre, data_period):
-    filtre_annee_activite = activite_par_titre['annee'] == data_period
-    activites_data = activite_par_titre[filtre_annee_activite][
+    activites_data = activite_par_titre[
         ['titre_id', 'annee', 'periode', 'type',
           'renseignements_orBrut', 'renseignements_orNet',
           'renseignements_environnement',
@@ -32,11 +26,9 @@ def get_activites_data(activite_par_titre, data_period):
     return activites_data
 
 
-# titres_ids = titres pour lesquels nous avons des activités
-def get_titres_data(communes_par_titre, titres_ids):
-    # 'titre_id' des exports d'activités (csv_activites) = 'id' des exports de titres (csv_titres)
-    filtre_titres = communes_par_titre['id'].isin(titres_ids.tolist())
-    titres_data = communes_par_titre[filtre_titres][
+def get_titres_data(csv_titres):
+    communes_par_titre : pandas.DataFrame = pandas.read_csv(csv_titres)
+    titres_data = communes_par_titre[
         ['id', 'domaine', 'substances',
           'communes', 'departements', 'administrations_noms',
           'titulaires_noms', 'titulaires_adresses', 'titulaires_categorie',
@@ -47,6 +39,28 @@ def get_titres_data(communes_par_titre, titres_ids):
     print(len(titres_data), "TITRES")
     print(titres_data[['id', 'communes']].head())
 
+    return titres_data
+
+
+def get_activites_annee(activite_par_titre, annee: str):
+    filtre_annee_activite = activite_par_titre['annee'] == annee  # ! annee en chaîne de caractères
+    activites_data = activite_par_titre[filtre_annee_activite]
+    return activites_data
+
+
+def get_titres_annee(communes_par_titre, activites_data):
+    '''
+    Sélectionne les titres de l'année de calcul parmi les données de l'export des titres par communes.
+    L'année étant présente dans un autre export, celui des activités, emploie la liste des identifiants de titres
+    de 'activites_data' déjà filtré à l'année choisie pour la sélection dans l'export des titres par communes.
+
+    Ceci sachant que 'titre_id' des exports d'activités (csv_activites)
+    = 'id' des exports de titres (csv_titres)
+    '''
+
+    titres_ids = activites_data.titre_id  # selection des titres pour lesquels nous avons des activités
+    filtre_titres = communes_par_titre['id'].isin(titres_ids.tolist())
+    titres_data = communes_par_titre[filtre_titres]
     return titres_data
 
 
@@ -99,6 +113,9 @@ def rename_titres_multicommunes(data):
 
 
 def clean_data(data):
+    '''
+    Parmi les colonnes qui nous intéressent, filtrer et adapter le format des valeurs.
+    '''
     une_ligne_par_titre = data[
         # supprime les rapports trimestriels
         (data.periode == 'année')
@@ -152,7 +169,7 @@ def set_simulation_inputs(simulation, data, openfisca_to_data_keys):
 
 
 # pour l'or, data['amodiataires_categorie'] entièrement à NaN
-# print("🍒", data[data['amodiataires_categorie'].notnull()])
+# print("🍒    ", data[data['amodiataires_categorie'].notnull()])
 # on choisit donc 'titulaires_categorie'
 def get_categories_titres(data):
     # pour l'or, data['titulaires_categorie'] à ETI, GE ou PME
@@ -177,11 +194,11 @@ if __name__ == "__main__":
 
     # ADAPT INPUT DATA
 
-    activite_par_titre, communes_par_titre = load_csv_data(csv_activites, csv_titres)
+    activite_par_titre = get_activites_data(csv_activites)
+    activites_data = get_activites_annee(activite_par_titre, str(data_period))
 
-    activites_data = get_activites_data(activite_par_titre, data_period)
-    titres_ids = activites_data.titre_id  # selection des titres pour lesquels nous avons des activités
-    titres_data = get_titres_data(communes_par_titre, titres_ids)
+    communes_par_titre = get_titres_data(csv_titres)
+    titres_data = get_titres_annee(communes_par_titre, activites_data)
 
     full_data = get_simulation_full_data(titres_data, activites_data)
     # print("renseignements_environnement : ", len(full_data[full_data.renseignements_environnement.notnull()]))
@@ -220,7 +237,7 @@ if __name__ == "__main__":
     redevance_departementale_des_mines_aurifere_kg = simulation.calculate('redevance_departementale_des_mines_aurifere_kg', simulation_period)
     redevance_communale_des_mines_aurifere_kg = simulation.calculate('redevance_communale_des_mines_aurifere_kg', simulation_period)
 
-    print("🍏 redevance_departementale_des_mines_aurifere_kg")
+    print("🍏    redevance_departementale_des_mines_aurifere_kg")
     print(redevance_departementale_des_mines_aurifere_kg)
 
     taxe_tarif_pme = current_parameters.taxes.guyane.categories.pme

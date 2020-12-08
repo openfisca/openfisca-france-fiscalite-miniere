@@ -1,15 +1,23 @@
 import pytest
 from pandas import DataFrame
-from simulations.estime_taxes_redevances import get_simulation_full_data, clean_data
+from simulations.estime_taxes_redevances import (
+    get_activites_annee,
+    get_titres_annee,
+    get_simulation_full_data,
+    clean_data
+    )
+
+
+ANNEE_ACTIVITES = 2019
 
 
 @pytest.fixture
-def titres_data() -> DataFrame:
+def communes_par_titre() -> DataFrame:
     # titre_1 a un amodiataire
     # titre_2 est multi-substances et a un titulaire de categorie inconnue
     # titre_3 est multi-communes
     # titre_4 ne fait que passer parce qu'il est d'une période passée
-    titres_data = {
+    communes_par_titre = {
         'id': ['titre_1', 'titre_2', 'titre_3', 'titre_4'],
         'domaine': ['minéraux et métaux', 'minéraux et métaux', 'minéraux et métaux', 'minéraux et métaux'],
         'substances': ['or', 'or', 'or;substances connexes', 'or'],
@@ -35,15 +43,15 @@ def titres_data() -> DataFrame:
         'amodiataires_categorie': ['ETI', '', '', '']
     }
 
-    return DataFrame(data=titres_data)
+    return DataFrame(data=communes_par_titre)
 
 
 @pytest.fixture
-def activites_data() -> DataFrame:
-    # titre_0 n'existe pas dans titres_data
+def activite_par_titre() -> DataFrame:
+    # titre_0 n'existe pas dans communes_par_titre
     # titre_1 a un rapport trimestriel (donc pas d'orNet mais des investissements)
     # titre_4 est sur une autre année
-    activites_data = {
+    activite_par_titre = {
         'titre_id': ['titre_4', 'titre_3', 'titre_2', 'titre_1', 'titre_0'],
         'annee': ['2018', '2019', '2019', '2018', '2019'],
         'periode': ['année', 'année', 'année', '1er trimestre', 'année'],
@@ -60,14 +68,43 @@ def activites_data() -> DataFrame:
         'complement_texte': ['nothing', 'rien', 'nada', 'chayn', 'heuu']
         }
 
-    return DataFrame(data=activites_data)
+    return DataFrame(data=activite_par_titre)
+
+
+@pytest.fixture
+def activites_data(activite_par_titre) -> DataFrame:
+    activites_data = get_activites_annee(activite_par_titre, str(ANNEE_ACTIVITES))
+    return activites_data
+
+
+@pytest.fixture
+def titres_data(communes_par_titre, activites_data) -> DataFrame:
+    titres_data = get_titres_annee(communes_par_titre, activites_data)
+    return titres_data
+
+
+def test_get_activites_annee(activite_par_titre):
+    activites_data = get_activites_annee(activite_par_titre, str(ANNEE_ACTIVITES))
+
+    input_years: pandas.Series = activite_par_titre['annee'].value_counts(dropna=False)
+    assert input_years[str(ANNEE_ACTIVITES)] == len(activites_data)
+
+
+def test_get_titres_annee(communes_par_titre, activite_par_titre, activites_data):
+    titres_data = get_titres_annee(communes_par_titre, activites_data)
+
+    input_years: pandas.Series = activite_par_titre['annee'].value_counts(dropna=False)
+
+    # seul écart : titre_0 est à la bonne année mais absent des données de titres
+    assert set(activites_data.titre_id).symmetric_difference(set(titres_data.id)) == { 'titre_0' }
+    assert input_years[str(ANNEE_ACTIVITES)]-1 == len(titres_data)
 
 
 def test_get_simulation_full_data(titres_data, activites_data):
     full_data = get_simulation_full_data(titres_data, activites_data)
 
     assert('id' not in full_data.columns)
-    assert((full_data['titre_id'] == ['titre_3', 'titre_2', 'titre_1']).all())
+    assert((full_data['titre_id'] == ['titre_3', 'titre_2']).all())
 
 
 def test_clean_data(titres_data, activites_data):
