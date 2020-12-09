@@ -122,6 +122,7 @@ def test_get_titres_annee(communes_par_titre, activite_par_titre, activites_data
 def test_get_simulation_full_data(titres_data, activites_data):
     full_data = get_simulation_full_data(titres_data, activites_data)
 
+    assert not full_data.empty
     assert('id' not in full_data.columns)
     assert((full_data['titre_id'] == ['titre_3', 'titre_2']).all())
 
