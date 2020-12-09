@@ -42,8 +42,9 @@ def get_titres_data(csv_titres):
     return titres_data
 
 
-def get_activites_annee(activite_par_titre, annee: str):
-    filtre_annee_activite = activite_par_titre['annee'] == annee  # ! annee en chaîne de caractères
+def get_activites_annee(activite_par_titre, annee):
+    # TODO fix incohérence : annee en chaîne de caractères pour les tests mais en int pour la prod
+    filtre_annee_activite = activite_par_titre['annee'] == annee
     activites_data = activite_par_titre[filtre_annee_activite]
     return activites_data
 
@@ -65,6 +66,7 @@ def get_titres_annee(communes_par_titre, activites_data):
 
 
 def get_simulation_full_data(titres_data, activites_data):
+    # 'titre_id' des exports d'activités (csv_activites) = 'id' des exports de titres (csv_titres)
     full_data : pandas.DataFrame = pandas.merge(
         activites_data, titres_data, left_on='titre_id', right_on='id'
         ).drop(columns=['id'])  # on supprime la colonne 'id' en doublon avec 'titre_id'
@@ -74,7 +76,7 @@ def get_simulation_full_data(titres_data, activites_data):
 
     # print(full_data.loc[full_data['titre_id'] == 'm-ax-berge-conrad-2016'][['periode', 'renseignements_environnement']])
     # full_data.to_csv(f'full_data_{time.strftime("%Y%m%d-%H%M%S")}.csv', index=False)
-
+    assert not full_data.empty
     return full_data
 
 
@@ -116,18 +118,8 @@ def clean_data(data):
     '''
     Parmi les colonnes qui nous intéressent, filtrer et adapter le format des valeurs.
     '''
-    une_ligne_par_titre = data[
-        # supprime les rapports trimestriels
-        (data.periode == 'année')
-        # supprime les rapports qui n'ont pas pour objet la production
-        & (data.renseignements_orNet.notnull())
-        ]
-
-    # print(len(une_ligne_par_titre), "une_ligne_par_titre (via année)")
-    # print(une_ligne_par_titre.head())
-
-    quantites_chiffrees = une_ligne_par_titre
-    quantites_chiffrees.loc['renseignements_orNet'] = une_ligne_par_titre.renseignements_orNet.fillna(0.)
+    quantites_chiffrees = data
+    quantites_chiffrees.loc['renseignements_orNet'] = data.renseignements_orNet.fillna(0.)
 
     print(len(quantites_chiffrees), "CLEANED DATA")
     # print(quantites_chiffrees[['titre_id', 'periode', 'communes', 'renseignements_orNet']].head())
@@ -139,12 +131,37 @@ def clean_data(data):
         "communes",
         ignore_index=True  # ! pandas v 1.1.0+
         ).dropna(subset=['titre_id'])  # NaN from exploded empty lists
-    print(une_commune_par_titre[['titre_id', 'periode', 'communes', 'renseignements_orNet']])
+    # print(une_commune_par_titre[['titre_id', 'periode', 'communes', 'renseignements_orNet']])
     # titre 'toto' devient 'toto+nom_commune_sans_surface'
     rename_titres_multicommunes(une_commune_par_titre)
 
     return une_commune_par_titre
 
+
+def select_reports(data: pandas.DataFrame, type: str) -> pandas.DataFrame:
+    selected_reports = data[data.type == type]
+    print(len(selected_reports), "SELECTED REPORTS")
+    return selected_reports
+
+
+def calculate_renseignements_environnement_annuels(titres_ids, rapports_trimestriels) -> list :
+    '''
+    Somme les investissements par titre d'après les montants de "renseignements_environnement"
+    des rapports trimestriels d'exploitation de chaque titre.
+    @return Une liste des investissements annuels calculés selon l'ordre des "titres_ids"
+        fournis en entrée.
+    '''
+    renseignements_environnement_annuels = []
+    for titre_id in titres_ids:
+        renseignements_trimestriels_titre : pandas.DataFrame = rapports_trimestriels[rapports_trimestriels.titre_id == titre_id]
+        # print(renseignements_trimestriels_titre[['titre_id', 'periode', 'renseignements_environnement']])
+        assert renseignements_trimestriels_titre.periode.isin(
+            ['1er trimestre', '2e trimestre', '3e trimestre', '4e trimestre']
+            ).all()
+        renseignements_annuels_titre = renseignements_trimestriels_titre.renseignements_environnement.sum()
+        renseignements_environnement_annuels.append(renseignements_annuels_titre)
+        # print(renseignements_annuels_titre)
+    return renseignements_environnement_annuels
 
 # SIMULATION
 
@@ -160,13 +177,6 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
   simulation_builder.join_with_persons(commune_instance, titres_des_communes, roles = titres_communes_roles)
 
   return simulation_builder.build(tax_benefit_system)
-
-
-def set_simulation_inputs(simulation, data, openfisca_to_data_keys):
-  for k, v in activite_par_titre_keys.items():
-    simulation.set_input(k, data_period, data[v])
-  return simulation
-
 
 # pour l'or, data['amodiataires_categorie'] entièrement à NaN
 # print("🍒    ", data[data['amodiataires_categorie'].notnull()])
@@ -195,15 +205,18 @@ if __name__ == "__main__":
     # ADAPT INPUT DATA
 
     activite_par_titre = get_activites_data(csv_activites)
-    activites_data = get_activites_annee(activite_par_titre, str(data_period))
+    activites_data = get_activites_annee(activite_par_titre, data_period)
 
     communes_par_titre = get_titres_data(csv_titres)
     titres_data = get_titres_annee(communes_par_titre, activites_data)
 
     full_data = get_simulation_full_data(titres_data, activites_data)
     # print("renseignements_environnement : ", len(full_data[full_data.renseignements_environnement.notnull()]))
-    data = clean_data(full_data)  # titres ayant des rapports annuels d'activité citant la production
-    cleaned_titres_ids = data.titre_id
+
+    rapports_annuels = select_reports(full_data, "rapport annuel de production d'or en Guyane")
+    assert (rapports_annuels.renseignements_orNet.notnull()).all()
+
+    data = clean_data(rapports_annuels)  # titres ayant des rapports annuels d'activité citant la production
 
     # SIMULATION
 
@@ -216,9 +229,16 @@ if __name__ == "__main__":
       data.titre_id, data.communes
       )
 
-    activite_par_titre_keys = {'quantite_aurifere_kg': 'renseignements_orNet'}
-    simulation = set_simulation_inputs(simulation, data, activite_par_titre_keys)
+    simulation.set_input('quantite_aurifere_kg', data_period, data['renseignements_orNet'])
     simulation.set_input('categorie', data_period, get_categories_titres(data))  # enums
+
+    rapports_trimestriels = select_reports(full_data, "rapport trimestriel d'exploitation d'or en Guyane")
+    assert (rapports_trimestriels.renseignements_environnement.notnull()).all()
+    renseignements_environnement_annuels = calculate_renseignements_environnement_annuels(
+        data.titre_id,
+        rapports_trimestriels
+        )
+    simulation.set_input('investissement', data_period, renseignements_environnement_annuels)
 
     rdm_tarif_aurifere = current_parameters.redevances.departementales.aurifere
     rcm_tarif_aurifere = current_parameters.redevances.communales.aurifere
@@ -235,7 +255,6 @@ if __name__ == "__main__":
 
     # SIMULATION OUTPUT
 
-    # TODO ordonnancer par titres
     colonnes = [
         'titre_id', 'communes',
         'titulaires_noms', 'titulaires_adresses',
@@ -255,6 +274,7 @@ if __name__ == "__main__":
         ]
 
     resultat = pandas.DataFrame(data, columns = colonnes)
+    nb_titres = len(data.titre_id)
 
     resultat['communes'] = data.communes
     resultat['titulaires_noms'] = data.titulaires_noms
@@ -263,15 +283,15 @@ if __name__ == "__main__":
     # Base des redevances :
     resultat['renseignements_orNet'] = activites_data.renseignements_orNet
     # Redevance départementale :
-    resultat['tarifs_rdm'] = [rdm_tarif_aurifere] * len(cleaned_titres_ids)
+    resultat['tarifs_rdm'] = [rdm_tarif_aurifere] * nb_titres
     resultat['redevance_departementale_des_mines_aurifere_kg'] = redevance_departementale_des_mines_aurifere_kg
     # Redevance communale :
-    resultat['tarifs_rcm'] = [rcm_tarif_aurifere] * len(cleaned_titres_ids)
+    resultat['tarifs_rcm'] = [rcm_tarif_aurifere] * nb_titres
     resultat['redevance_communale_des_mines_aurifere_kg'] = redevance_communale_des_mines_aurifere_kg
     # Taxe minière sur l'or de Guyane :
     resultat['taxe_tarif_pme'] = taxe_tarif_pme
     resultat['taxe_tarif_autres'] = taxe_tarif_autres_entreprises
-    resultat['investissement'] = data.renseignements_environnement
+    resultat['investissement'] = renseignements_environnement_annuels
     resultat['taxe_guyane_brute'] = taxe_guyane_brute
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
