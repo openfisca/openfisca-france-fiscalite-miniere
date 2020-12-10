@@ -168,8 +168,14 @@ def add_entreprises_data(data, entreprises_data):
         data.amodiataires_noms.notnull(),
         other = data.titulaires_noms
         )
-
     data['nom_entreprise'] = noms_entreprises
+
+    adresses_entreprises = data.amodiataires_adresses.where(
+        data.amodiataires_noms == data.nom_entreprise,
+        other = data.titulaires_adresses
+        )
+    data['adresse_entreprise'] = adresses_entreprises
+
     merged_data = data.merge(entreprises_data, how='left', left_on='nom_entreprise', right_on='nom').drop(columns=['nom'])
     return merged_data
 
@@ -315,18 +321,18 @@ if __name__ == "__main__":
         ]
 
     resultat = pandas.DataFrame(data, columns = colonnes)
-    nb_titres = len(data.titre_id)
+    # nb_titres = len(data.titre_id)
 
     resultat['communes'] = data.communes
     resultat['titulaires_noms'] = data.nom_entreprise
-    resultat['titulaires_adresses'] = titres_data.titulaires_adresses
+    resultat['titulaires_adresses'] = data.adresse_entreprise
     # Base des redevances :
     resultat['renseignements_orNet'] = activites_data.renseignements_orNet
     # Redevance départementale :
-    resultat['tarifs_rdm'] = [rdm_tarif_aurifere] * nb_titres
+    resultat['tarifs_rdm'] = numpy.where(redevance_departementale_des_mines_aurifere_kg > 0, rdm_tarif_aurifere, "")
     resultat['redevance_departementale_des_mines_aurifere_kg'] = redevance_departementale_des_mines_aurifere_kg
     # Redevance communale :
-    resultat['tarifs_rcm'] = [rcm_tarif_aurifere] * nb_titres
+    resultat['tarifs_rcm'] = numpy.where(redevance_communale_des_mines_aurifere_kg > 0, rcm_tarif_aurifere, "")
     resultat['redevance_communale_des_mines_aurifere_kg'] = redevance_communale_des_mines_aurifere_kg
     # Taxe minière sur l'or de Guyane :
     resultat['taxe_tarif_pme'] = taxe_tarif_pme
