@@ -74,7 +74,6 @@ def get_simulation_full_data(titres_data, activites_data):
     print(len(full_data), "SIMULATION DATA")
     # print(full_data[['titre_id', 'periode', 'communes']].head())
 
-    # print(full_data.loc[full_data['titre_id'] == 'm-ax-berge-conrad-2016'][['periode', 'renseignements_environnement']])
     # full_data.to_csv(f'full_data_{time.strftime("%Y%m%d-%H%M%S")}.csv', index=False)
     assert not full_data.empty
     return full_data
@@ -97,6 +96,8 @@ def dispatch_titres_multicommunes(data):
     # print(une_commune_par_titre[['titre_id', 'periode', 'communes', 'renseignements_orNet']])
 
     titres_names, titres_occurrences = numpy.unique(une_commune_par_titre.titre_id, return_counts=True)
+    une_commune_par_titre.assign(Name='surface_communale')
+    une_commune_par_titre.assign(Name='surface_totale')
 
     # on répertorie les groupes de nouveaux titres unicommunaux créés ici
     # à partir d'un titre multicommunal pour le futur calcul de surface totale par titre :
@@ -122,14 +123,14 @@ def dispatch_titres_multicommunes(data):
         else:
             # print("👹   ", titre_courant, data_titre_courant.communes.values)
             commune, surface = separe_commune_surface(str(data_titre_courant.communes.values))
-            data_titre_courant['surface_communale'] = float(surface)
-            data_titre_courant['surface_totale'] = float(surface)
+            une_commune_par_titre.loc[une_commune_par_titre.titre_id == titre_courant, 'surface_communale'] = float(surface)
+            une_commune_par_titre.loc[une_commune_par_titre.titre_id == titre_courant, 'surface_totale'] = float(surface)
 
     # on calcule les surfaces totales des titres multicommunaux éclatés
     for titre_multicommunal, titres_dispatched in titres_multicommunaux.items():
         filtre_titres_dispatched = une_commune_par_titre.titre_id.isin(titres_dispatched)
         surface_totale = une_commune_par_titre[filtre_titres_dispatched].surface_communale.sum()
-        une_commune_par_titre.loc[filtre_titres_dispatched].surface_totale = surface_totale
+        une_commune_par_titre.loc[filtre_titres_dispatched, 'surface_totale'] = surface_totale
         # print("👹👹👹 ", titre_multicommunal, titres_dispatched, surface_totale)
 
     return une_commune_par_titre
@@ -248,6 +249,8 @@ if __name__ == "__main__":
         data.titre_id, data.communes
         )
 
+    simulation.set_input('surface_communale', data_period, data['surface_communale'])
+    simulation.set_input('surface_totale', data_period, data['surface_totale'])
     simulation.set_input('quantite_aurifere_kg', data_period, data['renseignements_orNet'])
     simulation.set_input('categorie', data_period, get_categories_titres(data))  # enums
 
