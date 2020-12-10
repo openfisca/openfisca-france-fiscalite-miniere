@@ -80,33 +80,23 @@ def get_simulation_full_data(titres_data, activites_data):
     return full_data
 
 
-def multi_communes(communes_value):
-    return communes_value.str.contains(r';')
-
-
 def separe_commune_surface(commune_surface):
     '''Transforme 'Commune1 (0.123)' en 'Commune1', 0.123'''
     match = re.match("(.*)\((.*)\)", commune_surface)  # noqa: W605
     return match.group(1).strip(), match.group(2).strip()
 
 
-def detect_communes_surfaces(communes_surfaces):
-    communes_surfaces_list = communes_surfaces.split(';')
-    communes_surfaces_dict = {}
-    for item in communes_surfaces_list:
-        k, v = separe_commune_surface(item)
-        communes_surfaces_dict.update({k: v})
-
-    return communes_surfaces_dict
-
-
-# modifie directement l'instance 'data'
-# hypothèses : 
-# 'data' où les titres multicommunaux sont éclatés plusieurs occurrences du _même_ titre_id
-# chaque occurrence cible une commune (avec sa surface)
-# mais pas de titre à NaN
 def dispatch_titres_multicommunes(data):
-    titres_names, titres_occurrences = numpy.unique(data.titre_id, return_counts=True)
+    # on éclate les titres multicommunaux en plusieurs occurrences du _même_ titre_id
+    # chaque occurrence cible une commune (avec sa surface)
+    data['communes'] = data.communes.str.split(pat=';')  # 'Commune1 (0.123);Commune2 (4.567)'
+    une_commune_par_titre = data.explode(
+        "communes",
+        ignore_index=True  # ! pandas v 1.1.0+
+        ).dropna(subset=['titre_id'])  # dropping NaN values from exploded empty lists
+    # print(une_commune_par_titre[['titre_id', 'periode', 'communes', 'renseignements_orNet']])
+
+    titres_names, titres_occurrences = numpy.unique(une_commune_par_titre.titre_id, return_counts=True)
 
     # on répertorie les groupes de nouveaux titres unicommunaux créés ici
     # à partir d'un titre multicommunal pour le futur calcul de surface totale par titre :
@@ -114,7 +104,7 @@ def dispatch_titres_multicommunes(data):
 
     for index, occurrence_titre in enumerate(titres_occurrences):
         titre_courant = titres_names[index]
-        data_titre_courant = data[data.titre_id == titre_courant]
+        data_titre_courant = une_commune_par_titre[une_commune_par_titre.titre_id == titre_courant]
 
         dispatched_titres = []
         if occurrence_titre > 1:  # titre sur plusieurs communes
@@ -125,16 +115,24 @@ def dispatch_titres_multicommunes(data):
 
                 # titre 'toto' devient 'toto+nom_commune_sans_surface'
                 titre_unicommunal += "+" + commune
-                data.loc[j, 'titre_id'] = titre_unicommunal
-                data.loc[j, 'surface_communale'] = float(surface)
+                une_commune_par_titre.loc[j, 'titre_id'] = titre_unicommunal
+                une_commune_par_titre.loc[j, 'surface_communale'] = float(surface)
                 dispatched_titres.append(titre_unicommunal)
             titres_multicommunaux[titre_courant] = dispatched_titres
         else:
             # print("👹   ", titre_courant, data_titre_courant.communes.values)
             commune, surface = separe_commune_surface(str(data_titre_courant.communes.values))
             data_titre_courant['surface_communale'] = float(surface)
-    return titres_multicommunaux
+            data_titre_courant['surface_totale'] = float(surface)
 
+    # on calcule les surfaces totales des titres multicommunaux éclatés
+    for titre_multicommunal, titres_dispatched in titres_multicommunaux.items():
+        filtre_titres_dispatched = une_commune_par_titre.titre_id.isin(titres_dispatched)
+        surface_totale = une_commune_par_titre[filtre_titres_dispatched].surface_communale.sum()
+        une_commune_par_titre.loc[filtre_titres_dispatched].surface_totale = surface_totale
+        # print("👹👹👹 ", titre_multicommunal, titres_dispatched, surface_totale)
+
+    return une_commune_par_titre
 
 def get_surfaces_titres_unicommune(data_titre_unicommune) -> list :
     surfaces = []
@@ -156,20 +154,7 @@ def clean_data(data):
 
     # on éclate les titres multicommunaux en une ligne par titre+commune unique
     # attention : on refait l'index du dataframe pour distinguer les lignes résultat.
-    quantites_chiffrees['communes'] = quantites_chiffrees.communes.str.split(pat=';')
-    une_commune_par_titre = quantites_chiffrees.explode(
-        "communes",
-        ignore_index=True  # ! pandas v 1.1.0+
-        ).dropna(subset=['titre_id'])  # NaN from exploded empty lists
-    # print(une_commune_par_titre[['titre_id', 'periode', 'communes', 'renseignements_orNet']])
-
-    # on ajoute la surface totale des
-    titres_multicommunaux = dispatch_titres_multicommunes(une_commune_par_titre)
-    for titre_multicommunal, titres_dispatched in titres_multicommunaux.items():
-        filtre_titres_dispatched = une_commune_par_titre.titre_id.isin(titres_dispatched)
-        surface_totale = une_commune_par_titre[filtre_titres_dispatched].surface_communale.sum()
-        une_commune_par_titre.loc[filtre_titres_dispatched].surface_totale = surface_totale
-        # print("👹👹👹 ", titre_multicommunal, titres_dispatched, surface_totale)
+    une_commune_par_titre = dispatch_titres_multicommunes(quantites_chiffrees)
 
     return une_commune_par_titre
 
