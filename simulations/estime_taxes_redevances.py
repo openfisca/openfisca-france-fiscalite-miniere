@@ -42,6 +42,17 @@ def get_titres_data(csv_titres):
     return titres_data
 
 
+def get_entreprises_data(csv_entreprises):
+    entreprises : pandas.DataFrame = pandas.read_csv(csv_entreprises)
+    entreprises_data = entreprises[
+        ['nom', 'siren']
+    ]
+
+    print(len(entreprises_data), "ENTREPRISES")
+    print(entreprises_data.head())
+
+    return entreprises_data
+
 def get_activites_annee(activite_par_titre, annee):
     # TODO fix incohérence : annee en chaîne de caractères pour les tests mais en int pour la prod
     filtre_annee_activite = activite_par_titre['annee'] == annee
@@ -63,7 +74,6 @@ def get_titres_annee(communes_par_titre, activites_data):
     filtre_titres = communes_par_titre['id'].isin(titres_ids.tolist())
     titres_data = communes_par_titre[filtre_titres]
     return titres_data
-
 
 def get_simulation_full_data(titres_data, activites_data):
     # 'titre_id' des exports d'activités (csv_activites) = 'id' des exports de titres (csv_titres)
@@ -135,13 +145,6 @@ def dispatch_titres_multicommunes(data):
 
     return une_commune_par_titre
 
-def get_surfaces_titres_unicommune(data_titre_unicommune) -> list :
-    surfaces = []
-    for index, row in data_titre_unicommune:
-        commune, surface = separe_commune_surface(row.communes)
-        surfaces.append(surface)
-    return surfaces
-
 
 def clean_data(data):
     '''
@@ -158,6 +161,17 @@ def clean_data(data):
     une_commune_par_titre = dispatch_titres_multicommunes(quantites_chiffrees)
 
     return une_commune_par_titre
+
+
+def add_entreprises_data(data, entreprises_data):
+    noms_entreprises = data.amodiataires_noms.where(
+        data.amodiataires_noms.notnull(),
+        other = data.titulaires_noms
+        )
+
+    data['nom_entreprise'] = noms_entreprises
+    merged_data = data.merge(entreprises_data, how='left', left_on='nom_entreprise', right_on='nom').drop(columns=['nom'])
+    return merged_data
 
 
 def select_reports(data: pandas.DataFrame, type: str) -> pandas.DataFrame:
@@ -223,6 +237,8 @@ if __name__ == "__main__":
     # année N-1
     csv_activites = "/Volumes/Transcend2/beta/camino_2020/data/20201116-22h30-camino-activites-573.csv"
 
+    csv_entreprises = "/Volumes/Transcend2/beta/camino_2020/data/20201116-22h35-camino-entreprises-663.csv"
+
     # ADAPT INPUT DATA
 
     activite_par_titre = get_activites_data(csv_activites)
@@ -231,12 +247,15 @@ if __name__ == "__main__":
     communes_par_titre = get_titres_data(csv_titres)
     titres_data = get_titres_annee(communes_par_titre, activites_data)
 
+    entreprises_data = get_entreprises_data(csv_entreprises)
+
     full_data = get_simulation_full_data(titres_data, activites_data)
 
     rapports_annuels = select_reports(full_data, "rapport annuel de production d'or en Guyane")
     assert (rapports_annuels.renseignements_orNet.notnull()).all()
 
-    data = clean_data(rapports_annuels)  # titres ayant des rapports annuels d'activité citant la production
+    cleaned_data = clean_data(rapports_annuels)  # titres ayant des rapports annuels d'activité citant la production
+    data = add_entreprises_data(cleaned_data, entreprises_data)
 
     # SIMULATION
 
@@ -299,8 +318,7 @@ if __name__ == "__main__":
     nb_titres = len(data.titre_id)
 
     resultat['communes'] = data.communes
-    resultat['titulaires_noms'] = data.titulaires_noms
-    # ? numpy.where(data.amodiataires_noms, data.amodiataires_noms, data.titulaires_noms)
+    resultat['titulaires_noms'] = data.nom_entreprise
     resultat['titulaires_adresses'] = titres_data.titulaires_adresses
     # Base des redevances :
     resultat['renseignements_orNet'] = activites_data.renseignements_orNet
