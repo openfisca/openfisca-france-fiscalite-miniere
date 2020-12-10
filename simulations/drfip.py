@@ -1,6 +1,19 @@
 import pandas  # noqa: I201
 import numpy
 
+
+def build_designations_entreprises(data):
+    nb_lignes = data.shape[0]
+    new_lines = numpy.full(nb_lignes, '\n')
+    prefix_siren = numpy.full(nb_lignes, 'SIREN ')
+
+    return (data["nom_entreprise"] + new_lines
+        + data["adresse_entreprise"] + new_lines + prefix_siren
+        + data["siren"])
+
+def calculate_production_communale(data):
+    return data["renseignements_orNet"] * (data["surface_communale"] / data["surface_totale"])
+
 def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     '''
     Template MATRICE 1121
@@ -73,15 +86,14 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     matrice["Numéro d'ordre de la matrice"] = numeros_ordre
     matrice["Commune du lieu principal d'exploitation"] = data["commune_exploitation_principale"]
 
-    prefix_siren = numpy.full(nb_lignes, 'SIREN ')
-    matrice["Désignation et adresse des concessionnaires, titulaires de permis d’exploitation ou exploitants"] = (
-        data["nom_entreprise"] + new_lines
-        + data["adresse_entreprise"] + new_lines + prefix_siren
-        + data["siren"])
+    matrice[
+        "Désignation et adresse des concessionnaires, titulaires de permis d’exploitation ou exploitants"
+        ] = build_designations_entreprises(data)
+
     matrice["Nature des substances extraites"] = data["substances"]
     matrice["Nature"] = numpy.full(nb_lignes, "or")
 
-    production_communale = data["renseignements_orNet"] * (data["surface_communale"] / data["surface_totale"])
+    production_communale = calculate_production_communale(data)
     prefix_proportion_communale = numpy.full(nb_lignes, 'Porportion communale : ')
     matrice["Quantités (kg)"] = (
         data["renseignements_orNet"].astype(str)
@@ -129,21 +141,47 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     matrice.to_csv(f'matrice_drfip_guyane_production_{annee_production}_{timestamp}.csv', index=False)
 
 
-# Template ÉTAT ANNEXE À LA MATRICE 1122
-# REDEVANCE DÉPARTEMENTALE ET COMMUNALE DES MINES 
-# TAXE MINIÈRE SUR L'OR DE GUYANE
-# ÉTAT ANNEXE À LA MATRICE
-# DES  REDEVANCES, TAXES  ÉTABLIES  POUR  L'ANNÉE
+def generate_matrice_annexe_drfip_guyane(data, annee_production, timestamp):
+    '''
+    Template ÉTAT ANNEXE À LA MATRICE 1122
+    REDEVANCE DÉPARTEMENTALE ET COMMUNALE DES MINES 
+    TAXE MINIÈRE SUR L'OR DE GUYANE
+    ÉTAT ANNEXE À LA MATRICE
+    DES  REDEVANCES, TAXES  ÉTABLIES  POUR  L'ANNÉE
+    '''
 
-colonnes_1122 = [
-    "Numéro d'ordre de la matrice",  # [col. 1]
-    "Désignation des concessionnaires, exploitants ou explorateurs",  # [col. 2]
-    "Désignation des concessions, permis ou explorations",  # [col. 3]
+    colonnes_1122 = [
+        "Numéro d'ordre de la matrice",  # [col. 1]
+        "Désignation des concessionnaires, exploitants ou explorateurs",  # [col. 2]
+        "Désignation des concessions, permis ou explorations",  # [col. 3]
+        # Départements et communes sur le territoire desquels fonctionnent les exploitations :
+        "Départements",  # [col. 4]
+        "Communes",  # [col. 5]
+        # Tonnages extraits au cours de l'année précédente :
+        "par département",  # [col. 6]
+        "par commune",  # [col. 7]
+        "Observations"  # [col. 8]
+    ]
+
+    matrice_annexe = pandas.DataFrame(data, columns = colonnes_1122)
+
+    numeros_ordre = data["titre_id"].index
+    nb_lignes = len(numeros_ordre)
+    new_lines = numpy.full(nb_lignes, '\n')
+
+    matrice_annexe["Numéro d'ordre de la matrice"] = numeros_ordre
+    matrice_annexe[
+        "Désignation des concessionnaires, exploitants ou explorateurs"
+        ] = build_designations_entreprises(data)
+    matrice_annexe["Désignation des concessions, permis ou explorations"] = data["titre_id"]
     # Départements et communes sur le territoire desquels fonctionnent les exploitations :
-    "Départements",  # [col. 4]
-    "Communes",  # [col. 5]
+    matrice_annexe["Départements"] = numpy.full(nb_lignes, 'Guyane')
+    matrice_annexe["Communes"] = data['communes']
     # Tonnages extraits au cours de l'année précédente :
-    "par département",  # [col. 6]
-    "par commune",  # [col. 7]
-    "Observations"  # [col. 8]
-]
+    matrice_annexe["par département"] = numpy.full(nb_lignes, '')
+    matrice_annexe["par commune"] = calculate_production_communale(data)
+    matrice_annexe["Observations"] = numpy.where(
+        matrice_annexe["par commune"] > 0,
+        "production en kilogramme d'or", "")
+
+    matrice_annexe.to_csv(f'matrice_annexe_drfip_guyane_production_{annee_production}_{timestamp}.csv', index=False)

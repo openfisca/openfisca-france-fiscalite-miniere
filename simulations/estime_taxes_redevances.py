@@ -7,7 +7,7 @@ from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as FranceFiscaliteMiniereTaxBenefitSystem  # noqa: E501
 from openfisca_france_fiscalite_miniere.variables.taxes import CategorieEnum
 
-from simulations.drfip import generate_matrice_drfip_guyane
+from simulations.drfip import generate_matrice_drfip_guyane, generate_matrice_annexe_drfip_guyane
 
 
 # ADAPT INPUT DATA
@@ -387,6 +387,12 @@ if __name__ == "__main__":
 
     # TODO Vérifier quels titres du fichier CSV en entrée ne sont pas dans le rapport final.
     generate_matrice_drfip_guyane(
+        resultat,
+        data_period,
+        timestamp
+        )
+
+    generate_matrice_annexe_drfip_guyane(
         resultat,
         data_period,
         timestamp
