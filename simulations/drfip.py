@@ -68,18 +68,27 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
 
     numeros_ordre = data["titre_id"].index
     nb_lignes = len(numeros_ordre)
+    new_lines = numpy.full(nb_lignes, '\n')
 
     matrice["Numéro d'ordre de la matrice"] = numeros_ordre
     matrice["Commune du lieu principal d'exploitation"] = data["commune_exploitation_principale"]
-    new_lines = numpy.full(nb_lignes, '\n')
+
     prefix_siren = numpy.full(nb_lignes, 'SIREN ')
     matrice["Désignation et adresse des concessionnaires, titulaires de permis d’exploitation ou exploitants"] = (
         data["nom_entreprise"] + new_lines
         + data["adresse_entreprise"] + new_lines + prefix_siren
         + data["siren"])
     matrice["Nature des substances extraites"] = data["substances"]
-    matrice["Nature"] = data["substances"]
-    matrice["Quantités (kg)"] = data["renseignements_orNet"]  # TODO proportionnel à la surface ?
+    matrice["Nature"] = numpy.full(nb_lignes, "or")
+
+    production_communale = data["renseignements_orNet"] * (data["surface_communale"] / data["surface_totale"])
+    prefix_proportion_communale = numpy.full(nb_lignes, 'Porportion communale : ')
+    matrice["Quantités (kg)"] = (
+        data["renseignements_orNet"].astype(str)
+        + new_lines
+        + prefix_proportion_communale
+        + production_communale.astype(str)
+        )
 
     # Redevance départementale :
     matrice["Tarifs (RDM)"] = data["tarifs_rdm"]
