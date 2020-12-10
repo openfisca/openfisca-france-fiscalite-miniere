@@ -101,17 +101,47 @@ def detect_communes_surfaces(communes_surfaces):
 
 
 # modifie directement l'instance 'data'
-# hypothèse : pas de titre à NaN
-def rename_titres_multicommunes(data):
+# hypothèses : 
+# 'data' où les titres multicommunaux sont éclatés plusieurs occurrences du _même_ titre_id
+# chaque occurrence cible une commune (avec sa surface)
+# mais pas de titre à NaN
+def dispatch_titres_multicommunes(data):
     titres_names, titres_occurrences = numpy.unique(data.titre_id, return_counts=True)
+
+    # on répertorie les groupes de nouveaux titres unicommunaux créés ici
+    # à partir d'un titre multicommunal pour le futur calcul de surface totale par titre :
+    titres_multicommunaux = {}
+
     for index, occurrence_titre in enumerate(titres_occurrences):
-        if occurrence_titre > 1:
-            titre_multicommunes = titres_names[index]
-            titre_multicommunes_df = data[data.titre_id == titre_multicommunes]
-            
-            for j, row in titre_multicommunes_df.iterrows():
+        titre_courant = titres_names[index]
+        data_titre_courant = data[data.titre_id == titre_courant]
+
+        dispatched_titres = []
+        if occurrence_titre > 1:  # titre sur plusieurs communes
+            for j, row in data_titre_courant.iterrows():
+                titre_unicommunal = titre_courant
+                # print("👹👹 ", titre_courant, row.communes)
                 commune, surface = separe_commune_surface(row.communes)
-                data.loc[j, 'titre_id'] += "+" + commune
+
+                # titre 'toto' devient 'toto+nom_commune_sans_surface'
+                titre_unicommunal += "+" + commune
+                data.loc[j, 'titre_id'] = titre_unicommunal
+                data.loc[j, 'surface_communale'] = float(surface)
+                dispatched_titres.append(titre_unicommunal)
+            titres_multicommunaux[titre_courant] = dispatched_titres
+        else:
+            # print("👹   ", titre_courant, data_titre_courant.communes.values)
+            commune, surface = separe_commune_surface(str(data_titre_courant.communes.values))
+            data_titre_courant['surface_communale'] = float(surface)
+    return titres_multicommunaux
+
+
+def get_surfaces_titres_unicommune(data_titre_unicommune) -> list :
+    surfaces = []
+    for index, row in data_titre_unicommune:
+        commune, surface = separe_commune_surface(row.communes)
+        surfaces.append(surface)
+    return surfaces
 
 
 def clean_data(data):
@@ -132,15 +162,21 @@ def clean_data(data):
         ignore_index=True  # ! pandas v 1.1.0+
         ).dropna(subset=['titre_id'])  # NaN from exploded empty lists
     # print(une_commune_par_titre[['titre_id', 'periode', 'communes', 'renseignements_orNet']])
-    # titre 'toto' devient 'toto+nom_commune_sans_surface'
-    rename_titres_multicommunes(une_commune_par_titre)
+
+    # on ajoute la surface totale des
+    titres_multicommunaux = dispatch_titres_multicommunes(une_commune_par_titre)
+    for titre_multicommunal, titres_dispatched in titres_multicommunaux.items():
+        filtre_titres_dispatched = une_commune_par_titre.titre_id.isin(titres_dispatched)
+        surface_totale = une_commune_par_titre[filtre_titres_dispatched].surface_communale.sum()
+        une_commune_par_titre.loc[filtre_titres_dispatched].surface_totale = surface_totale
+        # print("👹👹👹 ", titre_multicommunal, titres_dispatched, surface_totale)
 
     return une_commune_par_titre
 
 
 def select_reports(data: pandas.DataFrame, type: str) -> pandas.DataFrame:
     selected_reports = data[data.type == type]
-    print(len(selected_reports), "SELECTED REPORTS")
+    print(len(selected_reports), "SELECTED REPORTS ", type)
     return selected_reports
 
 
@@ -160,7 +196,6 @@ def calculate_renseignements_environnement_annuels(titres_ids, rapports_trimestr
             ).all()
         renseignements_annuels_titre = renseignements_trimestriels_titre.renseignements_environnement.sum()
         renseignements_environnement_annuels.append(renseignements_annuels_titre)
-        # print(renseignements_annuels_titre)
     return renseignements_environnement_annuels
 
 # SIMULATION
@@ -211,7 +246,6 @@ if __name__ == "__main__":
     titres_data = get_titres_annee(communes_par_titre, activites_data)
 
     full_data = get_simulation_full_data(titres_data, activites_data)
-    # print("renseignements_environnement : ", len(full_data[full_data.renseignements_environnement.notnull()]))
 
     rapports_annuels = select_reports(full_data, "rapport annuel de production d'or en Guyane")
     assert (rapports_annuels.renseignements_orNet.notnull()).all()
@@ -225,9 +259,9 @@ if __name__ == "__main__":
     current_parameters = tax_benefit_system.parameters(simulation_period)
 
     simulation = build_simulation(
-      tax_benefit_system, simulation_period,
-      data.titre_id, data.communes
-      )
+        tax_benefit_system, simulation_period,
+        data.titre_id, data.communes
+        )
 
     simulation.set_input('quantite_aurifere_kg', data_period, data['renseignements_orNet'])
     simulation.set_input('categorie', data_period, get_categories_titres(data))  # enums
