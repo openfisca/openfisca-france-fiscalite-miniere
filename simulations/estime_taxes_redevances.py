@@ -7,7 +7,7 @@ from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as FranceFiscaliteMiniereTaxBenefitSystem  # noqa: E501
 from openfisca_france_fiscalite_miniere.variables.taxes import CategorieEnum
 
-from drfip import generate_matrice_drfip_guyane
+from simulations.drfip import generate_matrice_drfip_guyane
 
 
 # ADAPT INPUT DATA
@@ -360,7 +360,7 @@ if __name__ == "__main__":
     resultat['categorie_entreprise'] = data.categorie_entreprise
 
     # Base des redevances :
-    resultat['renseignements_orNet'] = activites_data.renseignements_orNet
+    resultat['renseignements_orNet'] = data.renseignements_orNet
     # Redevance départementale :
     resultat['tarifs_rdm'] = numpy.where(redevance_departementale_des_mines_aurifere_kg > 0, rdm_tarif_aurifere, "")
     resultat['redevance_departementale_des_mines_aurifere_kg'] = redevance_departementale_des_mines_aurifere_kg
@@ -368,20 +368,24 @@ if __name__ == "__main__":
     resultat['tarifs_rcm'] = numpy.where(redevance_communale_des_mines_aurifere_kg > 0, rcm_tarif_aurifere, "")
     resultat['redevance_communale_des_mines_aurifere_kg'] = redevance_communale_des_mines_aurifere_kg
     # Taxe minière sur l'or de Guyane :
-    resultat['taxe_tarif_pme'] = numpy.where(data['categorie_entreprise'] == "PME", taxe_tarif_pme, None)
-    resultat['taxe_tarif_autres'] = numpy.where(data['categorie_entreprise'] != "PME", taxe_tarif_autres_entreprises, None)
+    resultat['taxe_tarif_pme'] = numpy.where(
+        data['categorie_entreprise'] == "PME", taxe_tarif_pme, None)
+    resultat['taxe_tarif_autres'] = numpy.where(
+        (data['categorie_entreprise'] == "ETI") + (data['categorie_entreprise'] == "GE"),
+        taxe_tarif_autres_entreprises, None)
     resultat['investissement'] = renseignements_environnement_annuels
     resultat['taxe_guyane_brute'] = taxe_guyane_brute
     # https://lannuaire.service-public.fr/guyane/guyane/dr_fip-97302-01 :
     resultat['drfip'] = numpy.full(nb_titres, "Direction régionale des finances publiques (DRFIP) - Guyane")
-    resultat['observation'] = numpy.full(nb_titres, "")
+    resultat['observation'] = numpy.where(
+        ~data['categorie_entreprise'].isin(['PME', 'ETI', 'GE']),
+        "catégorie d'entreprise inconnue", "")
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
     # resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
     # TODO Vérifier quels titres du fichier CSV en entrée ne sont pas dans le rapport final.
 
     generate_matrice_drfip_guyane(
-        simulation.populations['societe'].ids,
         resultat,
         data_period,
         timestamp
