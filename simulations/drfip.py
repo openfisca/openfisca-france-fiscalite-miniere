@@ -1,7 +1,7 @@
 import pandas  # noqa: I201
 import numpy
 
-def generate_matrice_drfip_guyane(numeros_ordre, data, annee_production, timestamp):
+def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     '''
     Template MATRICE 1121
     REDEVANCE DÉPARTEMENTALE ET COMMUNALE DES MINES 
@@ -66,10 +66,13 @@ def generate_matrice_drfip_guyane(numeros_ordre, data, annee_production, timesta
 
     matrice = pandas.DataFrame(data, columns = colonnes_1121)
 
+    numeros_ordre = data["titre_id"].index
+    nb_lignes = len(numeros_ordre)
+
     matrice["Numéro d'ordre de la matrice"] = numeros_ordre
     matrice["Commune du lieu principal d'exploitation"] = data["commune_exploitation_principale"]
-    new_lines = numpy.full(len(numeros_ordre), '\n')
-    prefix_siren = numpy.full(len(numeros_ordre), 'SIREN ')
+    new_lines = numpy.full(nb_lignes, '\n')
+    prefix_siren = numpy.full(nb_lignes, 'SIREN ')
     matrice["Désignation et adresse des concessionnaires, titulaires de permis d’exploitation ou exploitants"] = (
         data["nom_entreprise"] + new_lines
         + data["adresse_entreprise"] + new_lines + prefix_siren
