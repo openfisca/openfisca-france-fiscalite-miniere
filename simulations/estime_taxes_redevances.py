@@ -7,6 +7,8 @@ from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as FranceFiscaliteMiniereTaxBenefitSystem  # noqa: E501
 from openfisca_france_fiscalite_miniere.variables.taxes import CategorieEnum
 
+from drfip import generate_matrice_drfip_guyane
+
 
 # ADAPT INPUT DATA
 
@@ -108,6 +110,8 @@ def dispatch_titres_multicommunes(data):
     titres_names, titres_occurrences = numpy.unique(une_commune_par_titre.titre_id, return_counts=True)
     une_commune_par_titre.assign(Name='surface_communale')
     une_commune_par_titre.assign(Name='surface_totale')
+    une_commune_par_titre.assign(Name='nom_commune')  # sans surface
+    une_commune_par_titre.assign(Name='commune_exploitation_principale')
 
     # on répertorie les groupes de nouveaux titres unicommunaux créés ici
     # à partir d'un titre multicommunal pour le futur calcul de surface totale par titre :
@@ -127,20 +131,33 @@ def dispatch_titres_multicommunes(data):
                 # titre 'toto' devient 'toto+nom_commune_sans_surface'
                 titre_unicommunal += "+" + commune
                 une_commune_par_titre.loc[j, 'titre_id'] = titre_unicommunal
+                une_commune_par_titre.loc[j, 'nom_commune'] = commune
                 une_commune_par_titre.loc[j, 'surface_communale'] = float(surface)
                 dispatched_titres.append(titre_unicommunal)
             titres_multicommunaux[titre_courant] = dispatched_titres
         else:
             # print("👹   ", titre_courant, data_titre_courant.communes.values)
-            commune, surface = separe_commune_surface(str(data_titre_courant.communes.values))
-            une_commune_par_titre.loc[une_commune_par_titre.titre_id == titre_courant, 'surface_communale'] = float(surface)
-            une_commune_par_titre.loc[une_commune_par_titre.titre_id == titre_courant, 'surface_totale'] = float(surface)
+            commune, surface = separe_commune_surface(str(data_titre_courant.communes.values[0]))
+            filtre_titre = une_commune_par_titre.titre_id == titre_courant
+            une_commune_par_titre.loc[filtre_titre, 'surface_communale'] = float(surface)
+            une_commune_par_titre.loc[filtre_titre, 'surface_totale'] = float(surface)
+            une_commune_par_titre.loc[filtre_titre, 'nom_commune'] = commune
+            une_commune_par_titre.loc[filtre_titre, 'commune_exploitation_principale'] = commune
 
     # on calcule les surfaces totales des titres multicommunaux éclatés
+    # print("***", titres_multicommunaux)
     for titre_multicommunal, titres_dispatched in titres_multicommunaux.items():
         filtre_titres_dispatched = une_commune_par_titre.titre_id.isin(titres_dispatched)
-        surface_totale = une_commune_par_titre[filtre_titres_dispatched].surface_communale.sum()
+        titres_dispatched_rows = une_commune_par_titre[filtre_titres_dispatched] 
+        surface_totale = titres_dispatched_rows.surface_communale.sum()
+
+        surface_max = titres_dispatched_rows.surface_communale.max()
+        commune_surface_max = titres_dispatched_rows['nom_commune'][titres_dispatched_rows.surface_communale == surface_max].values[0]
+        # print(titres_dispatched_rows[['titre_id', 'surface_communale']])
+        # print(titre_multicommunal, "MAX", surface_max)
+        # print(titre_multicommunal, " >>> ", commune_surface_max)
         une_commune_par_titre.loc[filtre_titres_dispatched, 'surface_totale'] = surface_totale
+        une_commune_par_titre.loc[filtre_titres_dispatched, 'commune_exploitation_principale'] = commune_surface_max
         # print("👹👹👹 ", titre_multicommunal, titres_dispatched, surface_totale)
 
     return une_commune_par_titre
@@ -163,6 +180,20 @@ def clean_data(data):
     return une_commune_par_titre
 
 
+def get_categories_entreprises(data):
+    # pour l'or, data['amodiataires_categorie'] entièrement à NaN
+    # print("🍒    ", data[data['amodiataires_categorie'].notnull()])
+    assert data['amodiataires_categorie'].isna().all(), data[
+        data['amodiataires_categorie'].notnull()
+        ][['titre_id', 'amodiataires_categorie']]
+    # on choisit donc 'titulaires_categorie'
+    # pour l'or, data['titulaires_categorie'] à ETI, GE ou PME
+    categories = data['titulaires_categorie'].apply(
+        lambda categorie: CategorieEnum.pme if "PME" else CategorieEnum.autre
+        )
+    return categories.to_numpy()
+
+
 def add_entreprises_data(data, entreprises_data):
     noms_entreprises = data.amodiataires_noms.where(
         data.amodiataires_noms.notnull(),
@@ -175,8 +206,10 @@ def add_entreprises_data(data, entreprises_data):
         other = data.titulaires_adresses
         )
     data['adresse_entreprise'] = adresses_entreprises
+    data['categorie_entreprise'] = data['titulaires_categorie']
 
     merged_data = data.merge(entreprises_data, how='left', left_on='nom_entreprise', right_on='nom').drop(columns=['nom'])
+
     return merged_data
 
 
@@ -218,16 +251,6 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
   simulation_builder.join_with_persons(commune_instance, titres_des_communes, roles = titres_communes_roles)
 
   return simulation_builder.build(tax_benefit_system)
-
-# pour l'or, data['amodiataires_categorie'] entièrement à NaN
-# print("🍒    ", data[data['amodiataires_categorie'].notnull()])
-# on choisit donc 'titulaires_categorie'
-def get_categories_titres(data):
-    # pour l'or, data['titulaires_categorie'] à ETI, GE ou PME
-    categories = data['titulaires_categorie'].apply(
-        lambda categorie: CategorieEnum.pme if "PME" else CategorieEnum.autre
-        )
-    return categories.to_numpy()
 
 
 if __name__ == "__main__":
@@ -277,7 +300,9 @@ if __name__ == "__main__":
     simulation.set_input('surface_communale', data_period, data['surface_communale'])
     simulation.set_input('surface_totale', data_period, data['surface_totale'])
     simulation.set_input('quantite_aurifere_kg', data_period, data['renseignements_orNet'])
-    simulation.set_input('categorie', data_period, get_categories_titres(data))  # enums
+
+    categories_entreprises_enum = get_categories_entreprises(data)
+    simulation.set_input('categorie', data_period, categories_entreprises_enum)
 
     rapports_trimestriels = select_reports(full_data, "rapport trimestriel d'exploitation d'or en Guyane")
     assert (rapports_trimestriels.renseignements_environnement.notnull()).all()
@@ -303,10 +328,10 @@ if __name__ == "__main__":
     # SIMULATION OUTPUT
 
     colonnes = [
-        'titre_id', 'communes',
-        'titulaires_noms', 'titulaires_adresses',
+        'titre_id', 'communes', 'commune_exploitation_principale'
+        'nom_entreprise', 'adresse_entreprise', 'siren', 'categorie_entreprise',
         # Base des redevances :
-        'substances', 'renseignements_orNet',
+        'substances', 'renseignements_orNet',  # TODO domaine ?
         # Redevance départementale :
         'tarifs_rdm',
         'redevance_departementale_des_mines_aurifere_kg',
@@ -317,15 +342,23 @@ if __name__ == "__main__":
         'taxe_tarif_pme',
         'taxe_tarif_autres',
         'investissement',
-        'taxe_guyane_brute'
+        'taxe_guyane_brute',
+        'drfip',
+        'observation'
         ]
 
     resultat = pandas.DataFrame(data, columns = colonnes)
-    # nb_titres = len(data.titre_id)
+    nb_titres = len(data.titre_id)
 
+    resultat['titre_id'] = data.titre_id
     resultat['communes'] = data.communes
-    resultat['titulaires_noms'] = data.nom_entreprise
-    resultat['titulaires_adresses'] = data.adresse_entreprise
+    resultat['commune_exploitation_principale'] = data.commune_exploitation_principale
+
+    resultat['nom_entreprise'] = data.nom_entreprise
+    resultat['adresse_entreprise'] = data.adresse_entreprise
+    resultat['siren'] = data.siren.astype(int).astype(str)  # afin d'éviter xxx.0 et concaténer
+    resultat['categorie_entreprise'] = data.categorie_entreprise
+
     # Base des redevances :
     resultat['renseignements_orNet'] = activites_data.renseignements_orNet
     # Redevance départementale :
@@ -335,11 +368,21 @@ if __name__ == "__main__":
     resultat['tarifs_rcm'] = numpy.where(redevance_communale_des_mines_aurifere_kg > 0, rcm_tarif_aurifere, "")
     resultat['redevance_communale_des_mines_aurifere_kg'] = redevance_communale_des_mines_aurifere_kg
     # Taxe minière sur l'or de Guyane :
-    resultat['taxe_tarif_pme'] = taxe_tarif_pme
-    resultat['taxe_tarif_autres'] = taxe_tarif_autres_entreprises
+    resultat['taxe_tarif_pme'] = numpy.where(data['categorie_entreprise'] == "PME", taxe_tarif_pme, None)
+    resultat['taxe_tarif_autres'] = numpy.where(data['categorie_entreprise'] != "PME", taxe_tarif_autres_entreprises, None)
     resultat['investissement'] = renseignements_environnement_annuels
     resultat['taxe_guyane_brute'] = taxe_guyane_brute
+    # https://lannuaire.service-public.fr/guyane/guyane/dr_fip-97302-01 :
+    resultat['drfip'] = numpy.full(nb_titres, "Direction régionale des finances publiques (DRFIP) - Guyane")
+    resultat['observation'] = numpy.full(nb_titres, "")
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
     # resultat.to_csv(f'matrice_drfip_{timestamp}.csv', index=False)
     # TODO Vérifier quels titres du fichier CSV en entrée ne sont pas dans le rapport final.
+
+    generate_matrice_drfip_guyane(
+        simulation.populations['societe'].ids,
+        resultat,
+        data_period,
+        timestamp
+        )
