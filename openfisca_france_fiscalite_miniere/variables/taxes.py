@@ -16,7 +16,7 @@ class CategorieEnum(indexed_enums.Enum):
 class categorie(Variable):
     value_type = indexed_enums.Enum
     possible_values = CategorieEnum
-    default_value = CategorieEnum.pme
+    default_value = CategorieEnum.pme  # ou inconnue pour ne pas calculer la taxe ?
     entity = Societe
     label = "Catégorie d'entreprises, dont l'imposition est prévue par la loi"
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
