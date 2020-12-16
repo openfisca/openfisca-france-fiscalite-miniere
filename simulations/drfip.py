@@ -179,8 +179,11 @@ def generate_matrice_annexe_drfip_guyane(data, annee_production, timestamp):
     matrice_annexe["Départements"] = numpy.full(nb_lignes, 'Guyane')
     matrice_annexe["Communes"] = data['communes']
     # Tonnages extraits au cours de l'année précédente :
-    matrice_annexe["par département"] = numpy.full(nb_lignes, '')
     matrice_annexe["par commune"] = calculate_production_communale(data)
+    production_par_departement = round(matrice_annexe["par commune"].sum(), 2)
+    print("!!!!  ", production_par_departement)
+    matrice_annexe["par département"] = numpy.full(nb_lignes, production_par_departement)  # total production communale sur chaque ligne
+
     matrice_annexe["Observations"] = numpy.where(
         matrice_annexe["par commune"] > 0,
         "production en kilogramme d'or", "")
