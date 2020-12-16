@@ -259,14 +259,14 @@ if __name__ == "__main__":
     data_period = 2019
 
     # Camino, export Titres miniers et autorisations :
-    csv_titres = "/Volumes/Transcend2/beta/camino_2020/data/20201116-22h32-camino-titres-1878.csv"
+    csv_titres = "/Volumes/Transcend2/beta/camino_2020/data/20201216-08h18-camino-titres-1209.csv"
     # Camino, export Activités
     # substance "or", tout type de titre, tout statut de titre
     # tout type de rapport, statut "déposé" uniquement
     # année N-1
-    csv_activites = "/Volumes/Transcend2/beta/camino_2020/data/20201116-22h30-camino-activites-573.csv"
+    csv_activites = "/Volumes/Transcend2/beta/camino_2020/data/20201216-08h17-camino-activites-568.csv"
 
-    csv_entreprises = "/Volumes/Transcend2/beta/camino_2020/data/20201116-22h35-camino-entreprises-663.csv"
+    csv_entreprises = "/Volumes/Transcend2/beta/camino_2020/data/20201216-08h18-camino-entreprises-1745.csv"
 
     # ADAPT INPUT DATA
 
