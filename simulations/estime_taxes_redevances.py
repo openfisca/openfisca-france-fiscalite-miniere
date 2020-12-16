@@ -162,6 +162,9 @@ def dispatch_titres_multicommunes(data):
 
     return une_commune_par_titre
 
+def convertit_grammes_a_kilo(data, colonne):
+    data[colonne] = data[colonne].astype(float).divide(1000)
+    return data
 
 def clean_data(data):
     '''
@@ -169,6 +172,8 @@ def clean_data(data):
     '''
     quantites_chiffrees = data
     quantites_chiffrees.loc['renseignements_orNet'] = data.renseignements_orNet.fillna(0.)
+    quantites_chiffrees = convertit_grammes_a_kilo(quantites_chiffrees, 'renseignements_orNet')
+    # print("👹👹👹 ", quantites_chiffrees.renseignements_orNet.head())
 
     print(len(quantites_chiffrees), "CLEANED DATA")
     # print(quantites_chiffrees[['titre_id', 'periode', 'communes', 'renseignements_orNet']].head())
@@ -365,6 +370,7 @@ if __name__ == "__main__":
 
     # Base des redevances :
     resultat['renseignements_orNet'] = data["renseignements_orNet"]
+
     # Redevance départementale :
     resultat['tarifs_rdm'] = numpy.where(redevance_departementale_des_mines_aurifere_kg > 0, rdm_tarif_aurifere, "")
     resultat['redevance_departementale_des_mines_aurifere_kg'] = redevance_departementale_des_mines_aurifere_kg
