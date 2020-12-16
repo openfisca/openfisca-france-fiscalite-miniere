@@ -5,11 +5,12 @@ import numpy
 def build_designations_entreprises(data):
     nb_lignes = data.shape[0]
     new_lines = numpy.full(nb_lignes, '\n')
-    prefix_siren = numpy.full(nb_lignes, 'SIREN ')
+    tirets = numpy.full(nb_lignes, ' - ')
+    texte_siren = numpy.full(nb_lignes, ' SIREN ')
 
-    return (data["nom_entreprise"] + new_lines
-        + data["adresse_entreprise"] + new_lines + prefix_siren
-        + data["siren"])
+    return (data["nom_entreprise"] + tirets
+        + data["adresse_entreprise"] + tirets
+        + data["siren"] + texte_siren)
 
 def calculate_production_communale(data):
     return data["renseignements_orNet"] * (data["surface_communale"] / data["surface_totale"])
@@ -94,12 +95,12 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     matrice["Nature"] = numpy.full(nb_lignes, "or")
 
     production_communale = calculate_production_communale(data)
-    prefix_proportion_communale = numpy.full(nb_lignes, 'Porportion communale : ')
+    # prefix_proportion_communale = numpy.full(nb_lignes, 'Porportion communale : ')
     matrice["Quantités (kg)"] = (
-        data["renseignements_orNet"].astype(str)
-        + new_lines
-        + prefix_proportion_communale
-        + production_communale.astype(str)
+        # data["renseignements_orNet"].astype(str)
+        # + new_lines
+        # + prefix_proportion_communale +
+        production_communale.astype(str)
         )
 
     # Redevance départementale :
