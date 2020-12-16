@@ -119,7 +119,7 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     matrice["Montant des investissements déduits"] = data["investissement"]
 
     # TODO add check
-    # pandas.testing.assert_series_equal(data["taxe_guyane_brute"], (
+    # pandas.testing.assert_series_equal(data["taxe_guyane"], (
     #     (
     #         (matrice["Quantités (kg)"] * matrice["PME"])
     #             - numpy.where(data["categorie_entreprise"] == "PME", matrice["Montant des investissements déduits"], 0)
@@ -129,7 +129,7 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     #             )
     #         ).astype('float32')
     #     )
-    matrice["Montant net de taxe minière sur l'or de Guyane"] = data["taxe_guyane_brute"]
+    matrice["Montant net de taxe minière sur l'or de Guyane"] = data["taxe_guyane"]
 
     matrice["Frais de gestion de la fiscalité directe locale"] = (
         matrice["Total redevance des mines"] + matrice["Montant net de taxe minière sur l'or de Guyane"]
@@ -139,7 +139,9 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     matrice["Numéro de l’article du rôle"] = data["titre_id"]
     matrice["Observations, précisions"] = data["observation"]
 
-    matrice.to_csv(f'matrice_drfip_guyane_production_{annee_production}_{timestamp}.csv', index=False)
+    matrice.to_csv(f'matrice_drfip_guyane_production_{annee_production}_{timestamp}.csv',
+        index=False,
+        encoding='utf-8')
 
 
 def generate_matrice_annexe_drfip_guyane(data, annee_production, timestamp):
@@ -181,11 +183,12 @@ def generate_matrice_annexe_drfip_guyane(data, annee_production, timestamp):
     # Tonnages extraits au cours de l'année précédente :
     matrice_annexe["par commune"] = calculate_production_communale(data)
     production_par_departement = round(matrice_annexe["par commune"].sum(), 2)
-    print("!!!!  ", production_par_departement)
     matrice_annexe["par département"] = numpy.full(nb_lignes, production_par_departement)  # total production communale sur chaque ligne
 
     matrice_annexe["Observations"] = numpy.where(
         matrice_annexe["par commune"] > 0,
         "production en kilogramme d'or", "")
 
-    matrice_annexe.to_csv(f'matrice_annexe_drfip_guyane_production_{annee_production}_{timestamp}.csv', index=False)
+    matrice_annexe.to_csv(f'matrice_annexe_drfip_guyane_production_{annee_production}_{timestamp}.csv',
+        index=False,
+        encoding='utf-8')
