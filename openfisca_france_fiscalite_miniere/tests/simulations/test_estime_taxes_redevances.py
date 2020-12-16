@@ -134,7 +134,7 @@ def test_clean_data(titres_data, activites_data):
     data = clean_data(full_data)
 
     assert((data['titre_id'] == ['titre_3+commune_x_p1', 'titre_3+commune_x_p2', 'titre_2']).all())
-    assert data.renseignements_orNet.equals([4, 3, 2, 0, 0]), data.renseignements_orNet
+    assert (data.renseignements_orNet.values == [3., 3., 2.]).all()
 
 
 def test_build_simulation(tax_benefit_system, simulation_data):
@@ -160,4 +160,4 @@ def test_convertit_grammes_a_kilo():
     # print(data.divide(1000))
     data = convertit_grammes_a_kilo(data, 'quantites')
 
-    assert data.quantites.equals([0., 1., 5.]), data.quantites
+    assert (data.quantites == [0., 1., 5.0009]).all()
