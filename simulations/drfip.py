@@ -13,7 +13,9 @@ def build_designations_entreprises(data):
         + data["siren"] + texte_siren)
 
 def calculate_production_communale(data):
-    return data["renseignements_orNet"] * (data["surface_communale"] / data["surface_totale"])
+    return round(
+        data["renseignements_orNet"] * (data["surface_communale"] / data["surface_totale"]),
+        2)
 
 def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     '''
@@ -182,8 +184,7 @@ def generate_matrice_annexe_drfip_guyane(data, annee_production, timestamp):
     matrice_annexe["Communes"] = data['communes']
     # Tonnages extraits au cours de l'année précédente :
     matrice_annexe["par commune"] = calculate_production_communale(data)
-    production_par_departement = round(matrice_annexe["par commune"].sum(), 2)
-    matrice_annexe["par département"] = numpy.full(nb_lignes, production_par_departement)  # total production communale sur chaque ligne
+    matrice_annexe["par département"] = matrice_annexe["par commune"]
 
     matrice_annexe["Observations"] = numpy.where(
         matrice_annexe["par commune"] > 0,
