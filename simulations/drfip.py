@@ -131,9 +131,9 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     #     )
     matrice["Montant net de taxe minière sur l'or de Guyane"] = data["taxe_guyane"]
 
-    matrice["Frais de gestion de la fiscalité directe locale"] = (
-        matrice["Total redevance des mines"] + matrice["Montant net de taxe minière sur l'or de Guyane"]
-    ) * 0.08
+    matrice["Frais de gestion de la fiscalité directe locale"] = round(
+        (matrice["Total redevance des mines"] + matrice["Montant net de taxe minière sur l'or de Guyane"]) * 0.08,
+        2)
 
     matrice["Service de la Direction générale des Finances publiques en charge du recouvrement"] = data["drfip"]
     matrice["Numéro de l’article du rôle"] = data["titre_id"]
