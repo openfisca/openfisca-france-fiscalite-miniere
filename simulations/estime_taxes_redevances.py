@@ -329,6 +329,7 @@ if __name__ == "__main__":
     taxe_tarif_pme = current_parameters.taxes.guyane.categories.pme
     taxe_tarif_autres_entreprises = current_parameters.taxes.guyane.categories.autre
     taxe_guyane_brute = simulation.calculate('taxe_guyane_brute', simulation_period)
+    taxe_guyane_deduction = simulation.calculate('taxe_guyane_deduction', simulation_period)
 
     # SIMULATION OUTPUT
 
@@ -347,7 +348,7 @@ if __name__ == "__main__":
         # Taxe minière sur l'or de Guyane :
         'taxe_tarif_pme',
         'taxe_tarif_autres',
-        'investissement',
+        'investissement',  # investissement déduit = openfisca taxe_guyane_deduction
         'taxe_guyane_brute',
         'drfip',
         'observation'
@@ -383,7 +384,7 @@ if __name__ == "__main__":
     resultat['taxe_tarif_autres'] = numpy.where(
         (data['categorie_entreprise'] == "ETI") + (data['categorie_entreprise'] == "GE"),
         taxe_tarif_autres_entreprises, None)
-    resultat['investissement'] = renseignements_environnement_annuels
+    resultat['investissement'] = taxe_guyane_deduction
     resultat['taxe_guyane_brute'] = numpy.where(categories_entreprises_connues, taxe_guyane_brute, None)
     # https://lannuaire.service-public.fr/guyane/guyane/dr_fip-97302-01 :
     resultat['drfip'] = numpy.full(nb_titres, "Direction régionale des finances publiques (DRFIP) - Guyane")
