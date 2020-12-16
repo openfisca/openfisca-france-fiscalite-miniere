@@ -91,8 +91,8 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
         "Désignation et adresse des concessionnaires, titulaires de permis d’exploitation ou exploitants"
         ] = build_designations_entreprises(data)
 
-    matrice["Nature des substances extraites"] = data["substances"]
-    matrice["Nature"] = numpy.full(nb_lignes, "or")
+    matrice["Nature des substances extraites"] = numpy.full(nb_lignes, 'Minerais aurifères')  # d'après texte législatif
+    matrice["Nature"] = numpy.full(nb_lignes, "Kilogramme d'or contenu")  # d'après texte législatif
 
     production_communale = calculate_production_communale(data)
     # prefix_proportion_communale = numpy.full(nb_lignes, 'Porportion communale : ')
