@@ -269,7 +269,7 @@ if __name__ == "__main__":
     # substance "or", tout type de titre, tout statut de titre
     # tout type de rapport, statut "déposé" uniquement
     # année N-1
-    csv_activites = "/Volumes/Transcend2/beta/camino_2020/data/20201216-08h17-camino-activites-568.csv"
+    csv_activites = "/Volumes/Transcend2/beta/camino_2020/data/20201216-21h36-camino-activites-569.csv"
 
     csv_entreprises = "/Volumes/Transcend2/beta/camino_2020/data/20201216-08h18-camino-entreprises-1745.csv"
 
@@ -286,7 +286,7 @@ if __name__ == "__main__":
     full_data = get_simulation_full_data(titres_data, activites_data)
 
     rapports_annuels = select_reports(full_data, "rapport annuel de production d'or en Guyane")
-    assert (rapports_annuels.renseignements_orNet.notnull()).all()
+    assert (rapports_annuels.renseignements_orNet.notnull()).all() # + 1 cas ajouté
 
     cleaned_data = clean_data(rapports_annuels)  # titres ayant des rapports annuels d'activité citant la production
     data = add_entreprises_data(cleaned_data, entreprises_data)
@@ -310,7 +310,7 @@ if __name__ == "__main__":
     simulation.set_input('categorie', data_period, categories_entreprises_enum)
 
     rapports_trimestriels = select_reports(full_data, "rapport trimestriel d'exploitation d'or en Guyane")
-    assert (rapports_trimestriels.renseignements_environnement.notnull()).all()
+    assert (rapports_trimestriels.renseignements_environnement.notnull()).all() # + 1 cas ajouté
     renseignements_environnement_annuels = calculate_renseignements_environnement_annuels(
         data.titre_id,
         rapports_trimestriels
