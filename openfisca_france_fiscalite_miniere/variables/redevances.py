@@ -115,7 +115,11 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
         tarif = parameters(period).redevances.departementales.aurifere
         quantites = societes("quantite_aurifere_kg", annee_production)
 
-        return numpy.round(quantites * tarif, decimals = 2)
+        # proratisation à la surface pour l'entité article (TODO spécifique à la Guyane ?)
+        surface_communale = societes("surface_communale", annee_production)
+        surface_totale = societes("surface_totale", annee_production)
+
+        return numpy.round((quantites * tarif) * surface_communale / surface_totale , decimals = 2)
 
 
 class redevance_communale_des_mines_sel_abattage_kt(Variable):
