@@ -46,7 +46,11 @@ class taxe_guyane_brute(Variable):
         tarifs = (params.categories[categorie.name] for categorie in categories)
         tarifs = numpy.fromiter(tarifs, dtype = float)
 
-        return round_(quantites * tarifs, decimals = 2)
+        # proratisation à la surface pour l'entité article
+        surface_communale = societes("surface_communale", annee_production)
+        surface_totale = societes("surface_totale", annee_production)
+
+        return round_((quantites * tarifs) * surface_communale / surface_totale , decimals = 2)
 
 
 class taxe_guyane_deduction(Variable):
@@ -64,13 +68,18 @@ class taxe_guyane_deduction(Variable):
         taux_deduction = params.deductions.taux
         montant_deduction_max = params.deductions.montant
 
-        return round_(
+        # proratisation à la surface pour l'entité article
+        surface_communale = societes("surface_communale", annee_production)
+        surface_totale = societes("surface_totale", annee_production)
+
+        deduction_toutes_communes = round_(
             min_(
                 montant_deduction_max,
                 min_(investissements, taxes_brutes * taux_deduction),
                 ),
             decimals = 2,
             )
+        return round_(deduction_toutes_communes * surface_communale / surface_totale , decimals = 2)
 
 
 class taxe_guyane(Variable):
