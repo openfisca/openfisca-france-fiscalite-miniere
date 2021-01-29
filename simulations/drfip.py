@@ -15,7 +15,7 @@ def build_designations_entreprises(data):
 def calculate_production_communale(data):
     return round(
         data["renseignements_orNet"] * (data["surface_communale"] / data["surface_totale"]),
-        2)
+        3)
 
 def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     '''
@@ -86,7 +86,7 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     nb_lignes = len(numeros_ordre)
     new_lines = numpy.full(nb_lignes, '\n')
 
-    matrice["Numéro d'ordre de la matrice"] = numeros_ordre
+    matrice["Numéro d'ordre de la matrice"] = numeros_ordre + 1
     matrice["Commune du lieu principal d'exploitation"] = data["commune_exploitation_principale"]
 
     matrice[
@@ -113,7 +113,9 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     matrice["Tarifs (RCM)"] = data["tarifs_rcm"]
     matrice["Montant net redevance des mines (RCM)"] = data["redevance_communale_des_mines_aurifere_kg"]
      
-    matrice["Total redevance des mines"] = matrice["Montant net (RDM)"] + matrice["Montant net redevance des mines (RCM)"]
+    matrice["Total redevance des mines"] = round(
+        matrice["Montant net (RDM)"] + matrice["Montant net redevance des mines (RCM)"],
+        2)  # TODO vérifier pourquoi la somme a 4 décimales en l'absence d'arrondi
 
     # Taxe minière sur l'or de Guyane :
     matrice["PME"] = data["taxe_tarif_pme"]
@@ -175,7 +177,7 @@ def generate_matrice_annexe_drfip_guyane(data, annee_production, timestamp):
     nb_lignes = len(numeros_ordre)
     new_lines = numpy.full(nb_lignes, '\n')
 
-    matrice_annexe["Numéro d'ordre de la matrice"] = numeros_ordre
+    matrice_annexe["Numéro d'ordre de la matrice"] = numeros_ordre + 1
     matrice_annexe[
         "Désignation des concessionnaires, exploitants ou explorateurs"
         ] = build_designations_entreprises(data)
