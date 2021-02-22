@@ -1,3 +1,4 @@
+import configparser
 import pandas  # noqa: I201
 import numpy
 import time
@@ -261,17 +262,20 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
 if __name__ == "__main__":
 
     # CONFIGURATION
-    data_period = 2019
+    config = configparser.ConfigParser()
+    config.read("config.ini")
+
+    data_period = int(config['SIMULATIONS']['periode'])
 
     # Camino, export Titres miniers et autorisations :
-    csv_titres = "/Volumes/Transcend2/beta/camino_2020/data/20201216-08h18-camino-titres-1209.csv"
+    csv_titres = config['SIMULATIONS']['titres']
     # Camino, export Activités
     # substance "or", tout type de titre, tout statut de titre
     # tout type de rapport, statut "déposé" uniquement
     # année N-1
-    csv_activites = "/Volumes/Transcend2/beta/camino_2020/data/20201216-21h36-camino-activites-569.csv"
+    csv_activites = config['SIMULATIONS']['activites']
 
-    csv_entreprises = "/Volumes/Transcend2/beta/camino_2020/data/20201216-08h18-camino-entreprises-1745.csv"
+    csv_entreprises = config['SIMULATIONS']['entreprises']
 
     # ADAPT INPUT DATA
 
