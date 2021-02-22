@@ -49,3 +49,7 @@ test: clean check-syntax-errors check-style check-types
 
 serve:
 	openfisca serve --country-package openfisca_france_fiscalite_miniere -p ${API_PORT}
+
+matrices:
+	@echo "DRFip Guyane : Génération de la matrice et de la matrice annexe..."
+	python simulations/estime_taxes_redevances.py
