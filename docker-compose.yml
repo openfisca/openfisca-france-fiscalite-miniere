@@ -4,10 +4,6 @@ services:
   openfisca-api:
     container_name: openfisca_api
     build: .
-    networks:
-      - nginx-proxy
     restart: unless-stopped
-
-networks:
-  nginx-proxy:
-    external: true
+    ports:
+    - 5000:8000
