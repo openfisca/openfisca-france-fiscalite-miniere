@@ -110,7 +110,7 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
     ]
     definition_period = YEAR
 
-    def formula(societes, period, parameters) -> numpy.ndarray:
+    def formula_2020_01(societes, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
         tarif = parameters(period).redevances.departementales.aurifere
         quantites = societes("quantite_aurifere_kg", annee_production)
@@ -128,6 +128,13 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
             )
 
         return numpy.round(redevance, decimals = 2)
+
+    def formula(societes, period, parameters) -> numpy.ndarray:
+        annee_production = period.last_year
+        taux = parameters(period).redevances.departementales.aurifere
+        quantites = societes("quantite_aurifere_kg", annee_production)
+
+        return numpy.round(quantites * taux, decimals = 2)
 
 
 class redevance_communale_des_mines_sel_abattage_kt(Variable):
