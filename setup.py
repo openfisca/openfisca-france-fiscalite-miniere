@@ -59,5 +59,7 @@ setup(
             "pandas >= 1.1.4, <2.0.0"
             ]
         },
-    packages=find_packages(),
+    packages=find_packages(exclude = [
+        "openfisca_france_fiscalite_miniere.tests*",
+        ]),
     )
