@@ -91,7 +91,6 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
         surface_communale = societes("surface_communale", annee_production)
         surface_totale = societes("surface_totale", annee_production)
 
-
         redevance = numpy.divide(
             (quantites * taux) * surface_communale,
             surface_totale,
