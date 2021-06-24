@@ -102,7 +102,6 @@ def get_simulation_full_data(titres_data, activites_data):
     logging.info(len(full_data), "SIMULATION DATA")
     logging.debug(full_data[['titre_id', 'periode', 'communes']].head())
 
-    # full_data.to_csv(f'full_data_{time.strftime("%Y%m%d-%H%M%S")}.csv', index=False)
     assert not full_data.empty
     return full_data
 
