@@ -50,7 +50,10 @@ class taxe_guyane_brute(Variable):
         surface_communale = societes("surface_communale", annee_production)
         surface_totale = societes("surface_totale", annee_production)
 
-        return round_((quantites * tarifs) * surface_communale / surface_totale , decimals = 2)
+        return round_(
+            (quantites * tarifs) * surface_communale / surface_totale,
+            decimals = 2
+            )
 
 
 class taxe_guyane_deduction(Variable):
@@ -79,7 +82,10 @@ class taxe_guyane_deduction(Variable):
                 ),
             decimals = 2,
             )
-        return round_(deduction_toutes_communes * surface_communale / surface_totale , decimals = 2)
+        return round_(
+            deduction_toutes_communes * surface_communale / surface_totale,
+            decimals = 2
+            )
 
 
 class taxe_guyane(Variable):
