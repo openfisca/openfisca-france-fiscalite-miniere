@@ -14,6 +14,7 @@ from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as France
 # pour chaque concession (titre) d'une mine, évaluation de la distribution
 # de la production et du produit de la taxe au prorata de la surface du titre
 # sur chaque commune.
+# (Appliquée aux données de la région Grand-Est.)
 
 # CONFIGURATION
 # -------------
