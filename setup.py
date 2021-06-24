@@ -54,6 +54,9 @@ setup(
             "flake8-tidy-imports",
             'mypy >= 0.700, < 0.800',
             "pytest >= 5.0.0, < 6.0.0",
+            ],
+        "simu": [
+            "pandas >= 1.1.4, <2.0.0"
             ]
         },
     packages=find_packages(exclude = [
