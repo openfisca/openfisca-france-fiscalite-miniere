@@ -56,5 +56,7 @@ setup(
             "pytest >= 5.0.0, < 6.0.0",
             ]
         },
-    packages=find_packages(),
+    packages=find_packages(exclude = [
+        "openfisca_france_fiscalite_miniere.tests*",
+        ]),
     )
