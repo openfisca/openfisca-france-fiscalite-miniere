@@ -50,10 +50,13 @@ class taxe_guyane_brute(Variable):
         surface_communale = societes("surface_communale", annee_production)
         surface_totale = societes("surface_totale", annee_production)
 
-        return round_(
-            (quantites * tarifs) * surface_communale / surface_totale,
-            decimals = 2
+        taxe = numpy.divide(
+            (quantites * tarifs) * surface_communale,
+            surface_totale,
+            out = numpy.zeros(len(surface_communale)),
+            where = (surface_totale != 0)
             )
+        return round_(taxe, decimals = 2)
 
     def formula(societes, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
@@ -92,10 +95,14 @@ class taxe_guyane_deduction(Variable):
                 ),
             decimals = 2,
             )
-        return round_(
-            deduction_toutes_communes * surface_communale / surface_totale,
-            decimals = 2
+
+        deduction = numpy.divide(
+            deduction_toutes_communes * surface_communale,
+            surface_totale,
+            out = numpy.zeros(len(surface_communale)),
+            where = (surface_totale != 0)
             )
+        return round_(deduction, decimals = 2)
 
     def formula(societes, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
