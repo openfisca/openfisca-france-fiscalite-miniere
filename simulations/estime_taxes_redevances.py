@@ -1,4 +1,5 @@
 import configparser
+import logging
 import re
 import time
 
@@ -29,8 +30,8 @@ def get_activites_data(csv_activites):
             ]
         ]
 
-    print(len(activites_data), "ACTIVITES")
-    print(activites_data[['titre_id', 'annee']].head())
+    logging.debug(len(activites_data), "ACTIVITES")
+    logging.debug(activites_data[['titre_id', 'annee']].head())
 
     return activites_data
 
@@ -46,8 +47,8 @@ def get_titres_data(csv_titres):
             ]
         ]
 
-    print(len(titres_data), "TITRES")
-    print(titres_data[['id', 'communes']].head())
+    logging.debug(len(titres_data), "TITRES")
+    logging.debug(titres_data[['id', 'communes']].head())
 
     return titres_data
 
@@ -58,8 +59,8 @@ def get_entreprises_data(csv_entreprises):
         ['nom', 'siren']
         ]
 
-    print(len(entreprises_data), "ENTREPRISES")
-    print(entreprises_data.head())
+    logging.debug(len(entreprises_data), "ENTREPRISES")
+    logging.debug(entreprises_data.head())
 
     return entreprises_data
 
@@ -98,8 +99,8 @@ def get_simulation_full_data(titres_data, activites_data):
         activites_data, titres_data, left_on='titre_id', right_on='id'
         ).drop(columns=['id'])  # on supprime la colonne 'id' en doublon avec 'titre_id'
 
-    print(len(full_data), "SIMULATION DATA")
-    # print(full_data[['titre_id', 'periode', 'communes']].head())
+    logging.info(len(full_data), "SIMULATION DATA")
+    logging.debug(full_data[['titre_id', 'periode', 'communes']].head())
 
     # full_data.to_csv(f'full_data_{time.strftime("%Y%m%d-%H%M%S")}.csv', index=False)
     assert not full_data.empty
@@ -115,15 +116,15 @@ def separe_commune_surface(commune_surface):
 def dispatch_titres_multicommunes(data):
     # on éclate les titres multicommunaux en plusieurs occurrences du _même_ titre_id
     # chaque occurrence cible une commune (avec sa surface)
-    # 'Commune1 (0.123);Commune2 (4.567)'
+    # 'Commune1 (0.123);Commune2 (4.567)'  # noqa: E800
     data['communes'] = data.communes.str.split(pat=';')
     une_commune_par_titre = data.explode(
         "communes",
         ignore_index=True  # ! pandas v 1.1.0+
         ).dropna(subset=['titre_id'])  # dropping NaN values from exploded empty lists
-    # print(une_commune_par_titre[
-    #   ['titre_id', 'periode', 'communes', 'renseignements_orNet']
-    # ])
+    logging.debug(une_commune_par_titre[
+        ['titre_id', 'periode', 'communes', 'renseignements_orNet']
+        ])
 
     titres_names, titres_occurrences = numpy.unique(
         une_commune_par_titre.titre_id,
@@ -149,7 +150,7 @@ def dispatch_titres_multicommunes(data):
         if occurrence_titre > 1:  # titre sur plusieurs communes
             for j, row in data_titre_courant.iterrows():
                 titre_unicommunal = titre_courant
-                # print("👹👹 ", titre_courant, row.communes)
+                logging.debug("👹👹 ", titre_courant, row.communes)
                 commune, surface = separe_commune_surface(row.communes)
 
                 # titre 'toto' devient 'toto+nom_commune_sans_surface'
@@ -160,7 +161,7 @@ def dispatch_titres_multicommunes(data):
                 dispatched_titres.append(titre_unicommunal)
             titres_multicommunaux[titre_courant] = dispatched_titres
         else:
-            # print("👹   ", titre_courant, data_titre_courant.communes.values)
+            logging.debug("👹   ", titre_courant, data_titre_courant.communes.values)
             commune, surface = separe_commune_surface(
                 str(data_titre_courant.communes.values[0])
                 )
@@ -175,7 +176,7 @@ def dispatch_titres_multicommunes(data):
                 ] = commune
 
     # on calcule les surfaces totales des titres multicommunaux éclatés
-    # print("***", titres_multicommunaux)
+    logging.debug("***", titres_multicommunaux)
     for titre_multicommunal, titres_dispatched in titres_multicommunaux.items():  # noqa: B007, E501
         filtre_titres_dispatched = une_commune_par_titre.titre_id.isin(
             titres_dispatched
@@ -187,16 +188,16 @@ def dispatch_titres_multicommunes(data):
         commune_surface_max = titres_dispatched_rows['nom_commune'][
             titres_dispatched_rows.surface_communale == surface_max
             ].values[0]
-        # print(titres_dispatched_rows[['titre_id', 'surface_communale']])
-        # print(titre_multicommunal, "MAX", surface_max)
-        # print(titre_multicommunal, " >>> ", commune_surface_max)
+        logging.debug(titres_dispatched_rows[['titre_id', 'surface_communale']])
+        logging.debug(titre_multicommunal, "MAX", surface_max)
+        logging.debug(titre_multicommunal, " >>> ", commune_surface_max)
         une_commune_par_titre.loc[
             filtre_titres_dispatched, 'surface_totale'
             ] = surface_totale
         une_commune_par_titre.loc[
             filtre_titres_dispatched, 'commune_exploitation_principale'
             ] = commune_surface_max
-        # print("👹👹👹 ", titre_multicommunal, titres_dispatched, surface_totale)
+        logging.debug("👹👹👹 ", titre_multicommunal, titres_dispatched, surface_totale)
 
     return une_commune_par_titre
 
@@ -217,12 +218,12 @@ def clean_data(data):
     quantites_chiffrees = convertit_grammes_a_kilo(
         quantites_chiffrees, 'renseignements_orNet'
         )
-    # print("👹👹👹 ", quantites_chiffrees.renseignements_orNet.head())
+    logging.debug("👹👹👹 ", quantites_chiffrees.renseignements_orNet.head())
 
-    print(len(quantites_chiffrees), "CLEANED DATA")
-    # print(quantites_chiffrees[
-    #   ['titre_id', 'periode', 'communes', 'renseignements_orNet']
-    # ].head())
+    logging.debug(len(quantites_chiffrees), "CLEANED DATA")
+    logging.debug(quantites_chiffrees[
+        ['titre_id', 'periode', 'communes', 'renseignements_orNet']
+        ].head())
 
     # on éclate les titres multicommunaux en une ligne par titre+commune unique
     # attention : on refait l'index du dataframe pour distinguer les lignes résultat.
@@ -233,7 +234,7 @@ def clean_data(data):
 
 def get_categories_entreprises(data):
     # pour l'or, data['amodiataires_categorie'] entièrement à NaN
-    # print("🍒    ", data[data['amodiataires_categorie'].notnull()])
+    logging.debug("🍒    ", data[data['amodiataires_categorie'].notnull()])
     assert data['amodiataires_categorie'].isna().all(), data[
         data['amodiataires_categorie'].notnull()
         ][['titre_id', 'amodiataires_categorie']]
@@ -271,7 +272,7 @@ def add_entreprises_data(data, entreprises_data):
 
 def select_reports(data: pandas.DataFrame, type: str) -> pandas.DataFrame:  # noqa: A002
     selected_reports = data[data.type == type]
-    print(len(selected_reports), "SELECTED REPORTS ", type)
+    logging.debug(len(selected_reports), "SELECTED REPORTS ", type)
     return selected_reports
 
 
@@ -290,9 +291,11 @@ def calculate_renseignements_environnement_annuels(
         renseignements_trimestriels_titre: pandas.DataFrame = rapports_trimestriels[
             rapports_trimestriels.titre_id == titre_id
             ]
-        # print(renseignements_trimestriels_titre[
-        #   ['titre_id', 'periode', 'renseignements_environnement']
-        # ])
+
+        logging.debug(renseignements_trimestriels_titre[
+            ['titre_id', 'periode', 'renseignements_environnement']
+            ])
+
         assert renseignements_trimestriels_titre.periode.isin(
             ['1er trimestre', '2e trimestre', '3e trimestre', '4e trimestre']
             ).all()
@@ -330,6 +333,7 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
 if __name__ == "__main__":
 
     # CONFIGURATION
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
     config = configparser.ConfigParser()
     config.read("config.ini")
 
@@ -419,8 +423,8 @@ if __name__ == "__main__":
         simulation_period
         )
 
-    print("🍏    redevance_departementale_des_mines_aurifere_kg")
-    print(redevance_departementale_des_mines_aurifere_kg)
+    logging.debug("🍏    redevance_departementale_des_mines_aurifere_kg")
+    logging.debug(redevance_departementale_des_mines_aurifere_kg)
 
     taxe_tarif_pme = current_parameters.taxes.guyane.categories.pme
     taxe_tarif_autres_entreprises = current_parameters.taxes.guyane.categories.autre

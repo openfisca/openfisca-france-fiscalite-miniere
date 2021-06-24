@@ -1,3 +1,5 @@
+import logging
+
 import numpy
 
 from openfisca_france_fiscalite_miniere import (
@@ -185,8 +187,8 @@ def test_build_simulation(tax_benefit_system, simulation_data):
 def test_convertit_grammes_a_kilo():
     simple_data = {'quantites': [0., 1000, 5000.9]}
     data = DataFrame(data=simple_data)
-    # print(data)
-    # print(data.divide(1000))
+    logging.debug(data)
+    logging.debug(data.divide(1000))
 
     data = convertit_grammes_a_kilo(data, 'quantites')  # act
 
