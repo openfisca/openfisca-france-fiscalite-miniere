@@ -5,7 +5,6 @@ import pandas  # noqa: I201
 
 def build_designations_entreprises(data):
     nb_lignes = data.shape[0]
-    # new_lines = numpy.full(nb_lignes, '\n')
     tirets = numpy.full(nb_lignes, ' - ')
     texte_siren = numpy.full(nb_lignes, ' SIREN ')
 
@@ -73,10 +72,10 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
         "Montant des investissements déduits",
         # [col. 14]
         # > Camino : somme des 4 rapports trimestriels année N-1
-        #   (activités.renseignements_environnement)
+        #   (activités.renseignements_environnement)  # noqa: E800
         # > pour activités.annee en N-1 et activités.period en 'année'
         # > = sur l'interface web, activités,
-        #   "Dépenses relatives à la protection de l’environnement (euros)"
+        #   "Dépenses relatives à la protection de l’environnement (euros)"  # noqa: E800, E501
         "Montant net de taxe minière sur l'or de Guyane",
         # -> [col. 15] (col.6 x col.12)-col.14 ou (col.6 x col.13)-col.14
         # ---
@@ -96,7 +95,6 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
 
     numeros_ordre = data["titre_id"].index
     nb_lignes = len(numeros_ordre)
-    # new_lines = numpy.full(nb_lignes, '\n')
 
     matrice["Numéro d'ordre de la matrice"] = numeros_ordre + 1
     matrice["Commune du lieu principal d'exploitation"] = data[
@@ -116,13 +114,7 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
         )  # d'après texte législatif
 
     production_communale = calculate_production_communale(data)
-    # prefix_proportion_communale = numpy.full(nb_lignes, 'Porportion communale : ')
-    matrice["Quantités (kg)"] = (
-        # data["renseignements_orNet"].astype(str)
-        # + new_lines
-        # + prefix_proportion_communale +
-        production_communale.astype(str)
-        )
+    matrice["Quantités (kg)"] = (production_communale.astype(str))
 
     # Redevance départementale :
     matrice["Tarifs (RDM)"] = data["tarifs_rdm"]
@@ -145,19 +137,8 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     matrice["Autres entreprises"] = data["taxe_tarif_autres"]
     matrice["Montant des investissements déduits"] = data["investissement"]
 
-    # TODO add check
-    # pandas.testing.assert_series_equal(data["taxe_guyane"], (
-    #     (
-    #         (matrice["Quantités (kg)"] * matrice["PME"])
-    #             - numpy.where(data["categorie_entreprise"] == "PME", matrice[
-    #                   "Montant des investissements déduits"], 0)
-    #         ) + (
-    #             (matrice["Quantités (kg)"] * matrice["Autres entreprises"])
-    #             - numpy.where(data["categorie_entreprise"] != "PME", matrice[
-    #                   "Montant des investissements déduits"], 0)
-    #             )
-    #         ).astype('float32')
-    #     )
+    # TODO add check pour la taxe guyane pour l'ensemble des investissements déduits
+    # PME et autres entreprises (non PME)
     matrice["Montant net de taxe minière sur l'or de Guyane"] = data["taxe_guyane"]
 
     matrice["Frais de gestion de la fiscalité directe locale"] = round(
@@ -203,7 +184,6 @@ def generate_matrice_annexe_drfip_guyane(data, annee_production, timestamp):
 
     numeros_ordre = data["titre_id"].index
     nb_lignes = len(numeros_ordre)
-    # new_lines = numpy.full(nb_lignes, '\n')
 
     matrice_annexe["Numéro d'ordre de la matrice"] = numeros_ordre + 1
     matrice_annexe[
