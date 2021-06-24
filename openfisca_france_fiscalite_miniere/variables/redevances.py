@@ -91,10 +91,14 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
         surface_communale = societes("surface_communale", annee_production)
         surface_totale = societes("surface_totale", annee_production)
 
-        return numpy.round(
-            (quantites * taux) * surface_communale / surface_totale,
-            decimals = 2
+
+        redevance = numpy.divide(
+            (quantites * taux) * surface_communale,
+            surface_totale,
+            out = numpy.zeros(len(surface_communale)),
+            where = (surface_totale != 0)
             )
+        return numpy.round(redevance, decimals = 2)
 
     def formula(societes, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
@@ -124,12 +128,10 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
         surface_communale = societes("surface_communale", annee_production)
         surface_totale = societes("surface_totale", annee_production)
 
-        redevance_nulle = numpy.zeros(len(surface_communale))
-
         redevance = numpy.divide(
             (quantites * tarif) * surface_communale,
             surface_totale,
-            out = redevance_nulle,
+            out = numpy.zeros(len(surface_communale)),
             where = (surface_totale != 0)
             )
 
