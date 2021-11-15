@@ -1,10 +1,11 @@
 # https://github.com/openfisca/openfisca-core/blob/34.7.7/openfisca_core/scripts/openfisca_command.py
 # https://github.com/openfisca/openfisca-core/blob/34.7.7/openfisca_web_api/scripts/serve.py
 import sys
+from flask import jsonify, request
 
 from openfisca_core.scripts import build_tax_benefit_system
-
 from openfisca_core.scripts.openfisca_command import get_parser
+
 from openfisca_web_api.app import create_app
 from openfisca_web_api.scripts.serve import read_user_configuration
 from openfisca_web_api.errors import handle_import_error
@@ -40,13 +41,24 @@ class OpenFiscaWebAPIApplication(BaseApplication):
             self.options.get('extensions'),
             self.options.get('reforms')
             )
-        return create_app(
+        app = create_app(
             tax_benefit_system,
             self.options.get('tracker_url'),
             self.options.get('tracker_idsite'),
             self.options.get('tracker_token'),
             self.options.get('welcome_message')
             )
+
+        DEFAULT_WELCOME_MESSAGE = "hello"
+        welcome_message = None
+
+        @app.route('/toto')
+        def get_toto():
+            return jsonify({
+            'welcome': welcome_message or DEFAULT_WELCOME_MESSAGE.format(request.host_url)
+            }), 300
+
+        return app
 
 def main(parser):
     configuration = {
