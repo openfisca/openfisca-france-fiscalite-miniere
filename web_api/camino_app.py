@@ -1,7 +1,10 @@
 # https://github.com/openfisca/openfisca-core/blob/34.7.7/openfisca_core/scripts/openfisca_command.py
 # https://github.com/openfisca/openfisca-core/blob/34.7.7/openfisca_web_api/scripts/serve.py
+# https://naysan.ca/2021/07/04/flask-101-serve-csv-files/
+import os
 import sys
-from flask import jsonify, request
+from configparser import ConfigParser
+from flask import jsonify, request, send_file
 
 from openfisca_core.scripts import build_tax_benefit_system
 from openfisca_core.scripts.openfisca_command import get_parser
@@ -21,7 +24,6 @@ DEFAULT_PORT = '5000'
 HOST = '127.0.0.1'
 DEFAULT_WORKERS_NUMBER = '3'
 DEFAULT_TIMEOUT = 120
-
 
 
 class OpenFiscaWebAPIApplication(BaseApplication):
@@ -52,11 +54,29 @@ class OpenFiscaWebAPIApplication(BaseApplication):
         DEFAULT_WELCOME_MESSAGE = "hello"
         welcome_message = None
 
-        @app.route('/toto')
-        def get_toto():
-            return jsonify({
-            'welcome': welcome_message or DEFAULT_WELCOME_MESSAGE.format(request.host_url)
-            }), 300
+        @app.route('/calculate_matrice')
+        def get_calculate_matrice():
+            # Checking that the month parameter has been supplied
+            if not "matrice" in request.args:
+                return "ERROR: value for 'matrice' is missing"
+            # Also make sure that the value provided is numeric
+            try:
+                matrice = int(request.args["matrice"])
+            except:
+                return "ERROR: value for 'matrice' should be between 1000 and 9999"
+
+            config = ConfigParser()
+            config.read("config.ini")
+            csv_dir  = os.path.abspath(config['SIMULATIONS']["OUTPUTS_DIRECTORY"])
+            # csv_file = "2019_%02d_weather.csv" % matrice
+            csv_file = "matrice_drfip_guyane_production_2019_20201216-224144.csv"
+            csv_path = os.path.join(csv_dir, csv_file)
+    
+            # Also make sure the requested csv file does exist
+            if not os.path.isfile(csv_path):
+                return "ERROR: file %s was not found on the server" % csv_path
+            # Send the file back to the client
+            return send_file(csv_path, as_attachment=True, attachment_filename=csv_file)
 
         return app
 
