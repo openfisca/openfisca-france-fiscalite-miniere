@@ -4,7 +4,8 @@
 import os
 import sys
 from configparser import ConfigParser
-from flask import jsonify, request, send_file
+from flask import request, send_file
+from pandas import read_csv
 
 from openfisca_core.scripts import build_tax_benefit_system
 from openfisca_core.scripts.openfisca_command import get_parser
@@ -54,9 +55,9 @@ class OpenFiscaWebAPIApplication(BaseApplication):
         DEFAULT_WELCOME_MESSAGE = "hello"
         welcome_message = None
 
-        @app.route('/calculate_matrice')
+        @app.route('/calculate_matrice', methods=['POST'])
         def get_calculate_matrice():
-            # Checking that the month parameter has been supplied
+            # Checking that the matrice parameter has been supplied
             if not "matrice" in request.args:
                 return "ERROR: value for 'matrice' is missing"
             # Also make sure that the value provided is numeric
@@ -67,6 +68,10 @@ class OpenFiscaWebAPIApplication(BaseApplication):
 
             config = ConfigParser()
             config.read("config.ini")
+            
+            file = request.files['file']
+            data = read_csv(file)  # DataFrame
+            
             csv_dir  = os.path.abspath(config['SIMULATIONS']["OUTPUTS_DIRECTORY"])
             # csv_file = "2019_%02d_weather.csv" % matrice
             csv_file = "matrice_drfip_guyane_production_2019_20201216-224144.csv"
@@ -75,6 +80,7 @@ class OpenFiscaWebAPIApplication(BaseApplication):
             # Also make sure the requested csv file does exist
             if not os.path.isfile(csv_path):
                 return "ERROR: file %s was not found on the server" % csv_path
+
             # Send the file back to the client
             return send_file(csv_path, as_attachment=True, attachment_filename=csv_file)
 
@@ -94,6 +100,7 @@ def main(parser):
 def run():
     parser = get_parser()
     sys.exit(main(parser))
+
 
 if __name__ == '__main__':
     run()
