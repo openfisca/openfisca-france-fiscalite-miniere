@@ -69,11 +69,23 @@ class OpenFiscaWebAPIApplication(BaseApplication):
             config = ConfigParser()
             config.read("config.ini")
             
-            file = request.files['file']
-            data = read_csv(file)  # DataFrame
+            # Si fileX inconnu, alors Bad request - 400
+
+            fileT = request.files['fileT']
+            print("fileT:", fileT)
+
+            fileE = request.files['fileE']
+            print("fileE:", fileE)
+
+            fileA = request.files['fileA']
+            print("fileA:", fileA)
+            
+            data_titres = read_csv(fileT)  # DataFrame
+            data_entreprises = read_csv(fileE)
+            data_activites = read_csv(fileA)
+
             
             csv_dir  = os.path.abspath(config['SIMULATIONS']["OUTPUTS_DIRECTORY"])
-            # csv_file = "2019_%02d_weather.csv" % matrice
             csv_file = "matrice_drfip_guyane_production_2019_20201216-224144.csv"
             csv_path = os.path.join(csv_dir, csv_file)
     
