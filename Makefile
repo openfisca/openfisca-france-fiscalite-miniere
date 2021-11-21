@@ -1,5 +1,8 @@
 
 API_PORT=5000
+CSV_PATH_ENTREPRISES=./simulations/20201216-08h18-camino-entreprises-1745.csv
+CSV_PATH_TITRES=./simulations/20201216-08h18-camino-titres-1209.csv
+CSV_PATH_ACTIVITES=./simulations/20201216-21h36-camino-activites-569.csv
 
 all: test
 
@@ -48,8 +51,16 @@ test: clean check-syntax-errors check-style check-types
 	openfisca test openfisca_france_fiscalite_miniere/tests --country-package openfisca_france_fiscalite_miniere
 
 serve:
+	@echo "Running OpenFisca Web API..."
 	openfisca serve --country-package openfisca_france_fiscalite_miniere -p ${API_PORT}
 
+api:
+	@echo "Running Camino Web API..."
+	python web_api/camino_app.py serve
+
+api-request:	
+	curl -X POST -F fileT=@${CSV_PATH_TITRES} -F fileA=@${CSV_PATH_ACTIVITES} -F fileE=@${CSV_PATH_ENTREPRISES} http://127.0.0.1:5000/calculate_matrice?matrice=1122
+
 matrices:
-	@echo "DRFip Guyane : Génération de la matrice et de la matrice annexe..."
+	@echo "DRFip : Génération de matrices..."
 	python simulations/estime_taxes_redevances.py
