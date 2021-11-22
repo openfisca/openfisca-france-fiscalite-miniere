@@ -77,8 +77,10 @@ class OpenFiscaWebAPIApplication(BaseApplication):
             config = ConfigParser()
             config.read("config.ini")
             
-            # Si fileX inconnu, alors Bad request - 400
-
+            if not {'fileA', 'fileE', 'fileT'}.issubset(request.files.keys()):
+                handle_invalid_request("wrong arguments list. 3 files should be given as inputs: 'fileA' for activités/'fileE' for entreprises/'fileT' for titres")
+                # TODO donner un exemple de solution
+            
             fileT = request.files['fileT']
             print("fileT:", fileT)
 
