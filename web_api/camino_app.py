@@ -4,7 +4,7 @@
 import os
 import sys
 from configparser import ConfigParser
-from flask import request, send_file
+from flask import abort, jsonify, make_response, request, send_file
 from pandas import read_csv
 
 from openfisca_core.scripts import build_tax_benefit_system
@@ -38,6 +38,7 @@ class OpenFiscaWebAPIApplication(BaseApplication):
             if key in self.cfg.settings:
                 self.cfg.set(key.lower(), value)
 
+
     def load(self):
         tax_benefit_system = build_tax_benefit_system(
             self.options.get('country_package'),
@@ -55,16 +56,23 @@ class OpenFiscaWebAPIApplication(BaseApplication):
         DEFAULT_WELCOME_MESSAGE = "hello"
         welcome_message = None
 
+
+        def handle_invalid_request(message):
+            json_response = jsonify({
+            'error': 'Invalid request: {}'.format(message),
+                })
+            abort(make_response(json_response, 400))
+
+
         @app.route('/calculate_matrice', methods=['POST'])
         def get_calculate_matrice():
             # Checking that the matrice parameter has been supplied
             if not "matrice" in request.args:
-                return "ERROR: value for 'matrice' is missing"
-            # Also make sure that the value provided is numeric
-            try:
-                matrice = int(request.args["matrice"])
-            except:
-                return "ERROR: value for 'matrice' should be between 1000 and 9999"
+                handle_invalid_request("value for 'matrice' is missing")
+            
+            matrice = request.args["matrice"]
+            if matrice != "1121" and matrice != "1122":
+                handle_invalid_request("value for 'matrice' should be 1121 or 1122")
 
             config = ConfigParser()
             config.read("config.ini")
@@ -84,6 +92,7 @@ class OpenFiscaWebAPIApplication(BaseApplication):
             data_entreprises = read_csv(fileE)
             data_activites = read_csv(fileA)
 
+            # TODO appeler estime_taxes_redevances
             
             csv_dir  = os.path.abspath(config['SIMULATIONS']["OUTPUTS_DIRECTORY"])
             csv_file = "matrice_drfip_guyane_production_2019_20201216-224144.csv"
