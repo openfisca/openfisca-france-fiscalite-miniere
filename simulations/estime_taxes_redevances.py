@@ -20,19 +20,23 @@ from simulations.drfip import (
 # ADAPT INPUT DATA
 
 def get_activites_data(csv_activites):
-    activite_par_titre: pandas.DataFrame = pandas.read_csv(csv_activites)
-    activites_data = activite_par_titre[
-        [
-            'titre_id', 'annee', 'periode', 'type',
-            'renseignements_orBrut', 'renseignements_orNet',
-            'renseignements_environnement',
-            'complement_texte'
+    activites_data = pandas.DataFrame()
+    try:
+        activite_par_titre: pandas.DataFrame = pandas.read_csv(csv_activites)
+        activites_data = activite_par_titre[
+            [
+                'titre_id', 'annee', 'periode', 'type',
+                'renseignements_orBrut', 'renseignements_orNet',
+                'renseignements_environnement',
+                'complement_texte'
+                ]
             ]
-        ]
+        
+        logging.debug(activites_data[['titre_id', 'annee']].head())
+    except FileNotFoundError:
+        logging.critical("Fichier d'activités introuvable. Voir './config.ini'.", csv_activites)
 
     logging.debug(len(activites_data), "ACTIVITES")
-    logging.debug(activites_data[['titre_id', 'annee']].head())
-
     return activites_data
 
 
@@ -329,7 +333,7 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
     return simulation_builder.build(tax_benefit_system)
 
 
-if __name__ == "__main__":
+def estime_taxes_redevances(matrice):
 
     # CONFIGURATION
     logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
@@ -519,14 +523,20 @@ if __name__ == "__main__":
 
     # TODO Vérifier quels titres du fichier CSV en entrée
     # ne sont pas dans le rapport final.
-    generate_matrice_drfip_guyane(
-        resultat,
-        data_period,
-        timestamp
-        )
+    
+    if (matrice == "1121") or (matrice == "all"):
+        generate_matrice_drfip_guyane(
+            resultat,
+            data_period,
+            timestamp
+            )
 
-    generate_matrice_annexe_drfip_guyane(
-        resultat,
-        data_period,
-        timestamp
-        )
+    if (matrice == "1122") or (matrice == "all"):
+        generate_matrice_annexe_drfip_guyane(
+            resultat,
+            data_period,
+            timestamp
+            )
+
+if __name__ == "__main__":
+    estime_taxes_redevances(matrice="all")
