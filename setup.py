@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-France-Fiscalite-Miniere",
-    version="1.1.2",
+    version="1.1.3",
     author="OpenFisca Team",
     author_email = "contact@openfisca.fr",
     classifiers=[
@@ -56,5 +56,7 @@ setup(
             "pytest >= 5.0.0, < 6.0.0",
             ]
         },
-    packages=find_packages(),
+    packages=find_packages(exclude = [
+        "openfisca_france_fiscalite_miniere.tests*",
+        ]),
     )

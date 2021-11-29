@@ -79,10 +79,27 @@ cd ./openfisca_france_fiscalite_miniere/examples
 curl -X POST http://localhost:5000/calculate -H 'Content-Type: application/json' -d @societe.json
 ```
 
+## Simulations
+
+Le modèle `openfisca_france_fiscalite_miniere` est employé pour la simulation de réformes et l'estimation des effets de la loi sur la base de données de production minière protégées (non fournies).  
+Les scripts de simulation sont assemblés dans le répertoire `./simulations`.  
+
+### Réformes de la RCM
+
+Il s'agit d'estimations des effets de réformes réalisées début 2020 sur la base de données [Camino](https://camino.beta.gouv.fr).
+
+Ce sont des simulations d'une réforme de répartition communale de la Redevance Communale des Mines (RCM) pour les exploitations de chaque type de sel : pour chaque concession (titre) d'une mine, les simulations évaluent la distribution de la production et du produit de la taxe au prorata de la surface du titre sur chaque commune.
+
+Elles sont rassemblées dans le répertoire `./simulations/reformes` :
+
+* `test_essai_selg.py` est dédié au sel par abattage,
+* `test_essai_selh.py` est dédié au sel en dissolution.
+
 ## Lexique
 
 * RCM = Redevance Communale des Mines
 * RDM = Redevance Départementale des Mines
+* Substances M = Substances non énergétiques (métaux, minéraux)
 
 ## Références législatives complémentaires
 
