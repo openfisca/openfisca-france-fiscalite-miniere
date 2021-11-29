@@ -1,5 +1,14 @@
 # Changelog
 
+###
+
+* Évolution du système socio-fiscal.
+* Périodes concernées : à partir du 01/01/2021.
+* Zones impactées : `parameters/redevances/communales/*`
+* Détails :
+  - Revalorise les tarifs 2021 de la redevance communale des mines (RCM) hors gisements en mer.
+  - Couvre l'[article 1519 II 1°](https://www.legifrance.gouv.fr/codes/id/LEGIARTI000043663105/2021-06-12/).
+
 ## 1.3.0
 
 * Évolution du système socio-fiscal. Ajout d'une fonction complémentaire au modèle.
