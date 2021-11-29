@@ -1,18 +1,3 @@
-- name: "Minerais aurifères (par kilogramme d'or contenu)"
-  input:
-    quantite_aurifere_kg:
-      2018: 100
-      2017: 100
-  output:
-    redevance_communale_des_mines_aurifere_kg:
-      2019: 14970
-      2018: 14530
-    redevance_departementale_des_mines_aurifere_kg:
-      2019: 2990
-      2018: 2900
-    # redevance_totale_des_mines_aurifere_kg:
-    #   2019: 17960
-    #   2018: 17430
 
 # - name: "Minerais d'uranium (par centaine de kilogrammes d'uranium contenu)"
 #   input:
