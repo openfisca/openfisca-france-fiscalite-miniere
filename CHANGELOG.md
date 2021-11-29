@@ -1,5 +1,19 @@
 # Changelog
 
+### 1.1.3
+
+* Correction d'un crash et amélioration technique.
+* Périodes concernées : toutes.
+* Zones impactées : 
+  - `openfisca_france_fiscalite_miniere/entities.py`
+  - `simulations/*`
+* Détails :
+  - Correction de CI : ajoute le nom de branche au nom de cache en CI afin de disposer d'un cache par branche.
+  - Ajoute la documentation de l'entité `societe`.
+  - Regroupe les fichiers de simulation de réforme RCM 2019-2020 dans `simulations/reformes/` et précise la documentation associée.
+  - Exclut les fichiers de test de la wheel du modèle.
+  - Supprime `.python-version` optionnel et produisant une erreur à la création d'environnement virtuel.
+
 ### 1.1.2 [#11](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/11)
 
 * Correction d'un crash.
