@@ -68,7 +68,7 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
     label = "Redevance communale des mines pour le minerais aurifères"
     reference = [
         # répartition
-        "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000030695303/2015-06-06",  # noqa: E501 
+        "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000030695303/2015-06-06",  # noqa: E501
         # tarification
         "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042160076/2020-07-25",  # noqa: E501
         "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293413/1987-08-09"  # noqa: E501
@@ -76,7 +76,8 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
     definition_period = YEAR
     documentation = '''
     Dite RCM pour l'or.
-    Un arrondi est effectué dans la formule car, par exemple, l'article 1519 de 2020 indique :
+    Un arrondi est effectué dans la formule car, par exemple,
+    l'article 1519 de 2020 indique :
     "Les tarifs sont arrondis au dizième d'euro le plus proche."
     '''
 
@@ -90,7 +91,10 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
         surface_communale = societes("surface_communale", annee_production)
         surface_totale = societes("surface_totale", annee_production)
 
-        return numpy.round((quantites * taux) * surface_communale / surface_totale , decimals = 2)
+        return numpy.round(
+            (quantites * taux) * surface_communale / surface_totale,
+            decimals = 2
+            )
 
     def formula(societes, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
@@ -115,7 +119,8 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
         tarif = parameters(period).redevances.departementales.aurifere
         quantites = societes("quantite_aurifere_kg", annee_production)
 
-        # proratisation à la surface pour l'entité article (TODO spécifique à la Guyane ?)
+        # proratisation à la surface pour l'entité article
+        # TODO spécifique à la Guyane ?
         surface_communale = societes("surface_communale", annee_production)
         surface_totale = societes("surface_totale", annee_production)
 
