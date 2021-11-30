@@ -71,3 +71,25 @@
       2019: 5000.0
     taxe_guyane:
       2019: 12261.5
+
+- name: "Taxe perçue pour la région de Guyane en 2020 suite proratisation à la surface communale - \
+    Déduction des investissements <= 45% de la taxe et > 5 000 €"
+  absolute_error_margin: 0.002
+  input:
+    categorie:
+      2019: pme
+    quantite_aurifere_kg:
+      2019: 50
+    investissement:
+      2019: 7500.0
+    surface_communale:
+      2019: 1
+    surface_totale:
+      2019: 10
+  output:
+    taxe_guyane_brute:
+      2020: 400.35 * 50 * 1 / 10  # tarif pme = 400.35
+    taxe_guyane_deduction:
+      2020: 2001.75 * 0.45 * 1 / 10  # taux déduction = 0.45
+    taxe_guyane:
+      2020: 2001.75 - 90.08

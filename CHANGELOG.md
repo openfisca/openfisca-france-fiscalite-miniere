@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.0
+
+* Évolution du système socio-fiscal.
+* Périodes concernées : à partir d 01/01/2020.
+* Zones impactées : 
+  - `variables/redevances.py`
+  - `variables/taxes.py`
+* Détails :
+  - Ajoute les input variables `surface_communale` et `surface_totale`.
+  - Ajoute les formules 2020 pour les RDCM aurifères et la taxe sur l'or en Guyane.
+    * Proratise les montants de redevances et taxe à la surface d'emprise sur la commune.
+  - Cette version représente le code du modèle employé pour la production de matrices fin 2020 (précisément en commit bdcdb7796e4a0f867fbf9ac498edc9b07b7f3c69).
+
 ### 1.1.3
 
 * Correction d'un crash et amélioration technique.

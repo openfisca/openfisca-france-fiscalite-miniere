@@ -1,0 +1,31 @@
+- name: RCM et RDM des minerais aurifères en 2018 et 2019 par kilogramme d'or contenu \
+    (pré-proratisation à la surface de 2020)
+  input:
+    quantite_aurifere_kg:
+      2018: 100
+      2017: 100
+  output:
+    redevance_communale_des_mines_aurifere_kg:
+      2019: 14970
+      2018: 14530
+    redevance_departementale_des_mines_aurifere_kg:
+      2019: 2990
+      2018: 2900
+    redevance_totale_des_mines_aurifere_kg:
+      2019: 14970 + 2990
+      2018: 14530 + 2900
+
+- name: RCM et RDM des minerais aurifères en 2020 suite proratisation à la surface communale
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    surface_communale: 
+      2019: [0.1000, 10.0000] # /surface_totale = [0,0099, 0.9901]
+    surface_totale: 
+      2019: [10.1000, 10.1000]
+    quantite_aurifere_kg: 
+      2019: [2.000, 20.000]
+  output:
+    redevance_communale_des_mines_aurifere_kg: [3.0413, 3041.5872]  # tarif = 153.60
+    redevance_departementale_des_mines_aurifere_kg: [0.6079, 607.9214]  # tarif = 30.70
+    redevance_totale_des_mines_aurifere_kg: [3.6492, 3649.5086]

@@ -38,6 +38,23 @@ class taxe_guyane_brute(Variable):
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
+    def formula_2020_01(societes, period, parameters) -> numpy.ndarray:
+        annee_production = period.last_year
+        params = parameters(period).taxes.guyane
+        quantites = societes("quantite_aurifere_kg", annee_production)
+        categories = societes("categorie", annee_production).decode()
+        tarifs = (params.categories[categorie.name] for categorie in categories)
+        tarifs = numpy.fromiter(tarifs, dtype = float)
+
+        # proratisation à la surface pour l'entité article
+        surface_communale = societes("surface_communale", annee_production)
+        surface_totale = societes("surface_totale", annee_production)
+
+        return round_(
+            (quantites * tarifs) * surface_communale / surface_totale,
+            decimals = 2
+            )
+
     def formula(societes, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
@@ -55,6 +72,30 @@ class taxe_guyane_deduction(Variable):
     label = "Investissements déductibles de la taxe perçue pour la région de Guyane"
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
+
+    def formula_2020_01(societes, period, parameters) -> numpy.ndarray:
+        annee_production = period.last_year
+        params = parameters(period).taxes.guyane
+        investissements = societes("investissement", annee_production)
+        taxes_brutes = societes("taxe_guyane_brute", period)
+        taux_deduction = params.deductions.taux
+        montant_deduction_max = params.deductions.montant
+
+        # proratisation à la surface pour l'entité article
+        surface_communale = societes("surface_communale", annee_production)
+        surface_totale = societes("surface_totale", annee_production)
+
+        deduction_toutes_communes = round_(
+            min_(
+                montant_deduction_max,
+                min_(investissements, taxes_brutes * taux_deduction),
+                ),
+            decimals = 2,
+            )
+        return round_(
+            deduction_toutes_communes * surface_communale / surface_totale,
+            decimals = 2
+            )
 
     def formula(societes, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
