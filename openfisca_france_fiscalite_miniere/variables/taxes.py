@@ -38,7 +38,7 @@ class taxe_guyane_brute(Variable):
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
-    def formula(societes, period, parameters) -> numpy.ndarray:
+    def formula_2020_01(societes, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
         quantites = societes("quantite_aurifere_kg", annee_production)
@@ -52,6 +52,16 @@ class taxe_guyane_brute(Variable):
 
         return round_((quantites * tarifs) * surface_communale / surface_totale , decimals = 2)
 
+    def formula(societes, period, parameters) -> numpy.ndarray:
+        annee_production = period.last_year
+        params = parameters(period).taxes.guyane
+        quantites = societes("quantite_aurifere_kg", annee_production)
+        categories = societes("categorie", annee_production).decode()
+        tarifs = (params.categories[categorie.name] for categorie in categories)
+        tarifs = numpy.fromiter(tarifs, dtype = float)
+
+        return round_(quantites * tarifs, decimals = 2)
+
 
 class taxe_guyane_deduction(Variable):
     value_type = float
@@ -60,7 +70,7 @@ class taxe_guyane_deduction(Variable):
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
-    def formula(societes, period, parameters) -> numpy.ndarray:
+    def formula_2020_01(societes, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
         investissements = societes("investissement", annee_production)
@@ -81,6 +91,21 @@ class taxe_guyane_deduction(Variable):
             )
         return round_(deduction_toutes_communes * surface_communale / surface_totale , decimals = 2)
 
+    def formula(societes, period, parameters) -> numpy.ndarray:
+        annee_production = period.last_year
+        params = parameters(period).taxes.guyane
+        investissements = societes("investissement", annee_production)
+        taxes_brutes = societes("taxe_guyane_brute", period)
+        taux_deduction = params.deductions.taux
+        montant_deduction_max = params.deductions.montant
+
+        return round_(
+            min_(
+                 montant_deduction_max,
+                 min_(investissements, taxes_brutes * taux_deduction),
+                 ),
+             decimals = 2,
+            )
 
 class taxe_guyane(Variable):
     value_type = float
