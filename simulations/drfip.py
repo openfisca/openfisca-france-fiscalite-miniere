@@ -14,6 +14,7 @@ def build_designations_entreprises(data):
 
 
 def calculate_production_communale(data):
+    # renseignements_orNet est renseignements_orExtrait à partir des data 2020
     return round(
         data["renseignements_orNet"] * (data["surface_communale"]
         / data["surface_totale"]),
