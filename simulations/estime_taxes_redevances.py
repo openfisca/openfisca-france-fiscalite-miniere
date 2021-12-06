@@ -17,15 +17,22 @@ from simulations.drfip import (
     )
 
 
-renseignements_or_2019 = "renseignements_orNet"
-renseignements_or_2020 = "renseignements_orExtrait"
+COLONNE_OR_2019 = "renseignements_orNet"
+COLONNE_OR_2020 = "substancesFiscales_auru"  # ou "renseignements_orExtrait" ?
+
+COLONNE_COMMUNES_2019 = "communes"
+COLONNE_COMMUNES_2020 = "communes (surface calculee km2)"
+
+RAPPORT_ANNUEL_OR_2019 = "rapport annuel de production d'or en Guyane"
+RAPPORT_ANNUEL_OR_2020 = "rapport d'exploitation (permis et concessions M)"  # et "rapport d'exploitation (autorisations M)" ? oui ?
+
 
 # ADAPT INPUT DATA
 
 def get_activites_data(csv_activites, data_period):
     activite_par_titre: pandas.DataFrame = pandas.read_csv(csv_activites)
     
-    renseignements_or = renseignements_or_2019 if (data_period == 2019) else renseignements_or_2020
+    renseignements_or = COLONNE_OR_2019 if (data_period == 2019) else COLONNE_OR_2020
     activites_data = activite_par_titre[
         [
             'titre_id', 'annee', 'periode', 'type',
@@ -41,19 +48,21 @@ def get_activites_data(csv_activites, data_period):
     return activites_data
 
 
-def get_titres_data(csv_titres):
+def get_titres_data(csv_titres, data_period):
     communes_par_titre: pandas.DataFrame = pandas.read_csv(csv_titres)
+
+    communes = COLONNE_COMMUNES_2019 if (data_period == 2019) else COLONNE_COMMUNES_2020
     titres_data = communes_par_titre[
         [
             'id', 'domaine', 'substances',
-            'communes', 'departements', 'administrations_noms',
+            communes, 'departements', 'administrations_noms',
             'titulaires_noms', 'titulaires_adresses', 'titulaires_categorie',
             'amodiataires_noms', 'amodiataires_adresses', 'amodiataires_categorie'
             ]
         ]
 
     logging.debug(len(titres_data), "TITRES")
-    logging.debug(titres_data[['id', 'communes']].head())
+    logging.debug(titres_data[['id', communes]].head())
 
     return titres_data
 
@@ -97,7 +106,7 @@ def get_titres_annee(communes_par_titre, activites_data):
     return titres_data
 
 
-def get_simulation_full_data(titres_data, activites_data):
+def get_simulation_full_data(titres_data, activites_data, data_period):
     # 'titre_id' des exports d'activités (csv_activites) = 'id'
     # des exports de titres (csv_titres)
     full_data: pandas.DataFrame = pandas.merge(
@@ -105,7 +114,8 @@ def get_simulation_full_data(titres_data, activites_data):
         ).drop(columns=['id'])  # on supprime la colonne 'id' en doublon avec 'titre_id'
 
     logging.info(len(full_data), "SIMULATION DATA")
-    logging.debug(full_data[['titre_id', 'periode', 'communes']].head())
+    communes = COLONNE_COMMUNES_2019 if (data_period == 2019) else COLONNE_COMMUNES_2020
+    logging.debug(full_data[['titre_id', 'periode', communes]].head())
 
     assert not full_data.empty
     return full_data
@@ -121,15 +131,18 @@ def dispatch_titres_multicommunes(data, data_period):
     # on éclate les titres multicommunaux en plusieurs occurrences du _même_ titre_id
     # chaque occurrence cible une commune (avec sa surface)
     # 'Commune1 (0.123);Commune2 (4.567)'  # noqa: E800
-    data['communes'] = data.communes.str.split(pat=';')
+
+    renseignements_or = COLONNE_OR_2019 if (data_period == 2019) else COLONNE_OR_2020
+    communes = COLONNE_COMMUNES_2019 if (data_period == 2019) else COLONNE_COMMUNES_2020
+
+    data[communes] = data[communes].str.split(pat=';')
     une_commune_par_titre = data.explode(
-        "communes",
+        communes,
         ignore_index=True  # ! pandas v 1.1.0+
         ).dropna(subset=['titre_id'])  # dropping NaN values from exploded empty lists
     
-    renseignements_or = renseignements_or_2019 if (data_period == 2019) else renseignements_or_2020
     logging.debug(une_commune_par_titre[
-        ['titre_id', 'periode', 'communes', renseignements_or]
+        ['titre_id', 'periode', communes, renseignements_or]
         ])
 
     titres_names, titres_occurrences = numpy.unique(
@@ -156,8 +169,8 @@ def dispatch_titres_multicommunes(data, data_period):
         if occurrence_titre > 1:  # titre sur plusieurs communes
             for j, row in data_titre_courant.iterrows():
                 titre_unicommunal = titre_courant
-                logging.debug("👹👹 ", titre_courant, row.communes)
-                commune, surface = separe_commune_surface(row.communes)
+                logging.debug("👹👹 ", titre_courant, row[communes])
+                commune, surface = separe_commune_surface(row[communes])
 
                 # titre 'toto' devient 'toto+nom_commune_sans_surface'
                 titre_unicommunal += "+" + commune
@@ -167,9 +180,9 @@ def dispatch_titres_multicommunes(data, data_period):
                 dispatched_titres.append(titre_unicommunal)
             titres_multicommunaux[titre_courant] = dispatched_titres
         else:
-            logging.debug("👹   ", titre_courant, data_titre_courant.communes.values)
+            logging.debug("👹   ", titre_courant, data_titre_courant[communes].values)
             commune, surface = separe_commune_surface(
-                str(data_titre_courant.communes.values[0])
+                str(data_titre_courant[communes].values[0])
                 )
             filtre_titre = une_commune_par_titre.titre_id == titre_courant
             une_commune_par_titre.loc[
@@ -217,8 +230,11 @@ def clean_data(data, data_period):
     '''
     Parmi les colonnes qui nous intéressent, filtrer et adapter le format des valeurs.
     '''
+    communes = COLONNE_COMMUNES_2019 if (data_period == 2019) else COLONNE_COMMUNES_2020
+    renseignements_or = COLONNE_OR_2019 if (data_period == 2019) else COLONNE_OR_2020
 
-    renseignements_or = renseignements_or_2019 if (data_period == 2019) else renseignements_or_2020
+    print("👹👹 clean_data - data")
+    print(data.head())
 
     quantites_chiffrees = data
     quantites_chiffrees.loc[
@@ -227,11 +243,14 @@ def clean_data(data, data_period):
     quantites_chiffrees = convertit_grammes_a_kilo(
         quantites_chiffrees, renseignements_or
         )
-    # logging.debug("👹👹👹 ", quantites_chiffrees.renseignements_orExtrait.head())
+    logging.debug("👹👹👹 ", quantites_chiffrees[renseignements_or].head())
+
+    print("👹👹 quantites_chiffrees")
+    print(quantites_chiffrees.head())
 
     logging.debug(len(quantites_chiffrees), "CLEANED DATA")
     logging.debug(quantites_chiffrees[
-        ['titre_id', 'periode', 'communes', renseignements_or]
+        ['titre_id', 'periode', communes, renseignements_or]
         ].head())
 
     # on éclate les titres multicommunaux en une ligne par titre+commune unique
@@ -280,6 +299,9 @@ def add_entreprises_data(data, entreprises_data):
 
 
 def select_reports(data: pandas.DataFrame, type: str) -> pandas.DataFrame:  # noqa: A002
+    print("👹👹 select_reports - data")
+    print(data[["annee", "type"]].head())
+
     selected_reports = data[data.type == type]
     logging.debug(len(selected_reports), "SELECTED REPORTS ", type)
     return selected_reports
@@ -360,42 +382,54 @@ if __name__ == "__main__":
 
     # ADAPT INPUT DATA
 
+    renseignements_or = COLONNE_OR_2019 if (data_period == 2019) else COLONNE_OR_2020
+    communes = COLONNE_COMMUNES_2019 if (data_period == 2019) else COLONNE_COMMUNES_2020
+    rapport_annuel = RAPPORT_ANNUEL_OR_2019 if (data_period == 2019) else RAPPORT_ANNUEL_OR_2020
+
     activite_par_titre = get_activites_data(csv_activites, data_period)
     activites_data = get_activites_annee(activite_par_titre, data_period)
 
-    communes_par_titre = get_titres_data(csv_titres)
+    communes_par_titre = get_titres_data(csv_titres, data_period)
     titres_data = get_titres_annee(communes_par_titre, activites_data)
 
     entreprises_data = get_entreprises_data(csv_entreprises)
 
-    full_data = get_simulation_full_data(titres_data, activites_data)
+    full_data = get_simulation_full_data(titres_data, activites_data, data_period)
+
+    print("👹👹 full_data")
+    print(full_data.head())
 
     rapports_annuels = select_reports(
         full_data,
-        "rapport annuel de production d'or en Guyane"
+        rapport_annuel
         )
-    if (data_period == 2019):
-        assert (rapports_annuels.renseignements_orNet.notnull()).all()  # + 1 cas ajouté
-    else:
-        assert (rapports_annuels.renseignements_orExtrait.notnull()).all()
+    rapports_annuels[renseignements_or].fillna(0., inplace=True)  # en 2020, 1 NaN
+
+    print("👹👹 rapports_annuels", renseignements_or)
+    print(rapports_annuels[["titre_id", renseignements_or]].head())
+    
+    assert (rapports_annuels[renseignements_or].notnull()).all()  # en 2019 : + 1 cas ajouté
+    
 
     cleaned_data = clean_data(
         rapports_annuels,
         data_period
         )  # titres ayant des rapports annuels d'activité citant la production
+    print("👹👹 cleaned_data")
+    print(cleaned_data.head())
     data = add_entreprises_data(cleaned_data, entreprises_data)
 
     # SIMULATION
 
-    renseignements_or = renseignements_or_2019 if (data_period == 2019) else renseignements_or_2020
-
+    print("👹👹 data")
+    print(data.head())
     simulation_period = '2020'
     tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
     current_parameters = tax_benefit_system.parameters(simulation_period)
 
     simulation = build_simulation(
         tax_benefit_system, simulation_period,
-        data.titre_id, data.communes
+        data.titre_id, data[communes]
         )
 
     simulation.set_input('surface_communale', data_period, data['surface_communale'])
@@ -479,7 +513,7 @@ if __name__ == "__main__":
         )
 
     resultat['titre_id'] = data.titre_id
-    resultat['communes'] = data.communes
+    resultat['communes'] = data[communes]  # !! changement de nom 2020 non propagé
     resultat['commune_exploitation_principale'] = data.commune_exploitation_principale
     resultat['surface_communale'] = data['surface_communale']
     resultat['surface_totale'] = data['surface_totale']
