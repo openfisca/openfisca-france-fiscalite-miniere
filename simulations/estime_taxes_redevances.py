@@ -223,7 +223,7 @@ def clean_data(data, data_period):
     quantites_chiffrees = data
     quantites_chiffrees.loc[
         renseignements_or
-        ] = data.renseignements_orExtrait.fillna(0.)
+        ] = data[renseignements_or].fillna(0.)
     quantites_chiffrees = convertit_grammes_a_kilo(
         quantites_chiffrees, renseignements_or
         )
