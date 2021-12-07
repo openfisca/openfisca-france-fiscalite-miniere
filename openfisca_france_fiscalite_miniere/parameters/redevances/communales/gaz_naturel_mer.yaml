@@ -2,7 +2,7 @@ description: Gaz naturel en mer (par 100 000 m3  extraits à 1 bar et 15°C)
 metadata:
   unit: currency-EUR
 documentation: |
-  Non revalorisé en 2020.
+  Non revalorisé en 2020 et 2021.
 
 values:
   2017-01-01:
