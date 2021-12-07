@@ -1,4 +1,5 @@
-description: gaz naturel (100 000 mètres cubes extraits)
+description: Montant du tarif de la redevance départementale des mines
+  pour le gaz naturel (par 100 000 mètres cubes extraits)
 metadata:
   unit: currency-EUR
 
@@ -19,3 +20,7 @@ values:
     value: 473.70
     metadata:
       reference: https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042159975/2020-07-25/
+  2021-01-01:
+    value: 513.0
+    metadata:
+      reference: https://www.legifrance.gouv.fr/codes/id/LEGIARTI000043663002/2021-06-12/
