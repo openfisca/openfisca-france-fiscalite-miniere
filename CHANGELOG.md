@@ -1,10 +1,15 @@
 # Changelog
 
+
+### 1.2.1 [#12](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/12)
+
+* Ajout du support de Docker.
+
 ## 1.2.0
 
 * Évolution du système socio-fiscal.
 * Périodes concernées : à partir d 01/01/2020.
-* Zones impactées : 
+* Zones impactées :
   - `variables/redevances.py`
   - `variables/taxes.py`
 * Détails :
@@ -17,7 +22,7 @@
 
 * Correction d'un crash et amélioration technique.
 * Périodes concernées : toutes.
-* Zones impactées : 
+* Zones impactées :
   - `openfisca_france_fiscalite_miniere/entities.py`
   - `simulations/*`
 * Détails :

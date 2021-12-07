@@ -67,6 +67,19 @@ Un port par défaut est défini dans le `Makefile` (port `5000`).
 
 Pour en savoir plus sur la commande `openfisca serve` sous-jascente et ses options, consultez la [documentation de référence](https://openfisca.org/doc/openfisca-python-api/openfisca_serve.html).
 
+## Docker
+
+Vous pouvez aussi utiliser Docker pour démarrer le serveur d'API Web. À l'intérieur du répertoire du dépôt `openfisca-france-fiscalite-miniere`, exécuter les commandes suivantes :
+```sh
+//Build de l’image localement
+docker build --no-cache -t openfisca-france-fiscalite-miniere .
+
+//Lancement de l’image
+docker run --rm -p 5000:8000 openfisca-france-fiscalite-miniere
+```
+L'API Web est alors accessible via le port 5000 de l'hôte (8000 du conteneur).
+Elle peut être testée dans un autre terminal. Elle renvoie par exemple un message d'accueil au format JSON en cas de requête `curl http://0.0.0.0:5000`.
+
 ### Envoyer une première requête à l'API Web
 
 Un exemple de requête simple est donné dans ce fichier :

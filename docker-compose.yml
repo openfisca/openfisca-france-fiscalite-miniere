@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  openfisca-api:
+    container_name: openfisca_api
+    build: .
+    restart: unless-stopped
+    ports:
+    - 5000:8000
