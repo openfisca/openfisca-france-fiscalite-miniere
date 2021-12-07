@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.0
+
+* Évolution du système socio-fiscal. Ajout d'une fonction complémentaire au modèle.
+* Périodes concernées : à partir du 01/01/2020.
+* Zones impactées :
+  - `variables/redevances.py`
+  - `variables/taxes.py`
+  - `simulations/*`
+* Détails :
+  - Corrige les divisions par zéro pour RCM et taxe.
+  - Ajoute la génération de matrices DRFip pour la production aurifère en Guyane (configurée par `./config.ini`).
 
 ### 1.2.1 [#12](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/12)
 
