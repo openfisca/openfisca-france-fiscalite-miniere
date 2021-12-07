@@ -5,6 +5,7 @@ import time
 
 import numpy
 import pandas  # noqa: I201
+from typing import List
 
 from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 
@@ -23,8 +24,8 @@ COLONNE_OR_2020 = "substancesFiscales_auru"  # ou "renseignements_orExtrait" ?
 COLONNE_COMMUNES_2019 = "communes"
 COLONNE_COMMUNES_2020 = "communes (surface calculee km2)"
 
-RAPPORT_ANNUEL_OR_2019 = "rapport annuel de production d'or en Guyane"
-RAPPORT_ANNUEL_OR_2020 = "rapport d'exploitation (permis et concessions M)"  # et "rapport d'exploitation (autorisations M)" ? oui ?
+RAPPORT_ANNUEL_OR_2019 = ["rapport annuel de production d'or en Guyane"]
+RAPPORT_ANNUEL_OR_2020 = ["rapport d'exploitation (permis et concessions M)", "rapport d'exploitation (autorisations M)"]
 
 
 # ADAPT INPUT DATA
@@ -298,11 +299,14 @@ def add_entreprises_data(data, entreprises_data):
     return merged_data
 
 
-def select_reports(data: pandas.DataFrame, type: str) -> pandas.DataFrame:  # noqa: A002
+def select_reports(data: pandas.DataFrame, type: List[str]) -> pandas.DataFrame:  # noqa: A002
     print("👹👹 select_reports - data")
     print(data[["annee", "type"]].head())
 
-    selected_reports = data[data.type == type]
+    if len(type) == 2:  # 2020
+        selected_reports = data[(data.type[0] == type) or (data.type == type[1])]
+    else:
+        selected_reports = data[data.type == type]
     logging.debug(len(selected_reports), "SELECTED REPORTS ", type)
     return selected_reports
 
