@@ -1,1 +1,2 @@
 recursive-include openfisca_france_fiscalite_miniere *
+recursive-include simulations/ *.py

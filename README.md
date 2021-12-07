@@ -1,6 +1,6 @@
 # OpenFisca France — Fiscalité Minière
 
-Système de fiscalité minière française modélisé avec OpenFisca
+Système de fiscalité minière française modélisé avec OpenFisca.
 
 ## Installation
 
@@ -108,10 +108,19 @@ Elles sont rassemblées dans le répertoire `./simulations/reformes` :
 * `test_essai_selg.py` est dédié au sel par abattage,
 * `test_essai_selh.py` est dédié au sel en dissolution.
 
+### Matrices DRFip
+
+La génération de CSV au format des matrices suivantes est exécutable sur la base de données [Camino](https://camino.beta.gouv.fr) (données sécurisées non fournies) :
+* REDEVANCE DÉPARTEMENTALE ET COMMUNALE DES MINES TAXE MINIÈRE SUR L'OR DE GUYANE
+* ÉTAT ANNEXE À LA MATRICE DES  REDEVANCES, TAXES  ÉTABLIES  POUR  L'ANNÉE
+
+Les données Camino employées en entrée des calculs sont également au format CSV. Leur format est donné dans [simulations/INPUT_DATA.md](./simulations/INPUT_DATA.md)
+
 ## Lexique
 
 * RCM = Redevance Communale des Mines
 * RDM = Redevance Départementale des Mines
+* RDCM = Redevance Départementale et Communale des Mines
 * Substances M = Substances non énergétiques (métaux, minéraux)
 
 ## Références législatives complémentaires

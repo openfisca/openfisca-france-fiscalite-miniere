@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-France-Fiscalite-Miniere",
-    version="1.2.1",
+    version="1.3.0",
     author="OpenFisca Team",
     author_email = "contact@openfisca.fr",
     classifiers=[
@@ -54,6 +54,9 @@ setup(
             "flake8-tidy-imports",
             'mypy >= 0.700, < 0.800',
             "pytest >= 5.0.0, < 6.0.0",
+            ],
+        "simu": [  # for /simulations scripts
+            "pandas >= 1.1.4, <2.0.0"
             ]
         },
     packages=find_packages(exclude = [

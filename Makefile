@@ -17,7 +17,7 @@ install: deps
 	@# Install OpenFisca-France-Fiscalite-Miniere for development.
 	@# `make install` installs the editable version of OpenFisca-France.
 	@# This allows contributors to test as they code.
-	pip install --editable .[dev] --upgrade
+	pip install --editable .[dev,simu] --upgrade
 
 install-prod:
 	pip install openfisca-france-fiscalite-miniere
@@ -30,7 +30,7 @@ build: clean deps
 	@# `make build` allows us to be be sure tests are run against the packaged version
 	@# of OpenFisca-France-Fiscalite-Miniere, the same we put in the hands of users and reusers.
 	python setup.py bdist_wheel
-	find dist -name "*.whl" -exec pip install --upgrade --force-reinstall {}[dev] \;
+	find dist -name "*.whl" -exec pip install --upgrade --force-reinstall {}[dev,simu] \;
 
 check-syntax-errors:
 	python -m compileall -q .
@@ -49,3 +49,7 @@ test: clean check-syntax-errors check-style check-types
 
 serve:
 	openfisca serve --country-package openfisca_france_fiscalite_miniere -p ${API_PORT}
+
+matrices:
+	@echo "DRFip Guyane : Génération de la matrice et de la matrice annexe..."
+	python simulations/estime_taxes_redevances.py
