@@ -20,3 +20,7 @@ values:
     value: 153.60
     metadata:
       reference: https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-07-25
+  2021-01-01:
+    value: 166.30
+    metadata:
+      reference: https://www.legifrance.gouv.fr/codes/id/LEGIARTI000043663105/2021-06-12/

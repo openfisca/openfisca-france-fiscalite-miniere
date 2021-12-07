@@ -1,4 +1,5 @@
-description: Calcaires et grès bitumineux ou asphaltiques non destinés à la distillation pour production d'huiles ou d'essences (par millier de tonnes nettes livrées)
+description: Calcaires et grès bitumineux ou asphaltiques non destinés à la distillation \ 
+  pour production d'huiles ou d'essences (par millier de tonnes nettes livrées)
 metadata:
   unit: currency-EUR
 
@@ -19,3 +20,7 @@ values:
     value: 1509.80
     metadata:
       reference: https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-07-25
+  2021-01-01:
+    value: 1635.10
+    metadata:
+      reference: https://www.legifrance.gouv.fr/codes/id/LEGIARTI000043663105/2021-06-12/
