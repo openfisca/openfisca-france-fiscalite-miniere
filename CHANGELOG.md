@@ -1,6 +1,6 @@
 # Changelog
 
-###
+### 1.3.1 [#16](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/16)
 
 * Évolution du système socio-fiscal.
 * Périodes concernées : à partir du 01/01/2021.
@@ -9,7 +9,7 @@
   - Revalorise les tarifs 2021 de la redevance communale des mines (RCM) hors gisements en mer.
   - Couvre l'[article 1519 II 1°](https://www.legifrance.gouv.fr/codes/id/LEGIARTI000043663105/2021-06-12/).
 
-## 1.3.0
+## 1.3.0 [#10](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/10)
 
 * Évolution du système socio-fiscal. Ajout d'une fonction complémentaire au modèle.
 * Périodes concernées : à partir du 01/01/2020.
@@ -25,7 +25,7 @@
 
 * Ajout du support de Docker.
 
-## 1.2.0
+## 1.2.0 [#17](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/17)
 
 * Évolution du système socio-fiscal.
 * Périodes concernées : à partir d 01/01/2020.
@@ -38,7 +38,7 @@
     * Proratise les montants de redevances et taxe à la surface d'emprise sur la commune.
   - Cette version représente le code du modèle employé pour la production de matrices fin 2020 (précisément en commit bdcdb7796e4a0f867fbf9ac498edc9b07b7f3c69).
 
-### 1.1.3
+### 1.1.3 [#15](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/15)
 
 * Correction d'un crash et amélioration technique.
 * Périodes concernées : toutes.
@@ -80,7 +80,6 @@
   - Ajoute dans `simulations/` les réformes de répartition communale de la Redevance Communale des Mines (RCM) pour le sel en dissolution (`test_essai_selh.py`) et le sel par abattage (`test_essai_selg.py`)
     - Réformes évaluées pour la fiscalité du sel au Grand Est en 2019 sur la base de données de déclaration de production de 2018
     - Colonnes des fichiers de données de production de la réforme décrits en `data_activites.csv` et `data_titres.csv` (format d'export de [Camino](https://camino.beta.gouv.fr))
-
 
 # 1.0.0 [#6](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/6)
 
