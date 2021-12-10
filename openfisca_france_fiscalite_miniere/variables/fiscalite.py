@@ -16,6 +16,11 @@ class fiscalite_frais_de_gestion_guyane(variables.Variable):
     def formula(societes, period, parameters) -> numpy.ndarray:
         redevances = societes("redevance_totale_des_mines_aurifere_kg", period)
         taxes = societes("taxe_guyane", period)
-        taux = parameters(period).fiscalite.frais.taux
+
+        parametres_frais = parameters(period).fiscalite.frais
+        taux = (
+            parametres_frais.taux_assiette_recouvrement
+            + parametres_frais.taux_degrevement_non_valeur
+            )
 
         return numpy.round((redevances + taxes) * taux, decimals = 2)
