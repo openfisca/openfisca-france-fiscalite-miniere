@@ -17,7 +17,7 @@ class fiscalite_frais_de_gestion_guyane(variables.Variable):
         redevances = societes("redevance_totale_des_mines_aurifere_kg", period)
         taxes = societes("taxe_guyane", period)
 
-        parametres_frais = parameters(period).fiscalite.frais
+        parametres_frais = parameters(period).frais
         taux = (
             parametres_frais.taux_assiette_recouvrement
             + parametres_frais.taux_degrevement_non_valeur
