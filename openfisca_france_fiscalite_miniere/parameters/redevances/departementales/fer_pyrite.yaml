@@ -1,4 +1,5 @@
-description: pyrite de fer (millier de tonnes nettes livrées)
+description: Montant du tarif de la redevance départementale des mines
+  pour la pyrite de fer (millier de tonnes nettes livrées)
 metadata:
   unit: currency-EUR
 
@@ -19,3 +20,7 @@ values:
     value: 102.90
     metadata:
       reference: https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042159975/2020-07-25/
+  2021-01-01:
+    value: 111.40
+    metadata:
+      reference: https://www.legifrance.gouv.fr/codes/id/LEGIARTI000043663002/2021-06-12/

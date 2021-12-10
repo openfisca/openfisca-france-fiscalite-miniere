@@ -1,5 +1,16 @@
 # Changelog
 
+### 1.3.2 [#18](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/18)
+
+* Évolution du système socio-fiscal.
+* Périodes concernées : à partir du 01/01/2021.
+* Zones impactées : 
+  - `parameters/redevances/departementales/*`
+  - `parameters/redevances/communales/*`
+* Détails :
+  - Revalorise les tarifs 2021 de la redevance départementale des mines (RDM).
+  - Couvre tout l'[article 1587 II](https://www.legifrance.gouv.fr/codes/id/LEGIARTI000043663002/2021-06-12/).
+
 ### 1.3.1 [#16](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/16)
 
 * Évolution du système socio-fiscal.
