@@ -7,15 +7,15 @@ values:
   2017-01-01:
     value: 362.95
     metadata:
-      reference: https://www.legifrance.gouv.fr/affichCodeArticle.do?idArticle=LEGIARTI000037342798&cidTexte=LEGITEXT000006069576&dateTexte=20180101
+      reference: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036016552/2018-01-01
   2018-01-01:
     value: 358.30
     metadata:
-      reference: https://www.legifrance.gouv.fr/affichCodeArticle.do?idArticle=LEGIARTI000037342798&cidTexte=LEGITEXT000006069576&dateTexte=20190101
+      reference: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000037342798/2019-01-01
   2019-01-01:
     value: 345.23
     metadata:
-      reference: https://www.legifrance.gouv.fr/affichCodeArticle.do?idArticle=LEGIARTI000037342798&cidTexte=LEGITEXT000006069576&dateTexte=20200101
+      reference: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000039355892/2020-01-01
   2020-01-01:
     value: 400.35
     metadata:
