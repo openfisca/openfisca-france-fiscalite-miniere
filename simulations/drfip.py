@@ -1,6 +1,7 @@
 import numpy
-
 import pandas  # noqa: I201
+
+from sip import *
 
 
 def build_designations_entreprises(data):
@@ -209,6 +210,92 @@ def generate_matrice_annexe_drfip_guyane(data, annee_production, timestamp):
 
     matrice_annexe.to_csv(
         f'matrice_annexe_drfip_guyane_production_{annee_production}_{timestamp}.csv',
+        index=False,
+        sep=';',
+        encoding='utf-8',
+        decimal=','
+        )
+
+
+def generate_matrice_1403_drfip_guyane(data, annee_production, timestamp):
+    colonnes_1403 = [
+        "Service de la Direction générale des finances publiques en charge du recouvrement",  # Circonscription
+        "Redevance départementale",  # Produit net = col. 2
+        "Redevance communale",  # Produit net = col. 3
+        "Taxe minière sur l'or de Guyane",  # Produit net = col. 4
+        "Sommes revenant à Région de Guyane",
+        "Sommes revenant à Conservatoire de biodiversité",  # Rien en 2020 ?
+        
+        # Sommes revenant à l'État :
+        "Frais d'assiette et de recouvrement",  # = col. 7
+        "Dégrèvements et non-valeurs",  # col. 8 / Rien en 2020 ?
+        "Total des colonnes 7 et 8", # col. 9
+        "Total des colonnes 2, 3 ,4 et 9",
+        "Nombre d'articles des rôles"
+    ]
+
+    matrice_1403 = pandas.DataFrame(columns = colonnes_1403)
+    print("🍄 data resultats", data.head())
+    # 🍄 data resultats Index(['titre_id', 'communes', 'commune_exploitation_principalenom_entreprise',
+    #    'adresse_entreprise', 'siren', 'categorie_entreprise', 'substances',
+    #    'substancesFiscales_auru', 'surface_communale',
+    #    'surface_totaletarifs_rdm',
+    #    'redevance_departementale_des_mines_aurifere_kg', 'tarifs_rcm',
+    #    'redevance_communale_des_mines_aurifere_kg', 'taxe_tarif_pme',
+    #    'taxe_tarif_autres', 'investissement', 'taxe_guyane', 'drfip',
+    #    'observation', 'commune_exploitation_principale', 'surface_totale',
+    #    'nom_entreprise', 'renseignements_orNet', 'tarifs_rdm'],
+    #   dtype='object')
+
+    data_sip_cayenne = get_sip_data(data, "commune_exploitation_principale", sip_guyane_cayenne)
+    data_sip_kourou = get_sip_data(data, "commune_exploitation_principale", sip_guyane_kourou)
+    data_sip_st_laurent_du_maroni = get_sip_data(data, "commune_exploitation_principale", sip_guyane_st_laurent_du_maroni)
+
+    matrice_1403["Service de la Direction générale des finances publiques en charge du recouvrement"] = [
+        sip_guyane_cayenne_nom,
+        sip_guyane_kourou_nom,
+        sip_guyane_st_laurent_du_maroni_nom
+    ]
+
+    matrice_1403["Redevance départementale"] = [
+        data_sip_cayenne["redevance_departementale_des_mines_aurifere_kg"].sum(),
+        data_sip_kourou["redevance_departementale_des_mines_aurifere_kg"].sum(),
+        data_sip_st_laurent_du_maroni["redevance_departementale_des_mines_aurifere_kg"].sum()
+    ]
+
+    matrice_1403["Redevance communale"] = [
+        data_sip_cayenne["redevance_communale_des_mines_aurifere_kg"].sum(),
+        data_sip_kourou["redevance_communale_des_mines_aurifere_kg"].sum(),
+        data_sip_st_laurent_du_maroni["redevance_communale_des_mines_aurifere_kg"].sum()
+    ]
+    matrice_1403["Taxe minière sur l'or de Guyane"] = [
+        data_sip_cayenne["taxe_guyane"].sum(),
+        data_sip_kourou["taxe_guyane"].sum(),
+        data_sip_st_laurent_du_maroni["taxe_guyane"].sum()
+    ]
+
+    total_rdcm_taxe = (
+        matrice_1403["Redevance départementale"] 
+        + matrice_1403["Redevance communale"] 
+        + matrice_1403["Taxe minière sur l'or de Guyane"]
+        )
+
+    matrice_1403["Sommes revenant à Région de Guyane"] = matrice_1403["Taxe minière sur l'or de Guyane"]
+    matrice_1403["Sommes revenant à Conservatoire de biodiversité"] = [None, None, None]
+    matrice_1403["Frais d'assiette et de recouvrement"] = (total_rdcm_taxe * 0.08).astype(int)  # 4.4% mais à 8% en 2020, perte des centimes
+    matrice_1403["Dégrèvements et non-valeurs"] = [None, None, None]  # 3.6% mais vide en 2020
+    matrice_1403["Total des colonnes 7 et 8"] = matrice_1403["Frais d'assiette et de recouvrement"]
+    matrice_1403["Total des colonnes 2, 3 ,4 et 9"] = total_rdcm_taxe + matrice_1403["Total des colonnes 7 et 8"]
+    matrice_1403["Nombre d'articles des rôles"] = [
+        len(data_sip_cayenne),
+        len(data_sip_kourou),
+        len(data_sip_st_laurent_du_maroni)
+    ]
+
+    print("🍄 matrice_1403", matrice_1403)
+
+    matrice_1403.to_csv(
+        f'matrice_1403_drfip_guyane_production_{annee_production}_{timestamp}.csv',
         index=False,
         sep=';',
         encoding='utf-8',
