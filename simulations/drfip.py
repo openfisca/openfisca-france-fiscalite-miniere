@@ -155,7 +155,9 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
         f'matrice_drfip_guyane_production_{annee_production}_{timestamp}.csv',
         index=False,
         sep=';',
-        encoding='utf-8')
+        encoding='utf-8',
+        decimal=','
+        )
 
 
 def generate_matrice_annexe_drfip_guyane(data, annee_production, timestamp):
@@ -209,5 +211,6 @@ def generate_matrice_annexe_drfip_guyane(data, annee_production, timestamp):
         f'matrice_annexe_drfip_guyane_production_{annee_production}_{timestamp}.csv',
         index=False,
         sep=';',
-        encoding='utf-8'
+        encoding='utf-8',
+        decimal=','
         )
