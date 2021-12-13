@@ -288,3 +288,50 @@ def generate_matrice_1403_drfip_guyane(data, annee_production, timestamp):
         encoding='utf-8',
         decimal=','
         )
+
+
+def generate_matrice_1404_drfip_guyane(data, annee_production, timestamp):
+    colonnes_1404 = [
+        "Service de la direction générale des finances publiques en charge du recouvrement",  # SIP
+        "Articles des rôles",
+        "Désignation des exploitants",
+
+        # DEPARTEMENTS ET COMMUNES sur les territoires desquels fonctionnent les exploitations :
+        "Départements",  # col. 4
+        "Communes",  # col. 5
+
+        # ELEMENTS SERVANT DE BASE A LA REPARTITION pour chaque exploitation :
+        "Revenus imposables à la TFPB (état 1123, col. 3)",  # vide en drfip
+        "Tonnages extraits :",
+
+        # REDEVANCE DÉPARTEMENTALE :
+        "Produit net de la redevance",
+        "Sommes revenant aux départements désignés dans la colonne 4 (a)",
+
+        # REDEVANCE COMMUNALE :
+        "Produit net de la redevance",  # col. 10
+        # > Répartition
+        "1ère fraction (col. 10 x 35%)",
+        "2ème fraction (col. 10 x 10%)",
+        "3ème fraction (col. 10 x 55%)",
+        # > Sommes revenant aux communes désignées dans la colonne 5 au titre des 1ère et 2ème fractions
+        "1ère fraction (b)",  # col. 14
+        "2ème fraction (a)",  # col. 15
+        "Total (col. 14 + col. 15)",
+
+        # TAXE MINIÈRE SUR L'OR DE GUYANE
+        "Produit net de la taxe",
+        # > Répartition
+        "Région de Guyane",
+        "Conservatoire",  # vide en 2020
+        "Observations"
+    ]
+
+    matrice_1404 = pandas.DataFrame(columns = colonnes_1404)
+    matrice_1404.to_csv(
+        f'matrice_1404_drfip_guyane_production_{annee_production}_{timestamp}.csv',
+        index=False,
+        sep=';',
+        encoding='utf-8',
+        decimal=','
+        )
