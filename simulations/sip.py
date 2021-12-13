@@ -11,7 +11,7 @@ sip_guyane_cayenne: List[str] = [
     ]
 
 sip_guyane_kourou_nom = "SIP de Kourou"
-sip_guyane_kourou: List[str] = ["Kourou", "Macouria", "Iarcoubo", "Sinnamary", "Saint-Elie"]
+sip_guyane_kourou: List[str] = ["Kourou", "Macouria", "Iracoubo", "Sinnamary", "Saint-Élie"]
 
 sip_guyane_st_laurent_du_maroni_nom = "SIP de Saint-Laurent du Maroni"
 sip_guyane_st_laurent_du_maroni: List[str] = [
