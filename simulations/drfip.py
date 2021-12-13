@@ -235,17 +235,6 @@ def generate_matrice_1403_drfip_guyane(data, annee_production, timestamp):
     ]
 
     matrice_1403 = pandas.DataFrame(columns = colonnes_1403)
-    print("🍄 data resultats", data.head())
-    # 🍄 data resultats Index(['titre_id', 'communes', 'commune_exploitation_principalenom_entreprise',
-    #    'adresse_entreprise', 'siren', 'categorie_entreprise', 'substances',
-    #    'substancesFiscales_auru', 'surface_communale',
-    #    'surface_totaletarifs_rdm',
-    #    'redevance_departementale_des_mines_aurifere_kg', 'tarifs_rcm',
-    #    'redevance_communale_des_mines_aurifere_kg', 'taxe_tarif_pme',
-    #    'taxe_tarif_autres', 'investissement', 'taxe_guyane', 'drfip',
-    #    'observation', 'commune_exploitation_principale', 'surface_totale',
-    #    'nom_entreprise', 'renseignements_orNet', 'tarifs_rdm'],
-    #   dtype='object')
 
     data_sip_cayenne = get_sip_data(data, "commune_exploitation_principale", sip_guyane_cayenne)
     data_sip_kourou = get_sip_data(data, "commune_exploitation_principale", sip_guyane_kourou)
@@ -258,20 +247,20 @@ def generate_matrice_1403_drfip_guyane(data, annee_production, timestamp):
     ]
 
     matrice_1403["Redevance départementale"] = [
-        data_sip_cayenne["redevance_departementale_des_mines_aurifere_kg"].sum(),
-        data_sip_kourou["redevance_departementale_des_mines_aurifere_kg"].sum(),
-        data_sip_st_laurent_du_maroni["redevance_departementale_des_mines_aurifere_kg"].sum()
+        data_sip_cayenne["redevance_departementale_des_mines_aurifere_kg"].sum().astype(int),
+        data_sip_kourou["redevance_departementale_des_mines_aurifere_kg"].sum().astype(int),
+        data_sip_st_laurent_du_maroni["redevance_departementale_des_mines_aurifere_kg"].sum().astype(int)
     ]
 
     matrice_1403["Redevance communale"] = [
-        data_sip_cayenne["redevance_communale_des_mines_aurifere_kg"].sum(),
-        data_sip_kourou["redevance_communale_des_mines_aurifere_kg"].sum(),
-        data_sip_st_laurent_du_maroni["redevance_communale_des_mines_aurifere_kg"].sum()
+        data_sip_cayenne["redevance_communale_des_mines_aurifere_kg"].sum().astype(int),
+        data_sip_kourou["redevance_communale_des_mines_aurifere_kg"].sum().astype(int),
+        data_sip_st_laurent_du_maroni["redevance_communale_des_mines_aurifere_kg"].sum().astype(int)
     ]
     matrice_1403["Taxe minière sur l'or de Guyane"] = [
-        data_sip_cayenne["taxe_guyane"].sum(),
-        data_sip_kourou["taxe_guyane"].sum(),
-        data_sip_st_laurent_du_maroni["taxe_guyane"].sum()
+        data_sip_cayenne["taxe_guyane"].sum().astype(int),
+        data_sip_kourou["taxe_guyane"].sum().astype(int),
+        data_sip_st_laurent_du_maroni["taxe_guyane"].sum().astype(int)
     ]
 
     total_rdcm_taxe = (
@@ -291,8 +280,6 @@ def generate_matrice_1403_drfip_guyane(data, annee_production, timestamp):
         len(data_sip_kourou),
         len(data_sip_st_laurent_du_maroni)
     ]
-
-    print("🍄 matrice_1403", matrice_1403)
 
     matrice_1403.to_csv(
         f'matrice_1403_drfip_guyane_production_{annee_production}_{timestamp}.csv',
