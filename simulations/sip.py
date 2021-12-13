@@ -17,7 +17,7 @@ sip_guyane_st_laurent_du_maroni_nom = "SIP de Saint-Laurent du Maroni"
 sip_guyane_st_laurent_du_maroni: List[str] = [
     "Papaichton", "Apatou", "Awala-Yalimapo",
     "Grand-Santi", "Mana", "Saül", "Maripasoula",
-    "Saint-Laurent du Maroni"
+    "Saint-Laurent-du-Maroni"
     ]
 
 def get_sip_data(data, column_name, sip):
