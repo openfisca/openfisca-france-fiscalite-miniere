@@ -296,7 +296,8 @@ def add_entreprises_data(data, entreprises_data):
 
 def select_reports(data: pandas.DataFrame, type: List[str]) -> pandas.DataFrame:  # noqa: A002
     if len(type) == 2:  # 2020
-        selected_reports = data[(data.type[0] == type) or (data.type == type[1])]
+        filtre_reports = (data.type == type[0]) | (data.type == type[1])
+        selected_reports = data[filtre_reports]
     else:
         selected_reports = data[data.type == type]
     logging.debug(len(selected_reports), "SELECTED REPORTS ", type)
