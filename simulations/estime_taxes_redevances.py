@@ -14,7 +14,8 @@ from openfisca_france_fiscalite_miniere.variables.taxes import CategorieEnum
 
 from simulations.drfip import (
     generate_matrice_annexe_drfip_guyane,
-    generate_matrice_drfip_guyane
+    generate_matrice_drfip_guyane,
+    generate_matrice_1403_drfip_guyane
     )
 
 
@@ -577,5 +578,11 @@ if __name__ == "__main__":
     generate_matrice_annexe_drfip_guyane(
         resultat,
         data_period,
+        timestamp
+        )
+
+    generate_matrice_1403_drfip_guyane(
+        resultat, 
+        data_period, 
         timestamp
         )
