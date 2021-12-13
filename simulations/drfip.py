@@ -276,9 +276,9 @@ def generate_matrice_1403_drfip_guyane(data, annee_production, timestamp):
     matrice_1403["Total des colonnes 7 et 8"] = matrice_1403["Frais d'assiette et de recouvrement"]
     matrice_1403["Total des colonnes 2, 3 ,4 et 9"] = total_rdcm_taxe + matrice_1403["Total des colonnes 7 et 8"]
     matrice_1403["Nombre d'articles des rôles"] = [
-        len(data_sip_cayenne),
-        len(data_sip_kourou),
-        len(data_sip_st_laurent_du_maroni)
+        data_sip_cayenne["nom_entreprise"].nunique(),
+        data_sip_kourou["nom_entreprise"].nunique(),
+        data_sip_st_laurent_du_maroni["nom_entreprise"].nunique()
     ]
 
     matrice_1403.to_csv(
