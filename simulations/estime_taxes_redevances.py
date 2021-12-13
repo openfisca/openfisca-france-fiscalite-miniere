@@ -137,6 +137,7 @@ def dispatch_titres_multicommunes(data, data_period):
     communes = COLONNE_COMMUNES_2019 if (data_period == 2019) else COLONNE_COMMUNES_2020
 
     data[communes] = data[communes].str.split(pat=';')
+
     une_commune_par_titre = data.explode(
         communes,
         ignore_index=True  # ! pandas v 1.1.0+
@@ -234,9 +235,6 @@ def clean_data(data, data_period):
     communes = COLONNE_COMMUNES_2019 if (data_period == 2019) else COLONNE_COMMUNES_2020
     renseignements_or = COLONNE_OR_2019 if (data_period == 2019) else COLONNE_OR_2020
 
-    print("👹👹 clean_data - data")
-    print(data.head())
-
     quantites_chiffrees = data
     quantites_chiffrees.loc[
         renseignements_or
@@ -245,9 +243,6 @@ def clean_data(data, data_period):
         quantites_chiffrees, renseignements_or
         )
     logging.debug("👹👹👹 ", quantites_chiffrees[renseignements_or].head())
-
-    print("👹👹 quantites_chiffrees")
-    print(quantites_chiffrees.head())
 
     logging.debug(len(quantites_chiffrees), "CLEANED DATA")
     logging.debug(quantites_chiffrees[
@@ -300,9 +295,6 @@ def add_entreprises_data(data, entreprises_data):
 
 
 def select_reports(data: pandas.DataFrame, type: List[str]) -> pandas.DataFrame:  # noqa: A002
-    print("👹👹 select_reports - data")
-    print(data[["annee", "type"]].head())
-
     if len(type) == 2:  # 2020
         selected_reports = data[(data.type[0] == type) or (data.type == type[1])]
     else:
@@ -400,18 +392,11 @@ if __name__ == "__main__":
 
     full_data = get_simulation_full_data(titres_data, activites_data, data_period)
 
-    print("👹👹 full_data")
-    print(full_data.head())
-
     rapports_annuels = select_reports(
         full_data,
         rapport_annuel
         )
     rapports_annuels[renseignements_or].fillna(0., inplace=True)  # en 2020, 1 NaN
-
-    print("👹👹 rapports_annuels", renseignements_or)
-    print(rapports_annuels[["titre_id", renseignements_or]].head())
-    
     assert (rapports_annuels[renseignements_or].notnull()).all()  # en 2019 : + 1 cas ajouté
     
 
@@ -419,15 +404,12 @@ if __name__ == "__main__":
         rapports_annuels,
         data_period
         )  # titres ayant des rapports annuels d'activité citant la production
-    print("👹👹 cleaned_data")
-    print(cleaned_data.head())
+
     data = add_entreprises_data(cleaned_data, entreprises_data)
 
     # SIMULATION
 
-    print("👹👹 data")
-    print(data.head())
-    simulation_period = '2020'
+    simulation_period = '2021'
     tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
     current_parameters = tax_benefit_system.parameters(simulation_period)
 
