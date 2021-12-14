@@ -344,25 +344,30 @@ def generate_matrice_1404_drfip_guyane(data, annee_production, timestamp):
     
     matrice_1404["Service de la direction générale des finances publiques en charge du recouvrement"] = [sip_guyane_cayenne_nom] * NB_ROWS_SIP_CAYENNE
     matrice_1404["Articles des rôles"] = data_sip_cayenne["titre_id"].index
-
+    
+    # Avant affectation, on valide le bon alignement des articles à défaut d'index commun aux DataFrame
     exploitants_sip_cayenne = build_designations_entreprises(data_sip_cayenne)
-    print("exploitants_sip_cayenne", exploitants_sip_cayenne)
-    matrice_1404["Désignation des exploitants"] = exploitants_sip_cayenne
+    assert (matrice_1404["Articles des rôles"].values == exploitants_sip_cayenne.index).all()
+    matrice_1404["Désignation des exploitants"] = exploitants_sip_cayenne.values
 
     # DEPARTEMENTS ET COMMUNES sur les territoires desquels fonctionnent les exploitations :
     matrice_1404["Départements"] = ['Guyane'] * NB_ROWS_SIP_CAYENNE  # col. 4
-    matrice_1404["Communes"] = data_sip_cayenne["commune_exploitation_principale"]  # col. 5
+    matrice_1404["Communes"] = data_sip_cayenne["commune_exploitation_principale"].values  # col. 5
 
     # ELEMENTS SERVANT DE BASE A LA REPARTITION pour chaque exploitation :
     matrice_1404["Revenus imposables à la TFPB (état 1123, col. 3)"] = [None] * NB_ROWS_SIP_CAYENNE  # vide en drfip
-    matrice_1404["Tonnages extraits :"] = calculate_production_communale(data_sip_cayenne)
+
+    # Avant affectation, on valide le bon alignement des articles à défaut d'index commun aux DataFrame
+    production_communale = calculate_production_communale(data_sip_cayenne)
+    assert (matrice_1404["Articles des rôles"].values == production_communale.index).all()
+    matrice_1404["Tonnages extraits :"] = production_communale.values
 
     # REDEVANCE DÉPARTEMENTALE :
-    matrice_1404["Produit net de la redevance (RDM)"] = data_sip_cayenne["redevance_departementale_des_mines_aurifere_kg"]
+    matrice_1404["Produit net de la redevance (RDM)"] = data_sip_cayenne["redevance_departementale_des_mines_aurifere_kg"].values
     matrice_1404["Sommes revenant aux départements désignés dans la colonne 4 (a)"] = matrice_1404["Produit net de la redevance (RDM)"]
 
     # REDEVANCE COMMUNALE :
-    matrice_1404["Produit net de la redevance (RCM)"] = data_sip_cayenne["redevance_communale_des_mines_aurifere_kg"]  # col. 10
+    matrice_1404["Produit net de la redevance (RCM)"] = data_sip_cayenne["redevance_communale_des_mines_aurifere_kg"].values  # col. 10
     # > Répartition
     matrice_1404["1ère fraction (col. 10 x 35%)"] = matrice_1404["Produit net de la redevance (RCM)"] * 0.35
     matrice_1404["2ème fraction (col. 10 x 10%)"] = matrice_1404["Produit net de la redevance (RCM)"] * 0.1
@@ -373,7 +378,7 @@ def generate_matrice_1404_drfip_guyane(data, annee_production, timestamp):
     matrice_1404["Total (col. 14 + col. 15)"] = matrice_1404["1ère fraction (b)"] + matrice_1404["2ème fraction (a)"]
 
     # TAXE MINIÈRE SUR L'OR DE GUYANE
-    matrice_1404["Produit net de la taxe"] = data_sip_cayenne["taxe_guyane"]
+    matrice_1404["Produit net de la taxe"] = data_sip_cayenne["taxe_guyane"].values
     # > Répartition
     matrice_1404["Région de Guyane"] = matrice_1404["Produit net de la taxe"]
     matrice_1404["Conservatoire"] = [None] * NB_ROWS_SIP_CAYENNE  # vide en 2020
