@@ -394,3 +394,23 @@ def generate_matrices_1404_drfip_guyane(data, annee_production, timestamp):
         encoding='utf-8',
         decimal=','
         )
+    
+    data_sip_kourou = get_sip_data(data, "commune_exploitation_principale", sip_guyane_kourou)
+    matrice_1404_sip_kourou = generate_matrice_1404_sip(colonnes_1404, data_sip_kourou, sip_guyane_kourou_nom)
+    matrice_1404_sip_kourou.to_csv(
+        f'matrice_1404_sip_guyane_kourou_production_{annee_production}_{timestamp}.csv',
+        index=False,
+        sep=';',
+        encoding='utf-8',
+        decimal=','
+        )
+
+    data_sip_st_laurent_du_maroni = get_sip_data(data, "commune_exploitation_principale", sip_guyane_st_laurent_du_maroni)
+    matrice_1404_sip_st_laurent_du_maroni = generate_matrice_1404_sip(colonnes_1404, data_sip_st_laurent_du_maroni, sip_guyane_st_laurent_du_maroni_nom)
+    matrice_1404_sip_st_laurent_du_maroni.to_csv(
+        f'matrice_1404_sip_guyane_st_laurent_du_maroni_production_{annee_production}_{timestamp}.csv',
+        index=False,
+        sep=';',
+        encoding='utf-8',
+        decimal=','
+        )
