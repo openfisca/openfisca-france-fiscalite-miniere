@@ -1,5 +1,19 @@
 # Changelog
 
+# 2.0.0 [#19](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/19)
+
+* Évolution du système socio-fiscal.
+* Périodes concernées : à partir du 01/01/2014.
+* Zones impactées : 
+  - `parameters/taxes/guyane/categories/*`
+  - `parameters/fiscalite/frais/*`
+  - `variables/fiscalite.py` désormais `variables/frais.py`
+* Détails :
+  - Corrige les frais de gestions à partir de 2014.
+    * le paramètre `fiscalite.frais.taux` est supprimé au bénéfice de `frais.taux_assiette_recouvrement` + `frais.taux_degrevement_non_valeur`.
+  - Revalorise les tarifs 2021 de la taxe sur l'or en Guyane.
+  - Ajoute des descriptions aux déductions de la taxe et frais de gestion de l'État.
+
 ### 1.3.2 [#18](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/18)
 
 * Évolution du système socio-fiscal.
