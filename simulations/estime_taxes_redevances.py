@@ -379,7 +379,7 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
     simulation_builder = SimulationBuilder()
     simulation_builder.create_entities(tax_benefit_system)
     simulation_builder.declare_person_entity(
-        'societe',
+        'article',
         titres_ids
         )  # titres sans doublons via renommage multicommunes
 
@@ -387,8 +387,8 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
     commune_instance = simulation_builder.declare_entity('commune', communes_ids)
     # un id par titre existant dans l'ordre de titres_ids :
     titres_des_communes = communes_ids
-    # role de chaque titre dans la commune = societe :
-    titres_communes_roles = ['societe'] * len(titres_des_communes)
+    # role de chaque titre dans la commune = article :
+    titres_communes_roles = ['article'] * len(titres_des_communes)
     simulation_builder.join_with_persons(
         commune_instance,
         titres_des_communes,

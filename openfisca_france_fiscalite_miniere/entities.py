@@ -2,7 +2,7 @@ from openfisca_core.entities import build_entity
 
 
 Societe = build_entity(
-    key = "societe",
+    key = "article",
     plural = "societes",
     label = 'Société',
     is_person = True,  # = est entité pivot
@@ -22,7 +22,7 @@ Commune = build_entity(
     label = 'Commune',
     roles = [
         {
-            'key': 'societe',
+            'key': 'article',
             'plural': 'societes',
             'label': 'Sociétés'
             }

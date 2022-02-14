@@ -11,4 +11,4 @@ def parse(file_name):
         return json.loads(file.read())
 
 
-societe = parse("societe.json")
+article = parse("article.json")
