@@ -7,10 +7,9 @@ Article = build_entity(
     label = 'Article',
     is_person = True,  # = est entité pivot
     doc = '''
-        Article = titre minier à ce stade.
-        Un titre peut aussi être sur plusieurs communes.
-        L'une des communes du titre est le lieu principal d'exploitation.
-        Il y a une substance extraite par titre.
+        Un article est une part d'un unique titre.
+        Il est sur une seule commune.
+        Il traite d'une seule substance fiscale.
     '''
     )
 
