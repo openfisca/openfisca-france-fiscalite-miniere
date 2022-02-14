@@ -5,7 +5,7 @@ from openfisca_core.model_api import min_, round_
 from openfisca_core.periods import YEAR
 from openfisca_core.variables import Variable
 
-from openfisca_france_fiscalite_miniere.entities import Societe
+from openfisca_france_fiscalite_miniere.entities import Article
 
 
 class CategorieEnum(indexed_enums.Enum):
@@ -17,7 +17,7 @@ class categorie(Variable):
     value_type = indexed_enums.Enum
     possible_values = CategorieEnum
     default_value = CategorieEnum.pme  # ou inconnue pour ne pas calculer la taxe ?
-    entity = Societe
+    entity = Article
     label = "Catégorie d'entreprises, dont l'imposition est prévue par la loi"
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -25,7 +25,7 @@ class categorie(Variable):
 
 class investissement(Variable):
     value_type = float
-    entity = Societe
+    entity = Article
     label = "Investissements pour la réduction des impacts de l'exploitation de l'or sur l'environnement"  # noqa: E501
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -33,7 +33,7 @@ class investissement(Variable):
 
 class taxe_guyane_brute(Variable):
     value_type = float
-    entity = Societe
+    entity = Article
     label = "Taxe perçue pour la production aurifère en Guyane, avant déduction des investissements"  # noqa: E501
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -71,7 +71,7 @@ class taxe_guyane_brute(Variable):
 
 class taxe_guyane_deduction(Variable):
     value_type = float
-    entity = Societe
+    entity = Article
     label = "Investissements déductibles de la taxe perçue pour la région de Guyane"
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -123,7 +123,7 @@ class taxe_guyane_deduction(Variable):
 
 class taxe_guyane(Variable):
     value_type = float
-    entity = Societe
+    entity = Article
     label = "Taxe perçue pour la région de Guyane"
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR

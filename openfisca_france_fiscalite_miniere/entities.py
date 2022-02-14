@@ -1,7 +1,7 @@
 from openfisca_core.entities import build_entity
 
 
-Societe = build_entity(
+Article = build_entity(
     key = "article",
     plural = "articles",
     label = 'Société',
@@ -29,4 +29,4 @@ Commune = build_entity(
         ]
     )
 
-entities = [Societe, Commune]
+entities = [Article, Commune]

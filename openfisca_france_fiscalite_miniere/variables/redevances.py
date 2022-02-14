@@ -8,7 +8,7 @@ from openfisca_france_fiscalite_miniere import entities
 
 class quantite_aurifere_kg(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Minerais aurifères (par kilogramme d'or contenu)"
     reference = [
         "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01",
@@ -26,7 +26,7 @@ class quantite_aurifere_kg(Variable):
 
 class quantite_sel_abattage_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Quantité de sel d'abattage (par millier de tonnes)"
     reference = "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -34,7 +34,7 @@ class quantite_sel_abattage_kt(Variable):
 
 class quantite_sel_raffine_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Quantité de sel raffiné (par millier de tonnes)"
     reference = "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -42,7 +42,7 @@ class quantite_sel_raffine_kt(Variable):
 
 class quantite_sel_dissolution_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Quantité de sel de dissolution (par millier de tonnes de NaCl contenu)"
     reference = "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191913/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -50,21 +50,21 @@ class quantite_sel_dissolution_kt(Variable):
 
 class surface_communale(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Surface du titre sur une commune"
     definition_period = YEAR
 
 
 class surface_totale(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Surface totale du titre, toutes communes comprises"
     definition_period = YEAR
 
 
 class redevance_communale_des_mines_aurifere_kg(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance communale des mines pour le minerais aurifères"
     reference = [
         # répartition
@@ -109,7 +109,7 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
 
 class redevance_departementale_des_mines_aurifere_kg(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance départementale des_mines pour le minerais aurifères"
     reference = [
         "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01",  # noqa: E501
@@ -146,7 +146,7 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
 
 class redevance_communale_des_mines_sel_abattage_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance communale du sel d'abattage"
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293413/1987-08-09"  # noqa: E501
     definition_period = YEAR
@@ -161,7 +161,7 @@ class redevance_communale_des_mines_sel_abattage_kt(Variable):
 
 class redevance_departementale_des_mines_sel_abattage_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance départementale du sel d'abattage"
     reference = "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501
     definition_period = YEAR
@@ -176,7 +176,7 @@ class redevance_departementale_des_mines_sel_abattage_kt(Variable):
 
 class redevance_totale_des_mines_sel_abattage_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance départamentale + communale des mines de sel d'abattage"
     definition_period = YEAR
 
@@ -192,7 +192,7 @@ class redevance_totale_des_mines_sel_abattage_kt(Variable):
 
 class redevance_communale_des_mines_sel_raffine_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance communale du sel raffiné"
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293413/1987-08-09"  # noqa: E501
     definition_period = YEAR
@@ -207,7 +207,7 @@ class redevance_communale_des_mines_sel_raffine_kt(Variable):
 
 class redevance_departementale_des_mines_sel_raffine_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance départementale du sel raffiné"
     reference = "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501
     definition_period = YEAR
@@ -222,7 +222,7 @@ class redevance_departementale_des_mines_sel_raffine_kt(Variable):
 
 class redevance_totale_des_mines_sel_raffine_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance départamentale + communale des mines de sel raffiné"  # noqa: E501
     definition_period = YEAR
 
@@ -238,7 +238,7 @@ class redevance_totale_des_mines_sel_raffine_kt(Variable):
 
 class redevance_communale_des_mines_sel_dissolution_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance communale du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293413/1987-08-09"  # noqa: E501
     definition_period = YEAR
@@ -253,7 +253,7 @@ class redevance_communale_des_mines_sel_dissolution_kt(Variable):
 
 class redevance_departementale_des_mines_sel_dissolution_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance départementale du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
     reference = "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501
     definition_period = YEAR
@@ -293,7 +293,7 @@ class redevance_communale_totale_sel(Variable):
 
 class redevance_totale_des_mines_sel_dissolution_kt(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance départamentale + communale des mines du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
     definition_period = YEAR
 
@@ -309,7 +309,7 @@ class redevance_totale_des_mines_sel_dissolution_kt(Variable):
 
 class redevance_totale_des_mines_aurifere_kg(Variable):
     value_type = float
-    entity = entities.Societe
+    entity = entities.Article
     label = "Redevance départamentale + communale des mines"
     definition_period = YEAR
 
