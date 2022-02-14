@@ -4,10 +4,10 @@ from openfisca_core.entities import build_entity
 Article = build_entity(
     key = "article",
     plural = "articles",
-    label = 'Société',
+    label = 'Article',
     is_person = True,  # = est entité pivot
     doc = '''
-        Société = titre minier à ce stade.
+        Article = titre minier à ce stade.
         Un titre peut aussi être sur plusieurs communes.
         L'une des communes du titre est le lieu principal d'exploitation.
         Il y a une substance extraite par titre.
@@ -16,7 +16,7 @@ Article = build_entity(
 
 
 Commune = build_entity(
-    # suppose qu'il n'y a qu'une commune par société/titre ?
+    # il n'y a qu'une commune par article
     key = "commune",
     plural = "communes",
     label = 'Commune',
@@ -24,7 +24,7 @@ Commune = build_entity(
         {
             'key': 'article',
             'plural': 'articles',
-            'label': 'Sociétés'
+            'label': 'Articles'
             }
         ]
     )
