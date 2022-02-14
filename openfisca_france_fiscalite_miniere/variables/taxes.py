@@ -38,17 +38,17 @@ class taxe_guyane_brute(Variable):
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
-    def formula_2020_01(societes, period, parameters) -> numpy.ndarray:
+    def formula_2020_01(articles, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
-        quantites = societes("quantite_aurifere_kg", annee_production)
-        categories = societes("categorie", annee_production).decode()
+        quantites = articles("quantite_aurifere_kg", annee_production)
+        categories = articles("categorie", annee_production).decode()
         tarifs = (params.categories[categorie.name] for categorie in categories)
         tarifs = numpy.fromiter(tarifs, dtype = float)
 
         # proratisation à la surface pour l'entité article
-        surface_communale = societes("surface_communale", annee_production)
-        surface_totale = societes("surface_totale", annee_production)
+        surface_communale = articles("surface_communale", annee_production)
+        surface_totale = articles("surface_totale", annee_production)
 
         taxe = numpy.divide(
             (quantites * tarifs) * surface_communale,
@@ -58,11 +58,11 @@ class taxe_guyane_brute(Variable):
             )
         return round_(taxe, decimals = 2)
 
-    def formula(societes, period, parameters) -> numpy.ndarray:
+    def formula(articles, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
-        quantites = societes("quantite_aurifere_kg", annee_production)
-        categories = societes("categorie", annee_production).decode()
+        quantites = articles("quantite_aurifere_kg", annee_production)
+        categories = articles("categorie", annee_production).decode()
         tarifs = (params.categories[categorie.name] for categorie in categories)
         tarifs = numpy.fromiter(tarifs, dtype = float)
 
@@ -76,17 +76,17 @@ class taxe_guyane_deduction(Variable):
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
-    def formula_2020_01(societes, period, parameters) -> numpy.ndarray:
+    def formula_2020_01(articles, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
-        investissements = societes("investissement", annee_production)
-        taxes_brutes = societes("taxe_guyane_brute", period)
+        investissements = articles("investissement", annee_production)
+        taxes_brutes = articles("taxe_guyane_brute", period)
         taux_deduction = params.deductions.taux
         montant_deduction_max = params.deductions.montant
 
         # proratisation à la surface pour l'entité article
-        surface_communale = societes("surface_communale", annee_production)
-        surface_totale = societes("surface_totale", annee_production)
+        surface_communale = articles("surface_communale", annee_production)
+        surface_totale = articles("surface_totale", annee_production)
 
         deduction_toutes_communes = round_(
             min_(
@@ -104,11 +104,11 @@ class taxe_guyane_deduction(Variable):
             )
         return round_(deduction, decimals = 2)
 
-    def formula(societes, period, parameters) -> numpy.ndarray:
+    def formula(articles, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
-        investissements = societes("investissement", annee_production)
-        taxes_brutes = societes("taxe_guyane_brute", period)
+        investissements = articles("investissement", annee_production)
+        taxes_brutes = articles("taxe_guyane_brute", period)
         taux_deduction = params.deductions.taux
         montant_deduction_max = params.deductions.montant
 
@@ -128,8 +128,8 @@ class taxe_guyane(Variable):
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
 
-    def formula(societes, period, parameters) -> numpy.ndarray:
-        taxes_brutes = societes("taxe_guyane_brute", period)
-        deduction = societes("taxe_guyane_deduction", period)
+    def formula(articles, period, parameters) -> numpy.ndarray:
+        taxes_brutes = articles("taxe_guyane_brute", period)
+        deduction = articles("taxe_guyane_deduction", period)
 
         return round_(taxes_brutes - deduction, decimals = 2)

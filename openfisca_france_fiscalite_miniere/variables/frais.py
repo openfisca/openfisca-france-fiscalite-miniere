@@ -13,9 +13,9 @@ class fiscalite_frais_de_gestion_guyane(variables.Variable):
     reference = "https://www.collectivites-locales.gouv.fr/files/files/finances_locales/fiscalite_locale/vademecum_fiscalite_directe_locale_collectivites.pdf"  # noqa: E501
     definition_period = periods.YEAR
 
-    def formula(societes, period, parameters) -> numpy.ndarray:
-        redevances = societes("redevance_totale_des_mines_aurifere_kg", period)
-        taxes = societes("taxe_guyane", period)
+    def formula(articles, period, parameters) -> numpy.ndarray:
+        redevances = articles("redevance_totale_des_mines_aurifere_kg", period)
+        taxes = articles("taxe_guyane", period)
 
         parametres_frais = parameters(period).frais
         taux = (
