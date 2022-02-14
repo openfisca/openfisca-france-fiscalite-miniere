@@ -14,6 +14,21 @@ Article = build_entity(
     )
 
 
+Titre = build_entity(
+    # il n'y a qu'une Titre par article
+    key = "Titre",
+    plural = "Titres",
+    label = 'Titre',
+    roles = [
+        {
+            'key': 'article',
+            'plural': 'articles',
+            'label': 'Articles'
+            }
+        ]
+    )
+
+
 Commune = build_entity(
     # il n'y a qu'une commune par article
     key = "commune",
@@ -28,4 +43,4 @@ Commune = build_entity(
         ]
     )
 
-entities = [Article, Commune]
+entities = [Article, Titre, Commune]
