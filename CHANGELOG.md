@@ -1,5 +1,16 @@
 # Changelog
 
+### 2.0.2 [#21](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/21)
+
+* Changement mineur.
+* Périodes concernées : à partir du 01/01/2020.
+* Zones impactées : 
+  - `simulations/drfip.py`
+  - `simulations/estime_taxes_redevances.py`
+* Détails :
+  - Ajoute la génération des matrices 1403 et 1404 aux scripts de `simulations/`.
+  - Matrices au format 2021. Code exécuté sur données de production 2020.
+
 ### 2.0.1 [#20](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/20)
 
 * Changement mineur.
