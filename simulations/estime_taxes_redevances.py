@@ -260,14 +260,16 @@ def clean_data(data, data_period):
     une_commune_par_titre = dispatch_titres_multicommunes(
         quantites_chiffrees, data_period)
 
-    communes_guyane = sip_guyane_cayenne+sip_guyane_kourou+sip_guyane_st_laurent_du_maroni
-    filtre_communes = une_commune_par_titre["commune_exploitation_principale"].isin(communes_guyane) 
+    communes_guyane = sip_guyane_cayenne + sip_guyane_kourou + sip_guyane_st_laurent_du_maroni
+    filtre_communes = une_commune_par_titre["commune_exploitation_principale"].isin(
+        communes_guyane)
     une_commune_par_titre = une_commune_par_titre.loc[filtre_communes]
 
     assert une_commune_par_titre["commune_exploitation_principale"].isin(
         communes_guyane
         ).all(), une_commune_par_titre.loc[
-            ~une_commune_par_titre["commune_exploitation_principale"].isin(communes_guyane)
+            ~une_commune_par_titre["commune_exploitation_principale"].isin(
+                communes_guyane)
             ][["commune_exploitation_principale"]]
 
     return une_commune_par_titre
@@ -594,13 +596,13 @@ if __name__ == "__main__":
         )
 
     generate_matrice_1403_drfip_guyane(
-        resultat, 
-        data_period, 
+        resultat,
+        data_period,
         timestamp
         )
 
     generate_matrices_1404_drfip_guyane(
-        resultat, 
-        data_period, 
+        resultat,
+        data_period,
         timestamp
         )
