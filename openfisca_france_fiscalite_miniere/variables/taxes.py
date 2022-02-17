@@ -5,7 +5,7 @@ from openfisca_core.model_api import min_, round_
 from openfisca_core.periods import YEAR
 from openfisca_core.variables import Variable
 
-from openfisca_france_fiscalite_miniere.entities import Article
+from openfisca_france_fiscalite_miniere.entities import Article, Titre
 
 
 class CategorieEnum(indexed_enums.Enum):
@@ -17,7 +17,7 @@ class categorie(Variable):
     value_type = indexed_enums.Enum
     possible_values = CategorieEnum
     default_value = CategorieEnum.pme  # ou inconnue pour ne pas calculer la taxe ?
-    entity = Article
+    entity = Titre
     label = "Catégorie d'entreprises, dont l'imposition est prévue par la loi"
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR
@@ -25,7 +25,7 @@ class categorie(Variable):
 
 class investissement(Variable):
     value_type = float
-    entity = Article
+    entity = Titre
     label = "Investissements pour la réduction des impacts de l'exploitation de l'or sur l'environnement"  # noqa: E501
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031817025/2020-01-01"  # noqa: E501
     definition_period = YEAR

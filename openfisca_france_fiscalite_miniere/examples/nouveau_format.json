@@ -9,11 +9,17 @@
             },
             "redevance_communale_des_mines_aurifere_kg": {
                 "2022": null
+            },
+            "surface_totale": {
+                "2021": 0.5 
             }
         },
         "m-ax-lieu-dit-SEL-RAFFINE-COMMUNE1": {
             "quantite_sel_raffine_kt": {
                 "2021": 1000
+            },
+            "surface_totale": {
+                "2021": 0.5 
             }
         }
     },
@@ -26,7 +32,7 @@
                 "2021": "amazon mines SAS"
             },
             "categorie":  {
-                "2021": "PME"
+                "2021": "pme"
             },
             "investissement":  {
                 "2021": "4500"
@@ -34,10 +40,7 @@
             "articles": [
                 "m-ax-lieu-dit-OR-COMMUNE1",
                 "m-ax-lieu-dit-SEL-RAFFINE-COMMUNE1"
-            ],
-            "surface_totale": {
-                "2021": 0.5 
-            }
+            ]
         }
     },
     "communes": {
