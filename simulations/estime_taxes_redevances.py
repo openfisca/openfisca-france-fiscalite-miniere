@@ -2,10 +2,10 @@ import configparser
 import logging
 import re
 import time
-
-import numpy
-import pandas  # noqa: I201
 from typing import List
+
+import numpy  # noqa: I201
+import pandas  # noqa: I201
 
 from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 
@@ -25,14 +25,17 @@ COLONNE_COMMUNES_2019 = "communes"
 COLONNE_COMMUNES_2020 = "communes (surface calculee km2)"
 
 RAPPORT_ANNUEL_OR_2019 = ["rapport annuel de production d'or en Guyane"]
-RAPPORT_ANNUEL_OR_2020 = ["rapport d'exploitation (permis et concessions M)", "rapport d'exploitation (autorisations M)"]
+RAPPORT_ANNUEL_OR_2020 = [
+    "rapport d'exploitation (permis et concessions M)",
+    "rapport d'exploitation (autorisations M)"
+    ]
 
 
 # ADAPT INPUT DATA
 
 def get_activites_data(csv_activites, data_period):
     activite_par_titre: pandas.DataFrame = pandas.read_csv(csv_activites)
-    
+
     renseignements_or = COLONNE_OR_2019 if (data_period == 2019) else COLONNE_OR_2020
     activites_data = activite_par_titre[
         [
@@ -142,7 +145,7 @@ def dispatch_titres_multicommunes(data, data_period):
         communes,
         ignore_index=True  # ! pandas v 1.1.0+
         ).dropna(subset=['titre_id'])  # dropping NaN values from exploded empty lists
-    
+
     logging.debug(une_commune_par_titre[
         ['titre_id', 'periode', communes, renseignements_or]
         ])
@@ -251,7 +254,8 @@ def clean_data(data, data_period):
 
     # on éclate les titres multicommunaux en une ligne par titre+commune unique
     # attention : on refait l'index du dataframe pour distinguer les lignes résultat.
-    une_commune_par_titre = dispatch_titres_multicommunes(quantites_chiffrees, data_period)
+    une_commune_par_titre = dispatch_titres_multicommunes(
+        quantites_chiffrees, data_period)
 
     return une_commune_par_titre
 
@@ -294,7 +298,11 @@ def add_entreprises_data(data, entreprises_data):
     return merged_data
 
 
-def select_reports(data: pandas.DataFrame, type: List[str]) -> pandas.DataFrame:  # noqa: A002
+def select_reports(
+    data: pandas.DataFrame,
+    type: List[str]  # noqa: A002
+    ) -> pandas.DataFrame:
+
     if len(type) == 2:  # 2020
         filtre_reports = (data.type == type[0]) | (data.type == type[1])
         selected_reports = data[filtre_reports]
@@ -381,7 +389,8 @@ if __name__ == "__main__":
 
     renseignements_or = COLONNE_OR_2019 if (data_period == 2019) else COLONNE_OR_2020
     communes = COLONNE_COMMUNES_2019 if (data_period == 2019) else COLONNE_COMMUNES_2020
-    rapport_annuel = RAPPORT_ANNUEL_OR_2019 if (data_period == 2019) else RAPPORT_ANNUEL_OR_2020
+    rapport_annuel = RAPPORT_ANNUEL_OR_2019 if (
+        data_period == 2019) else RAPPORT_ANNUEL_OR_2020
 
     activite_par_titre = get_activites_data(csv_activites, data_period)
     activites_data = get_activites_annee(activite_par_titre, data_period)
@@ -398,8 +407,8 @@ if __name__ == "__main__":
         rapport_annuel
         )
     rapports_annuels[renseignements_or].fillna(0., inplace=True)  # en 2020, 1 NaN
-    assert (rapports_annuels[renseignements_or].notnull()).all()  # en 2019 : + 1 cas ajouté
-    
+    assert (rapports_annuels[renseignements_or].notnull()
+            ).all()  # en 2019 : + 1 cas ajouté
 
     cleaned_data = clean_data(
         rapports_annuels,
@@ -434,7 +443,8 @@ if __name__ == "__main__":
         full_data,
         "rapport trimestriel d'exploitation d'or en Guyane"
         )
-    rapports_trimestriels.renseignements_environnement.fillna(0, inplace=True)  # en 2020, 20 vides pour statuts autres que "déposé"
+    rapports_trimestriels.renseignements_environnement.fillna(
+        0, inplace=True)  # en 2020, 20 vides pour statuts autres que "déposé"
     assert (
         rapports_trimestriels.renseignements_environnement.notnull()
         ).all()  # + 1 cas ajouté
@@ -512,7 +522,8 @@ if __name__ == "__main__":
     resultat['categorie_entreprise'] = data.categorie_entreprise
 
     # Base des redevances :
-    resultat['renseignements_orNet'] = data[renseignements_or]  # !! changement de nom 2020 non propagé
+    # !! changement de nom 2020 non propagé
+    resultat['renseignements_orNet'] = data[renseignements_or]
 
     # Redevance départementale :
     resultat['tarifs_rdm'] = numpy.where(
