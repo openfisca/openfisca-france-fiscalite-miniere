@@ -1,5 +1,17 @@
 # Changelog
 
+### 2.0.1 [#20](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/20)
+
+* Changement mineur.
+* Périodes concernées : à partir du 01/01/2020.
+* Zones impactées : 
+  - `simulations/drfip.py`
+  - `simulations/estime_taxes_redevances.py`
+* Détails :
+  - Adapte les scripts de production des matrices 1121 et 1122 au nouveau format des des données de production.
+    * Adapte à l'évolution du format d'export des données de production de Camino.
+    * Permet l'emploi des données de production 2019 au format 2020 et des données de production 2020 au format 2021.
+
 # 2.0.0 [#19](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/19)
 
 * Évolution du système socio-fiscal.
