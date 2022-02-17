@@ -279,14 +279,22 @@ def clean_data(data, data_period):
                 communes_guyane)
             ][["commune_exploitation_principale"]]
 
-    communes_guyane = sip_guyane_cayenne+sip_guyane_kourou+sip_guyane_st_laurent_du_maroni
-    filtre_communes = une_commune_par_titre["commune_exploitation_principale"].isin(communes_guyane) 
+    communes_guyane = (
+        sip_guyane_cayenne
+        + sip_guyane_kourou
+        + sip_guyane_st_laurent_du_maroni
+        )
+    filtre_communes = une_commune_par_titre[
+        "commune_exploitation_principale"
+        ].isin(communes_guyane)
     une_commune_par_titre = une_commune_par_titre.loc[filtre_communes]
 
     assert une_commune_par_titre["commune_exploitation_principale"].isin(
         communes_guyane
         ).all(), une_commune_par_titre.loc[
-            ~une_commune_par_titre["commune_exploitation_principale"].isin(communes_guyane)
+            ~une_commune_par_titre[
+                "commune_exploitation_principale"
+                ].isin(communes_guyane)
             ][["commune_exploitation_principale"]]
 
     return une_commune_par_titre
