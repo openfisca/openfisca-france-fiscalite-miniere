@@ -23,5 +23,5 @@ sip_guyane_st_laurent_du_maroni: List[str] = [
 
 
 def get_sip_data(data, column_name, sip):
-    filter = data[column_name].isin(sip)
+    filter = data[column_name].isin(sip)  # noqa: A001
     return data[filter]

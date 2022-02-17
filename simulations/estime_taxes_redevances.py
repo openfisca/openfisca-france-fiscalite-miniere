@@ -12,14 +12,17 @@ from openfisca_core.simulation_builder import SimulationBuilder  # noqa: I100
 from openfisca_france_fiscalite_miniere import CountryTaxBenefitSystem as FranceFiscaliteMiniereTaxBenefitSystem  # noqa: E501
 from openfisca_france_fiscalite_miniere.variables.taxes import CategorieEnum
 
-from simulations.sip import sip_guyane_cayenne, sip_guyane_kourou, sip_guyane_st_laurent_du_maroni
-from simulations.drfip import (
-    generate_matrice_annexe_drfip_guyane,
+from simulations.drfip import (  # noqa: I101
     generate_matrice_drfip_guyane,
+    generate_matrice_annexe_drfip_guyane,
     generate_matrice_1403_drfip_guyane,
     generate_matrices_1404_drfip_guyane
     )
-
+from simulations.sip import (
+    sip_guyane_cayenne,
+    sip_guyane_kourou,
+    sip_guyane_st_laurent_du_maroni
+    )
 
 COLONNE_OR_2019 = "renseignements_orNet"
 COLONNE_OR_2020 = "substancesFiscales_auru"  # ou "renseignements_orExtrait" ?
@@ -260,7 +263,11 @@ def clean_data(data, data_period):
     une_commune_par_titre = dispatch_titres_multicommunes(
         quantites_chiffrees, data_period)
 
-    communes_guyane = sip_guyane_cayenne + sip_guyane_kourou + sip_guyane_st_laurent_du_maroni
+    communes_guyane = (
+        sip_guyane_cayenne
+        + sip_guyane_kourou
+        + sip_guyane_st_laurent_du_maroni
+        )
     filtre_communes = une_commune_par_titre["commune_exploitation_principale"].isin(
         communes_guyane)
     une_commune_par_titre = une_commune_par_titre.loc[filtre_communes]

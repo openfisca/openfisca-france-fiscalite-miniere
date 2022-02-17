@@ -1,7 +1,12 @@
 import numpy
 import pandas  # noqa: I201
 
-from simulations.sip import *
+from simulations.sip import (
+    get_sip_data,
+    sip_guyane_cayenne, sip_guyane_cayenne_nom,
+    sip_guyane_kourou, sip_guyane_kourou_nom,
+    sip_guyane_st_laurent_du_maroni, sip_guyane_st_laurent_du_maroni_nom
+    )
 
 
 def build_designations_entreprises(data):
@@ -219,7 +224,7 @@ def generate_matrice_annexe_drfip_guyane(data, annee_production, timestamp):
 
 def generate_matrice_1403_drfip_guyane(data, annee_production, timestamp):
     colonnes_1403 = [
-        "Service de la Direction générale des finances publiques en charge du recouvrement",  # Circonscription
+        "Service de la Direction générale des finances publiques en charge du recouvrement",  # Circonscription  # noqa: E501
         "Redevance départementale",  # Produit net = col. 2
         "Redevance communale",  # Produit net = col. 3
         "Taxe minière sur l'or de Guyane",  # Produit net = col. 4
@@ -243,26 +248,32 @@ def generate_matrice_1403_drfip_guyane(data, annee_production, timestamp):
     data_sip_st_laurent_du_maroni = get_sip_data(
         data, "commune_exploitation_principale", sip_guyane_st_laurent_du_maroni)
 
-    matrice_1403["Service de la Direction générale des finances publiques en charge du recouvrement"] = [
+    matrice_1403[
+        "Service de la Direction générale des finances publiques en charge du recouvrement"  # noqa: E501
+        ] = [
         sip_guyane_cayenne_nom,
         sip_guyane_kourou_nom,
         sip_guyane_st_laurent_du_maroni_nom
         ]
 
     matrice_1403["Redevance départementale"] = [
-        data_sip_cayenne["redevance_departementale_des_mines_aurifere_kg"].sum().astype(
-            int),
-        data_sip_kourou["redevance_departementale_des_mines_aurifere_kg"].sum().astype(
-            int),
-        data_sip_st_laurent_du_maroni["redevance_departementale_des_mines_aurifere_kg"].sum(
-            ).astype(int)
+        data_sip_cayenne[
+            "redevance_departementale_des_mines_aurifere_kg"
+            ].sum().astype(int),
+        data_sip_kourou[
+            "redevance_departementale_des_mines_aurifere_kg"
+            ].sum().astype(int),
+        data_sip_st_laurent_du_maroni[
+            "redevance_departementale_des_mines_aurifere_kg"
+            ].sum().astype(int)
         ]
 
     matrice_1403["Redevance communale"] = [
         data_sip_cayenne["redevance_communale_des_mines_aurifere_kg"].sum().astype(int),
         data_sip_kourou["redevance_communale_des_mines_aurifere_kg"].sum().astype(int),
-        data_sip_st_laurent_du_maroni["redevance_communale_des_mines_aurifere_kg"].sum().astype(
-            int)
+        data_sip_st_laurent_du_maroni[
+            "redevance_communale_des_mines_aurifere_kg"
+            ].sum().astype(int)
         ]
     matrice_1403["Taxe minière sur l'or de Guyane"] = [
         data_sip_cayenne["taxe_guyane"].sum().astype(int),
@@ -276,15 +287,21 @@ def generate_matrice_1403_drfip_guyane(data, annee_production, timestamp):
         + matrice_1403["Taxe minière sur l'or de Guyane"]
         )
 
-    matrice_1403["Sommes revenant à Région de Guyane"] = matrice_1403["Taxe minière sur l'or de Guyane"]
+    matrice_1403["Sommes revenant à Région de Guyane"] = matrice_1403[
+        "Taxe minière sur l'or de Guyane"
+        ]
     matrice_1403["Sommes revenant à Conservatoire de biodiversité"] = [None, None, None]
     matrice_1403["Frais d'assiette et de recouvrement"] = (
-        total_rdcm_taxe * 0.08).astype(int)  # 4.4% mais à 8% en 2020, perte des centimes
+        total_rdcm_taxe * 0.08
+        ).astype(int)  # 4.4% mais à 8% en 2020, perte des centimes
     matrice_1403["Dégrèvements et non-valeurs"] = [None,
         None, None]  # 3.6% mais vide en 2020
-    matrice_1403["Total des colonnes 7 et 8"] = matrice_1403["Frais d'assiette et de recouvrement"]
-    matrice_1403["Total des colonnes 2, 3 ,4 et 9"] = total_rdcm_taxe + \
-        matrice_1403["Total des colonnes 7 et 8"]
+    matrice_1403["Total des colonnes 7 et 8"] = matrice_1403[
+        "Frais d'assiette et de recouvrement"
+        ]
+    matrice_1403["Total des colonnes 2, 3 ,4 et 9"] = total_rdcm_taxe + matrice_1403[
+        "Total des colonnes 7 et 8"
+        ]
     matrice_1403["Nombre d'articles des rôles"] = [
         data_sip_cayenne["nom_entreprise"].nunique(),
         data_sip_kourou["nom_entreprise"].nunique(),
@@ -305,17 +322,20 @@ def generate_matrice_1404_sip(columns_1404, data_sip, sip_name):
 
     NB_ROWS_SIP = len(data_sip)
 
-    matrice_1404_sip["Service de la direction générale des finances publiques en charge du recouvrement"] = [
-        sip_name] * NB_ROWS_SIP
+    matrice_1404_sip[
+        "Service de la direction générale des finances publiques en charge du recouvrement"  # noqa: E501
+        ] = [sip_name] * NB_ROWS_SIP
     matrice_1404_sip["Articles des rôles"] = data_sip["titre_id"].index
 
-    # Avant affectation, on valide le bon alignement des articles à défaut d'index commun aux DataFrame
+    # Avant affectation, on valide le bon alignement des articles
+    # à défaut d'index commun aux DataFrame
     exploitants_sip_cayenne = build_designations_entreprises(data_sip)
     assert (matrice_1404_sip["Articles des rôles"].values
             == exploitants_sip_cayenne.index).all()
     matrice_1404_sip["Désignation des exploitants"] = exploitants_sip_cayenne.values
 
-    # DEPARTEMENTS ET COMMUNES sur les territoires desquels fonctionnent les exploitations :
+    # DEPARTEMENTS ET COMMUNES
+    # sur les territoires desquels fonctionnent les exploitations :
     matrice_1404_sip["Départements"] = ['Guyane'] * NB_ROWS_SIP  # col. 4
     # col. 5
     matrice_1404_sip["Communes"] = data_sip["commune_exploitation_principale"].values
@@ -324,31 +344,49 @@ def generate_matrice_1404_sip(columns_1404, data_sip, sip_name):
     matrice_1404_sip["Revenus imposables à la TFPB (état 1123, col. 3)"] = [
         None] * NB_ROWS_SIP  # vide en drfip
 
-    # Avant affectation, on valide le bon alignement des articles à défaut d'index commun aux DataFrame
+    # Avant affectation, on valide le bon alignement des articles
+    # à défaut d'index commun aux DataFrame
     production_communale = calculate_production_communale(data_sip)
     assert (matrice_1404_sip["Articles des rôles"].values
             == production_communale.index).all()
     matrice_1404_sip["Tonnages extraits :"] = production_communale.values
 
     # REDEVANCE DÉPARTEMENTALE :
-    matrice_1404_sip["Produit net de la redevance (RDM)"] = data_sip["redevance_departementale_des_mines_aurifere_kg"].values
-    matrice_1404_sip["Sommes revenant aux départements désignés dans la colonne 4 (a)"] = matrice_1404_sip[
-        "Produit net de la redevance (RDM)"]
+    matrice_1404_sip["Produit net de la redevance (RDM)"] = data_sip[
+        "redevance_departementale_des_mines_aurifere_kg"
+        ].values
+    matrice_1404_sip[
+        "Sommes revenant aux départements désignés dans la colonne 4 (a)"
+        ] = matrice_1404_sip["Produit net de la redevance (RDM)"]
 
     # REDEVANCE COMMUNALE :
     # col. 10
-    matrice_1404_sip["Produit net de la redevance (RCM)"] = data_sip["redevance_communale_des_mines_aurifere_kg"].values
+    matrice_1404_sip["Produit net de la redevance (RCM)"] = data_sip[
+        "redevance_communale_des_mines_aurifere_kg"
+        ].values
     # > Répartition
-    matrice_1404_sip["1ère fraction (col. 10 x 35%)"] = matrice_1404_sip["Produit net de la redevance (RCM)"] * 0.35
-    matrice_1404_sip["2ème fraction (col. 10 x 10%)"] = matrice_1404_sip["Produit net de la redevance (RCM)"] * 0.1
-    matrice_1404_sip["3ème fraction (col. 10 x 55%)"] = matrice_1404_sip["Produit net de la redevance (RCM)"] * 0.55
-    # > Sommes revenant aux communes désignées dans la colonne 5 au titre des 1ère et 2ème fractions
+    matrice_1404_sip["1ère fraction (col. 10 x 35%)"] = matrice_1404_sip[
+        "Produit net de la redevance (RCM)"
+        ] * 0.35
+    matrice_1404_sip["2ème fraction (col. 10 x 10%)"] = matrice_1404_sip[
+        "Produit net de la redevance (RCM)"
+        ] * 0.1
+    matrice_1404_sip["3ème fraction (col. 10 x 55%)"] = matrice_1404_sip[
+        "Produit net de la redevance (RCM)"
+        ] * 0.55
+    # > Sommes revenant aux communes désignées dans la colonne 5
+    # au titre des 1ère et 2ème fractions
     # col. 14
-    matrice_1404_sip["1ère fraction (b)"] = matrice_1404_sip["1ère fraction (col. 10 x 35%)"]
+    matrice_1404_sip["1ère fraction (b)"] = matrice_1404_sip[
+        "1ère fraction (col. 10 x 35%)"
+        ]
     # col. 15
-    matrice_1404_sip["2ème fraction (a)"] = matrice_1404_sip["2ème fraction (col. 10 x 10%)"]
-    matrice_1404_sip["Total (col. 14 + col. 15)"] = matrice_1404_sip["1ère fraction (b)"] + \
-        matrice_1404_sip["2ème fraction (a)"]
+    matrice_1404_sip["2ème fraction (a)"] = matrice_1404_sip[
+        "2ème fraction (col. 10 x 10%)"
+        ]
+    matrice_1404_sip["Total (col. 14 + col. 15)"] = matrice_1404_sip[
+        "1ère fraction (b)"
+        ] + matrice_1404_sip["2ème fraction (a)"]
 
     # TAXE MINIÈRE SUR L'OR DE GUYANE
     matrice_1404_sip["Produit net de la taxe"] = data_sip["taxe_guyane"].values
@@ -362,11 +400,12 @@ def generate_matrice_1404_sip(columns_1404, data_sip, sip_name):
 
 def generate_matrices_1404_drfip_guyane(data, annee_production, timestamp):
     colonnes_1404 = [
-        "Service de la direction générale des finances publiques en charge du recouvrement",  # SIP
+        "Service de la direction générale des finances publiques en charge du recouvrement",  # SIP  # noqa: E501
         "Articles des rôles",
         "Désignation des exploitants",
 
-        # DEPARTEMENTS ET COMMUNES sur les territoires desquels fonctionnent les exploitations :
+        # DEPARTEMENTS ET COMMUNES
+        # sur les territoires desquels fonctionnent les exploitations :
         "Départements",  # col. 4
         "Communes",  # col. 5
 
@@ -384,7 +423,8 @@ def generate_matrices_1404_drfip_guyane(data, annee_production, timestamp):
         "1ère fraction (col. 10 x 35%)",
         "2ème fraction (col. 10 x 10%)",
         "3ème fraction (col. 10 x 55%)",
-        # > Sommes revenant aux communes désignées dans la colonne 5 au titre des 1ère et 2ème fractions
+        # > Sommes revenant aux communes désignées dans la colonne 5
+        # au titre des 1ère et 2ème fractions
         "1ère fraction (b)",  # col. 14
         "2ème fraction (a)",  # col. 15
         "Total (col. 14 + col. 15)",
@@ -410,7 +450,7 @@ def generate_matrices_1404_drfip_guyane(data, annee_production, timestamp):
     matrice_1404_sip_cayenne = generate_matrice_1404_sip(
         colonnes_1404, data_sip_cayenne, sip_guyane_cayenne_nom)
     matrice_1404_sip_cayenne.to_csv(
-        f'matrice_1404_sip_guyane_cayenne_production_{annee_production}_{timestamp}.csv',
+        f'matrice_1404_sip_guyane_cayenne_production_{annee_production}_{timestamp}.csv',  # noqa: E501
         index=False,
         sep=';',
         encoding='utf-8',
@@ -430,11 +470,14 @@ def generate_matrices_1404_drfip_guyane(data, annee_production, timestamp):
         )
 
     data_sip_st_laurent_du_maroni = get_sip_data(
-        data, "commune_exploitation_principale", sip_guyane_st_laurent_du_maroni)
+        data, "commune_exploitation_principale", sip_guyane_st_laurent_du_maroni
+        )
     matrice_1404_sip_st_laurent_du_maroni = generate_matrice_1404_sip(
-        colonnes_1404, data_sip_st_laurent_du_maroni, sip_guyane_st_laurent_du_maroni_nom)
+        colonnes_1404, data_sip_st_laurent_du_maroni,
+        sip_guyane_st_laurent_du_maroni_nom
+        )
     matrice_1404_sip_st_laurent_du_maroni.to_csv(
-        f'matrice_1404_sip_guyane_st_laurent_du_maroni_production_{annee_production}_{timestamp}.csv',
+        f'matrice_1404_sip_guyane_st_laurent_du_maroni_production_{annee_production}_{timestamp}.csv',  # noqa: E501
         index=False,
         sep=';',
         encoding='utf-8',
