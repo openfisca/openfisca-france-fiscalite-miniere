@@ -1,5 +1,17 @@
 # Changelog
 
+# 3.0.0 [#22](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/22)
+
+* Évolution du système socio-fiscal.
+* Périodes concernées : toutes.
+* Zones impactées : 
+  - `entities.py`.
+  - `variables/*`
+* Détails :
+  - Renomme l'entité sociéte en article.
+  - Ajoute l'entité titre.
+  - Ajoute des caractéristiques de titres.
+
 ### 2.0.2 [#21](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/21)
 
 * Changement mineur.
