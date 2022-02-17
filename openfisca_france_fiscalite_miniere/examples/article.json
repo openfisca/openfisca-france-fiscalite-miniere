@@ -1,6 +1,6 @@
 {
-    "societes": {
-        "un_titre_exemple": {
+    "articles": {
+        "un_article_exemple": {
             "quantite_aurifere_kg": {
                 "2019": 1000,
                 "2018": 1000

@@ -130,7 +130,7 @@
 
 - name: "Chlorure de sodium : redevance totale communale"
   input:
-    societes:
+    articles:
       societe_1:
         redevance_communale_des_mines_sel_abattage_kt: 
           2019: 5
@@ -142,11 +142,11 @@
           2019: 2
     communes:
       commune_1:
-        societes: 
+        articles: 
         - societe_1
         - societe_2
       commune_2:
-        societes: 
+        articles: 
         - societe_3
   output:
     redevance_communale_totale_sel: 

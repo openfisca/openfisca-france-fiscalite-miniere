@@ -1,0 +1,54 @@
+{
+    "articles": {
+        "m-ax-lieu-dit-OR-COMMUNE1": {
+            "quantite_aurifere_kg": {
+                "2021": 1000
+            },
+            "surface_communale": {
+                "2021": 0.5
+            },
+            "redevance_communale_des_mines_aurifere_kg": {
+                "2022": null
+            },
+            "surface_totale": {
+                "2021": 0.5 
+            }
+        },
+        "m-ax-lieu-dit-SEL-RAFFINE-COMMUNE1": {
+            "quantite_sel_raffine_kt": {
+                "2021": 1000
+            },
+            "surface_totale": {
+                "2021": 0.5 
+            }
+        }
+    },
+    "titres": {
+        "m-ax-lieu-dit": {
+            "commune_principale_exploitation": {
+                "2021": "COMMUNE1"
+            },
+            "operateur": {
+                "2021": "amazon mines SAS"
+            },
+            "categorie":  {
+                "2021": "pme"
+            },
+            "investissement":  {
+                "2021": "4500"
+            },
+            "articles": [
+                "m-ax-lieu-dit-OR-COMMUNE1",
+                "m-ax-lieu-dit-SEL-RAFFINE-COMMUNE1"
+            ]
+        }
+    },
+    "communes": {
+        "COMMUNE1": {
+            "articles": [
+                "m-ax-lieu-dit-OR-COMMUNE1",
+                "m-ax-lieu-dit-SEL-RAFFINE-COMMUNE1"
+            ]   
+        }
+    }
+}

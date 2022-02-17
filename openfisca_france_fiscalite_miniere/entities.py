@@ -1,32 +1,46 @@
 from openfisca_core.entities import build_entity
 
 
-Societe = build_entity(
-    key = "societe",
-    plural = "societes",
-    label = 'Société',
+Article = build_entity(
+    key = "article",
+    plural = "articles",
+    label = 'Article',
     is_person = True,  # = est entité pivot
     doc = '''
-        Société = titre minier à ce stade.
-        Un titre peut aussi être sur plusieurs communes.
-        L'une des communes du titre est le lieu principal d'exploitation.
-        Il y a une substance extraite par titre.
+        Un article est une part d'un unique titre.
+        Il est sur une seule commune.
+        Il traite d'une seule substance fiscale.
     '''
     )
 
 
+Titre = build_entity(
+    # il n'y a qu'une Titre par article
+    key = "titre",
+    plural = "titres",
+    label = 'Titre',
+    roles = [
+        {
+            'key': 'article',
+            'plural': 'articles',
+            'label': 'Articles'
+            }
+        ]
+    )
+
+
 Commune = build_entity(
-    # suppose qu'il n'y a qu'une commune par société/titre ?
+    # il n'y a qu'une commune par article
     key = "commune",
     plural = "communes",
     label = 'Commune',
     roles = [
         {
-            'key': 'societe',
-            'plural': 'societes',
-            'label': 'Sociétés'
+            'key': 'article',
+            'plural': 'articles',
+            'label': 'Articles'
             }
         ]
     )
 
-entities = [Societe, Commune]
+entities = [Article, Titre, Commune]

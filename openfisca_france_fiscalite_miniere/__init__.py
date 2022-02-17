@@ -15,5 +15,5 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.open_api_config = {
             "variable_example": "redevance_communale_des_mines_aurifere_kg",
             "parameter_example": "redevances.communales.aurifere",
-            "simulation_example": examples.societe,
+            "simulation_example": examples.article,
             }

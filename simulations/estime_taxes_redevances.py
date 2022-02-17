@@ -279,6 +279,24 @@ def clean_data(data, data_period):
                 communes_guyane)
             ][["commune_exploitation_principale"]]
 
+    communes_guyane = (
+        sip_guyane_cayenne
+        + sip_guyane_kourou
+        + sip_guyane_st_laurent_du_maroni
+        )
+    filtre_communes = une_commune_par_titre[
+        "commune_exploitation_principale"
+        ].isin(communes_guyane)
+    une_commune_par_titre = une_commune_par_titre.loc[filtre_communes]
+
+    assert une_commune_par_titre["commune_exploitation_principale"].isin(
+        communes_guyane
+        ).all(), une_commune_par_titre.loc[
+            ~une_commune_par_titre[
+                "commune_exploitation_principale"
+                ].isin(communes_guyane)
+            ][["commune_exploitation_principale"]]
+
     return une_commune_par_titre
 
 
@@ -369,7 +387,7 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
     simulation_builder = SimulationBuilder()
     simulation_builder.create_entities(tax_benefit_system)
     simulation_builder.declare_person_entity(
-        'societe',
+        'article',
         titres_ids
         )  # titres sans doublons via renommage multicommunes
 
@@ -377,8 +395,8 @@ def build_simulation(tax_benefit_system, period, titres_ids, communes_ids):
     commune_instance = simulation_builder.declare_entity('commune', communes_ids)
     # un id par titre existant dans l'ordre de titres_ids :
     titres_des_communes = communes_ids
-    # role de chaque titre dans la commune = societe :
-    titres_communes_roles = ['societe'] * len(titres_des_communes)
+    # role de chaque titre dans la commune = article :
+    titres_communes_roles = ['article'] * len(titres_des_communes)
     simulation_builder.join_with_persons(
         commune_instance,
         titres_des_communes,

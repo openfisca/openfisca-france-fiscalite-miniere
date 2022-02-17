@@ -103,7 +103,7 @@ tax_benefit_system = FranceFiscaliteMiniereTaxBenefitSystem()
 
 simulation_builder = SimulationBuilder()
 simulation_builder.create_entities(tax_benefit_system)
-simulation_builder.declare_person_entity('societe', titres_ids)
+simulation_builder.declare_person_entity('article', titres_ids)
 
 simulation = simulation_builder.build(tax_benefit_system)
 simulation.set_input(
