@@ -118,8 +118,9 @@ def tax_benefit_system():
 
 @pytest.fixture
 def simulation_data(titres_data, activites_data):
-    full_data = get_simulation_full_data(titres_data, activites_data)
-    data = clean_data(full_data)
+    data_period = 2019
+    full_data = get_simulation_full_data(titres_data, activites_data, data_period)
+    data = clean_data(full_data, data_period)
     return data
 
 
@@ -146,7 +147,13 @@ def test_get_titres_annee(communes_par_titre, activite_par_titre, activites_data
 
 
 def test_get_simulation_full_data(titres_data, activites_data):
-    full_data = get_simulation_full_data(titres_data, activites_data)  # act
+    data_period = 2019
+
+    full_data = get_simulation_full_data(
+        titres_data,
+        activites_data,
+        data_period
+        )  # act
 
     assert not full_data.empty
     assert('id' not in full_data.columns)
@@ -154,9 +161,10 @@ def test_get_simulation_full_data(titres_data, activites_data):
 
 
 def test_clean_data(titres_data, activites_data):
-    full_data = get_simulation_full_data(titres_data, activites_data)
+    data_period = 2019
+    full_data = get_simulation_full_data(titres_data, activites_data, data_period)
 
-    data = clean_data(full_data)  # act
+    data = clean_data(full_data, data_period)  # act
 
     assert((data['titre_id'] == [
         'titre_3+commune_x_p1', 'titre_3+commune_x_p2', 'titre_2'
