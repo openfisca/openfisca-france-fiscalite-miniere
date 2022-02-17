@@ -16,8 +16,8 @@ Article = build_entity(
 
 Titre = build_entity(
     # il n'y a qu'une Titre par article
-    key = "Titre",
-    plural = "Titres",
+    key = "titre",
+    plural = "titres",
     label = 'Titre',
     roles = [
         {
