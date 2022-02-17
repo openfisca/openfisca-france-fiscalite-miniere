@@ -11,32 +11,41 @@
                 "2022": null
             }
         },
-        "m-ax-lieu-dit-ARGENT-COMMUNE1": {
-            "quantite_argentifere_kg": {
+        "m-ax-lieu-dit-SEL-RAFFINE-COMMUNE1": {
+            "quantite_sel_raffine_kt": {
                 "2021": 1000
             }
         }
     },
     "titres": {
         "m-ax-lieu-dit": {
-            "commune_principale_exploitation": "COMMUNE1",
-            "operateur": "amazon mines SAS",
-            "operateur_categorie": "PME",
-            "investissement": 4500,
+            "commune_principale_exploitation": {
+                "2021": "COMMUNE1"
+            },
+            "operateur": {
+                "2021": "amazon mines SAS"
+            },
+            "categorie":  {
+                "2021": "PME"
+            },
+            "investissement":  {
+                "2021": "4500"
+            },
             "articles": [
                 "m-ax-lieu-dit-OR-COMMUNE1",
-                "m-ax-lieu-dit-ARGENT-COMMUNE1"
+                "m-ax-lieu-dit-SEL-RAFFINE-COMMUNE1"
             ],
-            "surface_totale": 0.5 
+            "surface_totale": {
+                "2021": 0.5 
+            }
         }
     },
     "communes": {
         "COMMUNE1": {
             "articles": [
                 "m-ax-lieu-dit-OR-COMMUNE1",
-                "m-ax-lieu-dit-ARGENT-COMMUNE1"
-            ]
-             
+                "m-ax-lieu-dit-SEL-RAFFINE-COMMUNE1"
+            ]   
         }
     }
 }
