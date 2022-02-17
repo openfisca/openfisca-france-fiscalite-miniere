@@ -1,7 +1,5 @@
 import logging
 
-import numpy
-
 from openfisca_france_fiscalite_miniere import (
     CountryTaxBenefitSystem as FranceFiscaliteMiniereTaxBenefitSystem
     )
@@ -11,7 +9,6 @@ from pandas import DataFrame, Series
 import pytest
 
 from simulations.estime_taxes_redevances import (
-    build_simulation,
     clean_data,
     convertit_grammes_a_kilo,
     get_activites_annee,
@@ -38,7 +35,7 @@ def communes_par_titre() -> DataFrame:
         'substances': ['or', 'or', 'or;substances connexes', 'or'],
         'communes': [
             'commune_1 (0.123)', 'commune_1 (0.456)',
-            'commune_x_p1 (42.0);commune_x_p2 (0.216)',
+            'Cayenne_p1 (42.0);Cayenne_p2 (0.216)',
             'temp (0.01)'
             ],
         'departements': ['Guyane', 'MonDepartement', 'Guyane', 'Guyane'],
@@ -158,38 +155,6 @@ def test_get_simulation_full_data(titres_data, activites_data):
     assert not full_data.empty
     assert('id' not in full_data.columns)
     assert((full_data['titre_id'] == ['titre_3', 'titre_2']).all())
-
-
-def test_clean_data(titres_data, activites_data):
-    data_period = 2019
-    full_data = get_simulation_full_data(titres_data, activites_data, data_period)
-
-    data = clean_data(full_data, data_period)  # act
-
-    assert((data['titre_id'] == [
-        'titre_3+commune_x_p1', 'titre_3+commune_x_p2', 'titre_2'
-        ]).all())
-    assert (data.renseignements_orNet.values == [3., 3., 2.]).all()
-
-
-def test_build_simulation(tax_benefit_system, simulation_data):
-    simulation = build_simulation(
-        tax_benefit_system, ANNEE_ACTIVITES,
-        simulation_data.titre_id, simulation_data.communes
-        )  # act
-
-    simulation_societes = simulation.populations['societe'].ids
-    simulation_communes = simulation.populations['commune'].ids
-
-    # ok si pas de doublons sur societes et communes
-    unique_societes, unique_societes_counts = numpy.unique(
-        simulation_societes, return_counts=True
-        )
-    assert any(count == 1 for count in unique_societes_counts)
-    unique_communes, unique_communes_counts = numpy.unique(
-        simulation_communes, return_counts=True
-        )
-    assert any(count == 1 for count in unique_communes_counts)
 
 
 def test_convertit_grammes_a_kilo():
