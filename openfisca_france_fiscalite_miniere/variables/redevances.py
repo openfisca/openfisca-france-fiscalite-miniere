@@ -110,7 +110,7 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
 class redevance_departementale_des_mines_aurifere_kg(Variable):
     value_type = float
     entity = entities.Article
-    label = "Redevance départementale des_mines pour le minerais aurifères"
+    label = "Redevance départementale des mines pour le minerais aurifères"
     reference = [
         "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01",  # noqa: E501
         "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501

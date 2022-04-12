@@ -345,21 +345,19 @@
 #       2019: 40840
 #       2018: 39660
 
-# - name: "Minerais d'antimoine (par tonne d'antimoine contenu)"
-#   input:
-#     quantite_antimoine_t:
-#       2018: 100
-#       2017: 100
-#   output:
-#     redevance_communale_des_mines_antimoine_t:
-#       2019: 1180
-#       2018: 1150
-#     redevance_departementale_des_mines_antimoine_t:
-#       2019: 270
-#       2018: 260
-#     redevance_totale_des_mines_antimoine_t:
-#       2019: 1450
-#       2018: 1410
+- name: "Minerais d'antimoine (par tonne d'antimoine contenu)"
+  period: 2021  # année de production
+  input:
+    quantite_antimoine_t: 100
+    surface_communale: 1
+    surface_totale: 2
+  output:
+    redevance_communale_des_mines_antimoine:
+      2021: 0
+      2022: 13.10 * 100 * (1/2)
+    redevance_departementale_des_mines_antimoine:
+      2021: 0
+      2022: 3 * 100 * (1/2)
 
 # - name: "Minerais de plomb (par centaine de tonnes de plomb contenu)"
 #   input:
