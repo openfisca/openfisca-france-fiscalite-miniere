@@ -10,7 +10,7 @@ class quantite_antimoine_t(Variable):
     value_type = float
     entity = Article
     definition_period = YEAR
-    label = "Minerais d'antimoine (par tonne d'antimoine contenu)"
+    label = "Quantité extraite de minerai d'antimoine (par tonne d'antimoine contenu)"
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006294877/2020-03-25"  # noqa: E501
 
 
@@ -18,7 +18,7 @@ class redevance_communale_des_mines_antimoine(Variable):
     value_type = float
     entity = Article
     definition_period = YEAR
-    label = "Redevance communale des mines pour le minerais d'antimoine"
+    label = "Redevance communale des mines pour le minerai d'antimoine"
     reference = [
         "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293413/1987-08-09",  # noqa: E501
         "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042160076/2020-07-25"  # noqa: E501
@@ -51,7 +51,7 @@ class redevance_communale_des_mines_antimoine(Variable):
 class redevance_departementale_des_mines_antimoine(Variable):
     value_type = float
     entity = Article
-    label = "Redevance départementale des mines pour le minerais d'antimoine"
+    label = "Redevance départementale des mines pour le minerai d'antimoine"
     definition_period = YEAR
     reference = [
         "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501
