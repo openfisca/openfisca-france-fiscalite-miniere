@@ -90,7 +90,7 @@ activite_selg_2018_par_titre = pandas.merge(
     left_on="id",
     right_on="titre_id")
 activite_selg_2018_par_titre['renseignements_selg'].fillna(0, inplace=True)
-print(activite_selg_2018_par_titre[[  # noqa: T001
+print(activite_selg_2018_par_titre[[  # noqa: T201
     'id_x', 'communes', 'renseignements_selg', 'annee'
     ]])
 
@@ -114,8 +114,8 @@ simulation.set_input(
 redevance_communale_des_mines_sel_abattage_kt = simulation.calculate(
     'redevance_communale_des_mines_sel_abattage_kt', period
     )
-print("redevance_communale_des_mines_sel_abattage_kt ?")  # noqa: T001
-print(redevance_communale_des_mines_sel_abattage_kt)  # noqa: T001
+print("redevance_communale_des_mines_sel_abattage_kt ?")  # noqa: T201
+print(redevance_communale_des_mines_sel_abattage_kt)  # noqa: T201
 
 
 # SIMULATION : ESSAI REFORME
@@ -139,21 +139,21 @@ colonnes = ['commune',
             'redevance communale par titre']
 
 for index, row in activite_selg_2018_par_titre.iterrows():
-    print("\n", row.id_x)  # noqa: T001
+    print("\n", row.id_x)  # noqa: T201
     titre_communes = row.communes
 
     titre_surface_totale = sum(map(float, titre_communes.values()))
-    print(titre_surface_totale, " = ", titre_communes)  # noqa: T001
+    print(titre_surface_totale, " = ", titre_communes)  # noqa: T201
 
     redevance_actuelle = redevance_communale_des_mines_sel_abattage_kt[index]
-    print("/titre", redevance_actuelle, "€")  # noqa: T001
+    print("/titre", redevance_actuelle, "€")  # noqa: T201
 
     for commune in titre_communes:
-        print(titre_communes[commune])  # noqa: T001
+        print(titre_communes[commune])  # noqa: T201
         nouvelle_redevance_commune = (
             redevance_actuelle * float(titre_communes[commune]) / titre_surface_totale
             )
-        print("/commune", commune, nouvelle_redevance_commune)  # noqa: T001
+        print("/commune", commune, nouvelle_redevance_commune)  # noqa: T201
         ligne_resultat = (
             commune,
             redevance_actuelle,
