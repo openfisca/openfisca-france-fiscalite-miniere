@@ -1,0 +1,12 @@
+- name: Répartition de la taxe aurifère 
+  period: 2020
+  input:
+    surface_communale: 1
+    surface_totale: 1
+    quantite_aurifere_kg: 1000
+    taxe_guyane_deduction: 0
+  output:
+    taxe_guyane_brute:
+      2021: 498.06 * 1000
+    taxe_guyane:
+      2021 : 498.06 * 1000

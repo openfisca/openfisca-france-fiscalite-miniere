@@ -42,7 +42,7 @@ class taxe_guyane_brute(Variable):
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
         quantites = articles("quantite_aurifere_kg", annee_production)
-        categories = articles("categorie", annee_production).decode()
+        categories = articles.titre("categorie", annee_production).decode()
         tarifs = (params.categories[categorie.name] for categorie in categories)
         tarifs = numpy.fromiter(tarifs, dtype = float)
 
@@ -62,7 +62,7 @@ class taxe_guyane_brute(Variable):
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
         quantites = articles("quantite_aurifere_kg", annee_production)
-        categories = articles("categorie", annee_production).decode()
+        categories = articles.titre("categorie", annee_production).decode()
         tarifs = (params.categories[categorie.name] for categorie in categories)
         tarifs = numpy.fromiter(tarifs, dtype = float)
 
@@ -79,7 +79,7 @@ class taxe_guyane_deduction(Variable):
     def formula_2020_01(articles, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
-        investissements = articles("investissement", annee_production)
+        investissements = articles.titre("investissement", annee_production)
         taxes_brutes = articles("taxe_guyane_brute", period)
         taux_deduction = params.deductions.taux
         montant_deduction_max = params.deductions.montant
@@ -107,7 +107,7 @@ class taxe_guyane_deduction(Variable):
     def formula(articles, period, parameters) -> numpy.ndarray:
         annee_production = period.last_year
         params = parameters(period).taxes.guyane
-        investissements = articles("investissement", annee_production)
+        investissements = articles.titre("investissement", annee_production)
         taxes_brutes = articles("taxe_guyane_brute", period)
         taux_deduction = params.deductions.taux
         montant_deduction_max = params.deductions.montant
