@@ -15,7 +15,7 @@ deps:
 
 install: deps
 	@# Install OpenFisca-France-Fiscalite-Miniere for development.
-	@# `make install` installs the editable version of OpenFisca-France.
+	@# `make install` installs the editable version of OpenFisca-France-Fiscalite-Miniere.
 	@# This allows contributors to test as they code.
 	pip install --editable .[dev,simu] --upgrade
 
