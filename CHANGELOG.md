@@ -1,5 +1,15 @@
 # Changelog
 
+### 3.0.1 [#25](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/25)
+
+* Correction d'un crash.
+* Périodes concernées : toutes.
+* Zones impactées : N/A
+* Détails :
+  - Corrige l'erreur d'exécution de l'API Web (`cannot import name 'escape' from 'jinja2`)
+  - Met à jour la dépendance `Flask` via la mise à jour d'`OpenFisca-Core`
+  - Met à jour l'ignore des affichages console suite à l'évolution de `flake8-print`
+
 # 3.0.0 [#22](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/22)
 
 * Évolution du système socio-fiscal.
