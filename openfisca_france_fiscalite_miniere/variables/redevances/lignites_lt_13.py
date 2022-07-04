@@ -14,7 +14,7 @@ class quantite_lignites_lt_13_kt(Variable):
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006294877/2020-03-25"  # noqa: E501
 
 
-class redevance_communale_des_mines_fer(Variable):
+class redevance_communale_des_mines_lignites_lt_13(Variable):
     value_type = float
     entity = Article
     definition_period = YEAR
@@ -37,7 +37,7 @@ class redevance_communale_des_mines_fer(Variable):
         return round(rcm, decimals = 2)
 
 
-class redevance_departementale_des_mines_fer(Variable):
+class redevance_departementale_des_mines_lignites_lt_13(Variable):
     value_type = float
     entity = Article
     label = "Redevance départementale des mines pour les lignites d'un pouvoir calorifique inférieur à 13 MJ/kg"  # noqa: E501
