@@ -10,7 +10,7 @@ class quantite_tungstene_t(Variable):
     value_type = float
     entity = Article
     definition_period = YEAR
-    label = "Quantité extraite de minerai de tungstène (par tonne d'oxyde de tungstène WO3 contenu)"
+    label = "Quantité extraite de minerai de tungstène (par tonne d'oxyde de tungstène WO3 contenu)"  # noqa: E501
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006294877/2020-03-25"  # noqa: E501
 
 
@@ -27,11 +27,12 @@ class redevance_communale_des_mines_tungstene(Variable):
     def formula_2020_01(articles, period, parameters) -> ndarray:
         annee_production = period.last_year
 
-        surface_communale_proportionnee = articles("surface_communale_proportionnee", annee_production)
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
         quantite = articles("quantite_tungstene_t", annee_production)
-        
+
         tarif_rcm = parameters(period).redevances.communales.tungstene
-        
+
         rcm = (quantite * tarif_rcm) * surface_communale_proportionnee
         return round(rcm, decimals = 2)
 
@@ -43,13 +44,14 @@ class redevance_departementale_des_mines_tungstene(Variable):
     definition_period = YEAR
     reference = [
         "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501
-        "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01",  # noqa: E501
+        "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01",
     ]
 
     def formula_2020_01(articles, period, parameters) -> ndarray:
         annee_production = period.last_year
 
-        surface_communale_proportionnee = articles("surface_communale_proportionnee", annee_production)
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
         quantite = articles("quantite_tungstene_t", annee_production)
 
         tarif_rdm = parameters(period).redevances.departementales.tungstene

@@ -1,4 +1,4 @@
-from numpy import divide, ndarray, round, zeros
+from numpy import ndarray, round
 
 from openfisca_core.periods import YEAR
 from openfisca_core.variables import Variable
@@ -25,26 +25,14 @@ class redevance_communale_des_mines_fer_pyrite(Variable):
     ]
 
     def formula_2020_01(articles, period, parameters) -> ndarray:
-        def redevance_par_surface(tarif, quantite, surface_article, surface_totale):
-            redevance_nulle = zeros(len(surface_article))
-            return divide(
-                (quantite * tarif) * surface_article,
-                surface_totale,
-                out = redevance_nulle,
-                where = (surface_totale != 0)
-                )
-
         tarif_rcm = parameters(period).redevances.communales.fer_pyrite
 
         annee_production = period.last_year
         quantite = articles("quantite_fer_pyrite_kt", annee_production)
-        surface_communale = articles("surface_communale", annee_production)
-        surface_totale = articles("surface_totale", annee_production)
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
 
-        rcm = redevance_par_surface(
-            tarif_rcm, quantite,
-            surface_communale, surface_totale
-            )
+        rcm = (quantite * tarif_rcm) * surface_communale_proportionnee
         return round(rcm, decimals = 2)
 
 
@@ -59,24 +47,12 @@ class redevance_departementale_des_mines_fer_pyrite(Variable):
     ]
 
     def formula_2020_01(articles, period, parameters) -> ndarray:
-        def redevance_par_surface(tarif, quantite, surface_article, surface_totale):
-            redevance_nulle = zeros(len(surface_article))
-            return divide(
-                (quantite * tarif) * surface_article,
-                surface_totale,
-                out = redevance_nulle,
-                where = (surface_totale != 0)
-                )
-
         tarif_rdm = parameters(period).redevances.departementales.fer_pyrite
 
         annee_production = period.last_year
         quantite = articles("quantite_fer_pyrite_kt", annee_production)
-        surface_communale = articles("surface_communale", annee_production)
-        surface_totale = articles("surface_totale", annee_production)
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
 
-        rdm = redevance_par_surface(
-            tarif_rdm, quantite,
-            surface_communale, surface_totale
-            )
+        rdm = (quantite * tarif_rdm) * surface_communale_proportionnee
         return round(rdm, decimals = 2)

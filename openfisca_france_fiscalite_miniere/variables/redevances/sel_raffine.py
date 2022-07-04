@@ -24,11 +24,12 @@ class redevance_communale_des_mines_sel_raffine_kt(Variable):
     def formula_2020_01(articles, period, parameters) -> ndarray:
         annee_production = period.last_year
 
-        surface_communale_proportionnee = articles("surface_communale_proportionnee", annee_production)
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
         quantite = articles("quantite_sel_raffine_kt", annee_production)
-        
+
         tarif_rcm = parameters(period).redevances.communales.sel_raffine
-        
+
         rcm = (quantite * tarif_rcm) * surface_communale_proportionnee
         return round(rcm, decimals = 2)
 
@@ -50,7 +51,8 @@ class redevance_departementale_des_mines_sel_raffine_kt(Variable):
     def formula_2020_01(articles, period, parameters) -> ndarray:
         annee_production = period.last_year
 
-        surface_communale_proportionnee = articles("surface_communale_proportionnee", annee_production)
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
         quantite = articles("quantite_sel_raffine_kt", annee_production)
 
         tarif_rdm = parameters(period).redevances.departementales.sel_raffine
@@ -69,7 +71,7 @@ class redevance_departementale_des_mines_sel_raffine_kt(Variable):
 class redevance_totale_des_mines_sel_raffine_kt(Variable):
     value_type = float
     entity = Article
-    label = "Redevance départamentale + communale des mines de sel raffiné"  # noqa: E501
+    label = "Redevance départamentale + communale des mines de sel raffiné"
     definition_period = YEAR
 
     def formula(articles, period) -> ndarray:

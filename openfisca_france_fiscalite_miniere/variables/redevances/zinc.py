@@ -10,7 +10,7 @@ class quantite_zinc_kt(Variable):
     value_type = float
     entity = Article
     definition_period = YEAR
-    label = "Quantité extraite de minerai de zinc (par centaine de tonnes de zinc contenu)"
+    label = "Quantité extraite de minerai de zinc (par centaine de tonnes de zinc contenu)"  # noqa: E501
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006294877/2020-03-25"  # noqa: E501
 
 
@@ -27,11 +27,12 @@ class redevance_communale_des_mines_zinc(Variable):
     def formula_2020_01(articles, period, parameters) -> ndarray:
         annee_production = period.last_year
 
-        surface_communale_proportionnee = articles("surface_communale_proportionnee", annee_production)
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
         quantite = articles("quantite_zinc_kt", annee_production)
-        
+
         tarif_rcm = parameters(period).redevances.communales.zinc
-        
+
         rcm = (quantite * tarif_rcm) * surface_communale_proportionnee
         return round(rcm, decimals = 2)
 
@@ -49,7 +50,8 @@ class redevance_departementale_des_mines_zinc(Variable):
     def formula_2020_01(articles, period, parameters) -> ndarray:
         annee_production = period.last_year
 
-        surface_communale_proportionnee = articles("surface_communale_proportionnee", annee_production)
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
         quantite = articles("quantite_zinc_kt", annee_production)
 
         tarif_rdm = parameters(period).redevances.departementales.zinc

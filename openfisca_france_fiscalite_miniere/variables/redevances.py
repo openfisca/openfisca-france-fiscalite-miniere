@@ -28,7 +28,7 @@ class surface_communale_proportionnee(Variable):
     reference = [
         "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293413/1987-08-09",  # noqa: E501
         "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042160076/2020-07-25"  # noqa: E501
-    ]    
+    ]
 
     def formula_2020_01(articles, period) -> ndarray:
         surface_communale = articles("surface_communale", period)
@@ -36,11 +36,11 @@ class surface_communale_proportionnee(Variable):
         surface_nulle = zeros(len(surface_communale))
 
         return divide(
-                surface_communale,
-                surface_totale,
-                out = surface_nulle,
-                where = (surface_totale != 0)
-                )
+            surface_communale,
+            surface_totale,
+            out = surface_nulle,
+            where = (surface_totale != 0)
+            )
 
 
 class redevance_communale_totale_sel(Variable):
@@ -50,7 +50,7 @@ class redevance_communale_totale_sel(Variable):
     reference = "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293413/1987-08-09"  # noqa: E501
     definition_period = YEAR
 
-    def formula(communes, period) -> numpy.ndarray:
+    def formula(communes, period) -> ndarray:
         redevance_communale_des_mines_sel_abattage_kt = communes.members(
             "redevance_communale_des_mines_sel_abattage_kt",
             period)

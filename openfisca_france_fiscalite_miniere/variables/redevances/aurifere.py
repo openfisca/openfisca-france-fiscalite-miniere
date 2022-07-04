@@ -1,4 +1,4 @@
-from numpy import divide, ndarray, round, zeros
+from numpy import ndarray, round
 
 from openfisca_core.periods import YEAR
 from openfisca_core.variables import Variable
@@ -30,9 +30,9 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
     label = "Redevance communale des mines pour le minerais aurifères"
     reference = [
         # répartition
-        "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000030695303/2015-06-06",  # noqa: E501
+        "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000030695303/2015-06-06",
         # tarification
-        "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042160076/2020-07-25",  # noqa: E501
+        "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042160076/2020-07-25",
         "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293413/1987-08-09"  # noqa: E501
     ]
     definition_period = YEAR
@@ -45,28 +45,24 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
 
     def formula_2020_01(articles, period, parameters) -> ndarray:
         # répartition au prorata de la surface de commune du titre
-        # cas appliqué mais règlement inconnu ; à vérifier
+        # mais texte de référence inconnu ;
+        # appliqué à la redevance par anticipation de la répartition ?
         annee_production = period.last_year
-        taux = parameters(period).redevances.communales.aurifere
-        quantites = articles("quantite_aurifere_kg", annee_production)
 
-        surface_communale = articles("surface_communale", annee_production)
-        surface_totale = articles("surface_totale", annee_production)
+        tarif_rcm = parameters(period).redevances.communales.aurifere
+        quantite = articles("quantite_aurifere_kg", annee_production)
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
 
-        redevance = divide(
-            (quantites * taux) * surface_communale,
-            surface_totale,
-            out = zeros(len(surface_communale)),
-            where = (surface_totale != 0)
-            )
+        redevance = (quantite * tarif_rcm) * surface_communale_proportionnee
         return round(redevance, decimals = 2)
 
     def formula(articles, period, parameters) -> ndarray:
         annee_production = period.last_year
-        taux = parameters(period).redevances.communales.aurifere
-        quantites = articles("quantite_aurifere_kg", annee_production)
+        tarif = parameters(period).redevances.communales.aurifere
+        quantite = articles("quantite_aurifere_kg", annee_production)
 
-        return round(quantites * taux, decimals = 2)
+        return round(quantite * tarif, decimals = 2)
 
 
 class redevance_departementale_des_mines_aurifere_kg(Variable):
@@ -74,36 +70,31 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
     entity = Article
     label = "Redevance départementale des mines pour le minerais aurifères"
     reference = [
-        "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01",  # noqa: E501
+        "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01",
         "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501
     ]
     definition_period = YEAR
 
     def formula_2020_01(articles, period, parameters) -> ndarray:
         annee_production = period.last_year
-        tarif = parameters(period).redevances.departementales.aurifere
-        quantites = articles("quantite_aurifere_kg", annee_production)
+        tarif_rdm = parameters(period).redevances.departementales.aurifere
+        quantite = articles("quantite_aurifere_kg", annee_production)
 
         # proratisation à la surface pour l'entité article
-        # TODO spécifique à la Guyane ?
-        surface_communale = articles("surface_communale", annee_production)
-        surface_totale = articles("surface_totale", annee_production)
+        # mais texte de référence inconnu ;
+        # appliqué par anticipation de la répartition ?
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
 
-        redevance_nulle = zeros(len(surface_communale))
-        redevance = divide(
-            (quantites * tarif) * surface_communale,
-            surface_totale,
-            out = redevance_nulle,
-            where = (surface_totale != 0)
-            )
+        redevance = (quantite * tarif_rdm) * surface_communale_proportionnee
         return round(redevance, decimals = 2)
 
     def formula(articles, period, parameters) -> ndarray:
         annee_production = period.last_year
-        taux = parameters(period).redevances.departementales.aurifere
-        quantites = articles("quantite_aurifere_kg", annee_production)
+        tarif = parameters(period).redevances.departementales.aurifere
+        quantite = articles("quantite_aurifere_kg", annee_production)
 
-        return round(quantites * taux, decimals = 2)
+        return round(quantite * tarif, decimals = 2)
 
 
 class redevance_totale_des_mines_aurifere_kg(Variable):
