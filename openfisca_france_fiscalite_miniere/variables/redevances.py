@@ -30,7 +30,7 @@ class surface_communale_proportionnee(Variable):
         "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042160076/2020-07-25"  # noqa: E501
     ]
 
-    def formula_2020_01(articles, period) -> ndarray:
+    def formula(articles, period) -> ndarray:
         surface_communale = articles("surface_communale", period)
         surface_totale = articles("surface_totale", period)
         surface_nulle = zeros(len(surface_communale))

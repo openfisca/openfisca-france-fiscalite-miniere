@@ -20,12 +20,14 @@
   absolute_error_margin: 0.01
   input:
     surface_communale: 
-      2019: [0.1000, 10.0000] # /surface_totale = [0,0099, 0.9901]
+      2019: [0.1000, 10.0000]
     surface_totale: 
       2019: [10.1000, 10.1000]
     quantite_aurifere_kg: 
       2019: [2.000, 20.000]
   output:
+    surface_communale_proportionnee:
+      2019: [0.0099, 0.9901]
     redevance_communale_des_mines_aurifere_kg: [3.0413, 3041.5872]  # tarif = 153.60
     redevance_departementale_des_mines_aurifere_kg: [0.6079, 607.9214]  # tarif = 30.70
     redevance_totale_des_mines_aurifere_kg: [3.6492, 3649.5086]
