@@ -1,5 +1,13 @@
 # Changelog
 
+### 3.0.2 [#26](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/26)
+
+* Correction d'un crash.
+* Périodes concernées : toutes.
+* Zones impactées : `./variables/taxes.py`
+* Détails :
+  - Corrige l'erreur d'entité à l'appel de `taxe_guyane_brute` et `taxe_guyane_deduction`
+
 ### 3.0.1 [#25](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/25)
 
 * Correction d'un crash.

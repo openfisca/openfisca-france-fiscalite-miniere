@@ -1,0 +1,55 @@
+- name: Taxe aurifère selon production de l'année passée
+  period: 2020
+  input:
+    quantite_aurifere_kg: 1000
+    surface_communale: 1
+    surface_totale: 2
+    taxe_guyane_deduction: 
+      2021: 10
+  output:
+    taxe_guyane_brute:
+      2021: 498.06 * 1000 * 1 / 2  # PME par défaut.
+    taxe_guyane:
+      2021 : (498.06 * 1000 * 1 / 2) - 10
+
+- name: Taxe aurifère selon catégorie de l'entreprise du titre et surface communale
+  period: 2020
+  input:
+    articles:
+      a1:
+        quantite_aurifere_kg: 10
+        surface_communale: 0.5
+        surface_totale: 1
+      a2:
+        quantite_aurifere_kg: 100
+        surface_communale: 0.5
+        surface_totale: 1
+      a3:
+        quantite_aurifere_kg: 1000
+        surface_communale: 2
+        surface_totale: 2
+    titres:
+      t1:
+        articles: ['a1', 'a2']
+        categorie: pme
+        investissement: 20
+      t2:
+        articles: 'a3'
+        categorie: autre
+        investissement: 40
+    communes:
+      c1:
+        articles: 'a1'
+      c2:
+        articles: ['a2', 'a3']
+  output:
+    taxe_guyane_deduction: 
+      2021: [10, 10, 40] # (20 * 0.5 / 1) OU (40 * 2 / 2)
+    taxe_guyane_brute: 
+      2021: [2_490.3, 24_903, 996_130] # tarif pme OU autre
+    taxe_guyane:
+      2021 : [
+        2_480.3,  # 498.06 * 10 * (0.5 / 1) - (20 * 0.5 / 1)
+        24_893,  # 498.06 * 100 * (0.5 / 1) - (20 * 0.5 / 1)
+        996_090  # 996.13 * 1000 * (2 / 2) - (40 * 2 / 2)
+        ]
