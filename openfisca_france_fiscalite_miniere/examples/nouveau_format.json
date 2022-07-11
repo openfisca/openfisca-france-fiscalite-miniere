@@ -9,9 +9,6 @@
             },
             "redevance_communale_des_mines_aurifere_kg": {
                 "2022": null
-            },
-            "surface_totale": {
-                "2021": 0.5 
             }
         },
         "m-ax-lieu-dit-SEL-RAFFINE-COMMUNE1": {
@@ -36,6 +33,9 @@
             },
             "investissement":  {
                 "2021": "4500"
+            },
+            "surface_totale": {
+                "2021": 0.5 
             },
             "articles": [
                 "m-ax-lieu-dit-OR-COMMUNE1",

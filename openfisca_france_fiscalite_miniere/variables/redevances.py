@@ -3,7 +3,7 @@ from numpy import divide, ndarray, zeros
 from openfisca_core.periods import YEAR
 from openfisca_core.variables import Variable
 
-from openfisca_france_fiscalite_miniere.entities import Article, Commune
+from openfisca_france_fiscalite_miniere.entities import Article, Commune, Titre
 
 
 class surface_communale(Variable):
@@ -15,7 +15,7 @@ class surface_communale(Variable):
 
 class surface_totale(Variable):
     value_type = float
-    entity = Article
+    entity = Titre
     label = "Surface totale du titre, toutes communes comprises"
     definition_period = YEAR
 
@@ -32,7 +32,7 @@ class surface_communale_proportionnee(Variable):
 
     def formula(articles, period) -> ndarray:
         surface_communale = articles("surface_communale", period)
-        surface_totale = articles("surface_totale", period)
+        surface_totale = articles.titre("surface_totale", period)
         surface_nulle = zeros(len(surface_communale))
 
         return divide(
