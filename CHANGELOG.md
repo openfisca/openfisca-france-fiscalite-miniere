@@ -1,6 +1,6 @@
 # Changelog
 
-# 
+# 4.0.0 [#27](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/27)
 
 * Évolution du système socio-fiscal **non rétrocompatible**.
 * Périodes concernées : à partir du 01/01/2020.
@@ -40,8 +40,8 @@
   - `entities.py`.
   - `variables/*`
 * Détails :
-  - Renomme l'entité sociéte en article.
-  - Ajoute l'entité titre.
+  - Renomme l'entité `Societe` en `Article`.
+  - Ajoute l'entité `Titre`.
   - Ajoute des caractéristiques de titres.
 
 ### 2.0.2 [#21](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/21)
