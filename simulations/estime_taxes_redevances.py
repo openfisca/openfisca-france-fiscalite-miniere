@@ -1,3 +1,8 @@
+# Warning : Scripts adaptés à la génération des matrices 2021
+# sur la base de données de production 2020 au format d'export Camino 2021
+# et vérifié jusqu'à v3.0.0 d'openfisca-france-fiscalite-miniere.
+
+
 import configparser
 import logging
 import re
