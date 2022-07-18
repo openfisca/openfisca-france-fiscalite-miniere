@@ -329,37 +329,36 @@
 #       2019: 59100
 #       2018: 57380
 
-# - name: "Minerais de fer (par millier de tonnes nettes livrées)"
-#   input:
-#     quantite_fer_kt:
-#       2018: 100
-#       2017: 100
-#   output:
-#     redevance_communale_des_mines_fer_kt:
-#       2019: 33810
-#       2018: 32830
-#     redevance_departementale_des_mines_fer_kt:
-#       2019: 7030
-#       2018: 6830
-#     redevance_totale_des_mines_fer_kt:
-#       2019: 40840
-#       2018: 39660
+- name: "Minerais de fer (par millier de tonnes nettes livrées)"
+  input:
+    quantite_fer_kt:
+      2020: 100
+      2019: 100
+    surface_communale_proportionnee:
+      2020: 1.1
+      2019: 1
+  output:
+    redevance_communale_des_mines_fer:
+      2021: 375.70 * 100 * 1.1
+      2020: 346.90 * 100 * 1
+    redevance_departementale_des_mines_fer:
+      2021: 78.10 * 100 * 1.1
+      2020: 72.10 * 100 * 1
 
-# - name: "Minerais d'antimoine (par tonne d'antimoine contenu)"
-#   input:
-#     quantite_antimoine_t:
-#       2018: 100
-#       2017: 100
-#   output:
-#     redevance_communale_des_mines_antimoine_t:
-#       2019: 1180
-#       2018: 1150
-#     redevance_departementale_des_mines_antimoine_t:
-#       2019: 270
-#       2018: 260
-#     redevance_totale_des_mines_antimoine_t:
-#       2019: 1450
-#       2018: 1410
+
+- name: "Minerais d'antimoine (par tonne d'antimoine contenu)"
+  period: 2021  # année de production
+  input:
+    quantite_antimoine_t: 100
+    surface_communale: 1
+    surface_totale: 2
+  output:
+    redevance_communale_des_mines_antimoine:
+      2021: 0
+      2022: 13.10 * 100 * (1/2)
+    redevance_departementale_des_mines_antimoine:
+      2021: 0
+      2022: 3 * 100 * (1/2)
 
 # - name: "Minerais de plomb (par centaine de tonnes de plomb contenu)"
 #   input:

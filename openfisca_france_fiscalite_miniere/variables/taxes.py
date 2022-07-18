@@ -47,15 +47,10 @@ class taxe_guyane_brute(Variable):
         tarifs = numpy.fromiter(tarifs, dtype = float)
 
         # proratisation à la surface pour l'entité article
-        surface_communale = articles("surface_communale", annee_production)
-        surface_totale = articles("surface_totale", annee_production)
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
+        taxe = (quantites * tarifs) * surface_communale_proportionnee
 
-        taxe = numpy.divide(
-            (quantites * tarifs) * surface_communale,
-            surface_totale,
-            out = numpy.zeros(len(surface_communale)),
-            where = (surface_totale != 0)
-            )
         return round_(taxe, decimals = 2)
 
     def formula(articles, period, parameters) -> numpy.ndarray:
@@ -85,9 +80,8 @@ class taxe_guyane_deduction(Variable):
         montant_deduction_max = params.deductions.montant
 
         # proratisation à la surface pour l'entité article
-        surface_communale = articles("surface_communale", annee_production)
-        surface_totale = articles("surface_totale", annee_production)
-
+        surface_communale_proportionnee = articles(
+            "surface_communale_proportionnee", annee_production)
         deduction_toutes_communes = round_(
             min_(
                 montant_deduction_max,
@@ -95,13 +89,8 @@ class taxe_guyane_deduction(Variable):
                 ),
             decimals = 2,
             )
+        deduction = deduction_toutes_communes * surface_communale_proportionnee
 
-        deduction = numpy.divide(
-            deduction_toutes_communes * surface_communale,
-            surface_totale,
-            out = numpy.zeros(len(surface_communale)),
-            where = (surface_totale != 0)
-            )
         return round_(deduction, decimals = 2)
 
     def formula(articles, period, parameters) -> numpy.ndarray:

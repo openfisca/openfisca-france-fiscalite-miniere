@@ -19,24 +19,23 @@
       a1:
         quantite_aurifere_kg: 10
         surface_communale: 0.5
-        surface_totale: 1
       a2:
         quantite_aurifere_kg: 100
         surface_communale: 0.5
-        surface_totale: 1
       a3:
         quantite_aurifere_kg: 1000
         surface_communale: 2
-        surface_totale: 2
     titres:
       t1:
         articles: ['a1', 'a2']
         categorie: pme
         investissement: 20
+        surface_totale: 1
       t2:
         articles: 'a3'
         categorie: autre
         investissement: 40
+        surface_totale: 2
     communes:
       c1:
         articles: 'a1'

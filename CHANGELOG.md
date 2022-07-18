@@ -1,5 +1,19 @@
 # Changelog
 
+# 4.0.0 [#27](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/27)
+
+* Évolution du système socio-fiscal **non rétrocompatible**.
+* Périodes concernées : à partir du 01/01/2020.
+* Zones impactées : 
+  - `variables/redevances.py`
+  - `variables/taxes.py`
+* Détails :
+  - Change `surface_totale` d'une caractéristique d'`Article` à une caractéristique de `Titre`
+  - Ajoute le calcul des redevances (RDCM) à toutes les substances
+    * Ajoute la `RCM` à toute substance dans `redevances_communales_departementales/`.
+    * Ajoute la `RDM` à toute substance dans `redevances_communales_departementales/`.
+  - Introduit `surface_communale_proportionnee` et l'introduit à partir de 2020 à toutes les substances.
+
 ### 3.0.2 [#26](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/26)
 
 * Correction d'un crash.
@@ -26,8 +40,8 @@
   - `entities.py`.
   - `variables/*`
 * Détails :
-  - Renomme l'entité sociéte en article.
-  - Ajoute l'entité titre.
+  - Renomme l'entité `Societe` en `Article`.
+  - Ajoute l'entité `Titre`.
   - Ajoute des caractéristiques de titres.
 
 ### 2.0.2 [#21](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/21)
