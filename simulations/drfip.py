@@ -126,13 +126,13 @@ def generate_matrice_drfip_guyane(data, annee_production, timestamp):
     # Redevance départementale :
     matrice["Tarifs (RDM)"] = data["tarifs_rdm"]
     matrice["Montant net (RDM)"] = data[
-        "redevance_departementale_des_mines_aurifere_kg"
+        "redevance_departementale_des_mines_aurifere"
         ]
 
     # Redevance communale :
     matrice["Tarifs (RCM)"] = data["tarifs_rcm"]
     matrice["Montant net redevance des mines (RCM)"] = data[
-        "redevance_communale_des_mines_aurifere_kg"
+        "redevance_communale_des_mines_aurifere"
         ]
 
     matrice["Total redevance des mines"] = round(
@@ -258,21 +258,21 @@ def generate_matrice_1403_drfip_guyane(data, annee_production, timestamp):
 
     matrice_1403["Redevance départementale"] = [
         data_sip_cayenne[
-            "redevance_departementale_des_mines_aurifere_kg"
+            "redevance_departementale_des_mines_aurifere"
             ].sum().astype(int),
         data_sip_kourou[
-            "redevance_departementale_des_mines_aurifere_kg"
+            "redevance_departementale_des_mines_aurifere"
             ].sum().astype(int),
         data_sip_st_laurent_du_maroni[
-            "redevance_departementale_des_mines_aurifere_kg"
+            "redevance_departementale_des_mines_aurifere"
             ].sum().astype(int)
         ]
 
     matrice_1403["Redevance communale"] = [
-        data_sip_cayenne["redevance_communale_des_mines_aurifere_kg"].sum().astype(int),
-        data_sip_kourou["redevance_communale_des_mines_aurifere_kg"].sum().astype(int),
+        data_sip_cayenne["redevance_communale_des_mines_aurifere"].sum().astype(int),
+        data_sip_kourou["redevance_communale_des_mines_aurifere"].sum().astype(int),
         data_sip_st_laurent_du_maroni[
-            "redevance_communale_des_mines_aurifere_kg"
+            "redevance_communale_des_mines_aurifere"
             ].sum().astype(int)
         ]
     matrice_1403["Taxe minière sur l'or de Guyane"] = [
@@ -353,7 +353,7 @@ def generate_matrice_1404_sip(columns_1404, data_sip, sip_name):
 
     # REDEVANCE DÉPARTEMENTALE :
     matrice_1404_sip["Produit net de la redevance (RDM)"] = data_sip[
-        "redevance_departementale_des_mines_aurifere_kg"
+        "redevance_departementale_des_mines_aurifere"
         ].values
     matrice_1404_sip[
         "Sommes revenant aux départements désignés dans la colonne 4 (a)"
@@ -362,7 +362,7 @@ def generate_matrice_1404_sip(columns_1404, data_sip, sip_name):
     # REDEVANCE COMMUNALE :
     # col. 10
     matrice_1404_sip["Produit net de la redevance (RCM)"] = data_sip[
-        "redevance_communale_des_mines_aurifere_kg"
+        "redevance_communale_des_mines_aurifere"
         ].values
     # > Répartition
     matrice_1404_sip["1ère fraction (col. 10 x 35%)"] = matrice_1404_sip[

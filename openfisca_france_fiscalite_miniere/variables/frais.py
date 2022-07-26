@@ -14,7 +14,7 @@ class fiscalite_frais_de_gestion_guyane(variables.Variable):
     definition_period = periods.YEAR
 
     def formula(articles, period, parameters) -> numpy.ndarray:
-        redevances = articles("redevance_totale_des_mines_aurifere_kg", period)
+        redevances = articles("redevance_totale_des_mines_aurifere", period)
         taxes = articles("taxe_guyane", period)
 
         parametres_frais = parameters(period).frais

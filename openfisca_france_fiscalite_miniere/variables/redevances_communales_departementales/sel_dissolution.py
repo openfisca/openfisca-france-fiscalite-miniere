@@ -14,7 +14,7 @@ class quantite_sel_dissolution_kt(Variable):
     definition_period = YEAR
 
 
-class redevance_communale_des_mines_sel_dissolution_kt(Variable):
+class redevance_communale_des_mines_sel_dissolution(Variable):
     value_type = float
     entity = Article
     label = "Redevance communale du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
@@ -41,7 +41,7 @@ class redevance_communale_des_mines_sel_dissolution_kt(Variable):
         return round(quantites * taux, decimals = 2)
 
 
-class redevance_departementale_des_mines_sel_dissolution_kt(Variable):
+class redevance_departementale_des_mines_sel_dissolution(Variable):
     value_type = float
     entity = Article
     label = "Redevance départementale du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
@@ -68,7 +68,7 @@ class redevance_departementale_des_mines_sel_dissolution_kt(Variable):
         return round(quantites * taux, decimals = 2)
 
 
-class redevance_totale_des_mines_sel_dissolution_kt(Variable):
+class redevance_totale_des_mines_sel_dissolution(Variable):
     value_type = float
     entity = Article
     label = "Redevance départamentale + communale des mines du sel extrait en dissolution par sondage livré en dissolution"  # noqa: E501
@@ -76,9 +76,9 @@ class redevance_totale_des_mines_sel_dissolution_kt(Variable):
 
     def formula(articles, period) -> ndarray:
         departementale = articles(
-            "redevance_departementale_des_mines_sel_dissolution_kt",
+            "redevance_departementale_des_mines_sel_dissolution",
             period)
         communale = articles(
-            "redevance_communale_des_mines_sel_dissolution_kt",
+            "redevance_communale_des_mines_sel_dissolution",
             period)
         return departementale + communale

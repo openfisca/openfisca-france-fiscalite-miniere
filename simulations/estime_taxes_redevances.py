@@ -506,17 +506,17 @@ if __name__ == "__main__":
     rdm_tarif_aurifere = current_parameters.redevances.departementales.aurifere
     rcm_tarif_aurifere = current_parameters.redevances.communales.aurifere
 
-    redevance_departementale_des_mines_aurifere_kg = simulation.calculate(
-        'redevance_departementale_des_mines_aurifere_kg',
+    redevance_departementale_des_mines_aurifere = simulation.calculate(
+        'redevance_departementale_des_mines_aurifere',
         simulation_period
         )
-    redevance_communale_des_mines_aurifere_kg = simulation.calculate(
-        'redevance_communale_des_mines_aurifere_kg',
+    redevance_communale_des_mines_aurifere = simulation.calculate(
+        'redevance_communale_des_mines_aurifere',
         simulation_period
         )
 
-    logging.debug("🍏    redevance_departementale_des_mines_aurifere_kg")
-    logging.debug(redevance_departementale_des_mines_aurifere_kg)
+    logging.debug("🍏    redevance_departementale_des_mines_aurifere")
+    logging.debug(redevance_departementale_des_mines_aurifere)
 
     taxe_tarif_pme = current_parameters.taxes.guyane.categories.pme
     taxe_tarif_autres_entreprises = current_parameters.taxes.guyane.categories.autre
@@ -536,10 +536,10 @@ if __name__ == "__main__":
         'surface_communale', 'surface_totale'
         # Redevance départementale :
         'tarifs_rdm',
-        'redevance_departementale_des_mines_aurifere_kg',
+        'redevance_departementale_des_mines_aurifere',
         # Redevance communale :
         'tarifs_rcm',
-        'redevance_communale_des_mines_aurifere_kg',
+        'redevance_communale_des_mines_aurifere',
         # Taxe minière sur l'or de Guyane :
         'taxe_tarif_pme',
         'taxe_tarif_autres',
@@ -572,22 +572,22 @@ if __name__ == "__main__":
 
     # Redevance départementale :
     resultat['tarifs_rdm'] = numpy.where(
-        redevance_departementale_des_mines_aurifere_kg > 0,
+        redevance_departementale_des_mines_aurifere > 0,
         rdm_tarif_aurifere,
         ""
         )
     resultat[
-        'redevance_departementale_des_mines_aurifere_kg'
-        ] = redevance_departementale_des_mines_aurifere_kg
+        'redevance_departementale_des_mines_aurifere'
+        ] = redevance_departementale_des_mines_aurifere
     # Redevance communale :
     resultat['tarifs_rcm'] = numpy.where(
-        redevance_communale_des_mines_aurifere_kg > 0,
+        redevance_communale_des_mines_aurifere > 0,
         rcm_tarif_aurifere,
         ""
         )
     resultat[
-        'redevance_communale_des_mines_aurifere_kg'
-        ] = redevance_communale_des_mines_aurifere_kg
+        'redevance_communale_des_mines_aurifere'
+        ] = redevance_communale_des_mines_aurifere
     # Taxe minière sur l'or de Guyane :
     resultat['taxe_tarif_pme'] = numpy.where(
         data['categorie_entreprise'] == "PME", taxe_tarif_pme, None)

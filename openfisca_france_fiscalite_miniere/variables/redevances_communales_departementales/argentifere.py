@@ -6,7 +6,7 @@ from openfisca_core.variables import Variable
 from openfisca_france_fiscalite_miniere.entities import Article
 
 
-class quantite_argentifere_q(Variable):
+class quantite_argentifere_100kg(Variable):
     value_type = float
     entity = Article
     definition_period = YEAR
@@ -28,7 +28,7 @@ class redevance_communale_des_mines_argentifere(Variable):
         tarif_rcm = parameters(period).redevances.communales.argentifere
 
         annee_production = period.last_year
-        quantite = articles("quantite_argentifere_q", annee_production)
+        quantite = articles("quantite_argentifere_100kg", annee_production)
         surface_communale_proportionnee = articles(
             "surface_communale_proportionnee", annee_production)
 
@@ -50,7 +50,7 @@ class redevance_departementale_des_mines_argentifere(Variable):
         tarif_rdm = parameters(period).redevances.departementales.argentifere
 
         annee_production = period.last_year
-        quantite = articles("quantite_argentifere_q", annee_production)
+        quantite = articles("quantite_argentifere_100kg", annee_production)
         surface_communale_proportionnee = articles(
             "surface_communale_proportionnee", annee_production)
 
