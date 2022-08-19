@@ -1,5 +1,16 @@
 # Changelog
 
+# 4.2.0 [#29](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/29)
+
+* Uniformisation des noms des variables des redevances communales et departementales
+* Zones impactées :
+  - `variables/redevances_communales_*/*.py`
+  - `variables/frais.py`
+  - `variables/redevances.py`
+* Détails :
+  - Enlève l'unité dans le nom de la classe
+    - par exemple : `redevance_communale_des_mines_sel_raffine_kt` devient `redevance_communale_des_mines_sel_raffine`
+
 # 4.1.0 [#30](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/30)
 
 * Évolution du système socio-fiscal.
