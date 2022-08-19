@@ -1,10 +1,19 @@
 # Changelog
 
+# 4.1.0 [#30](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/30)
+
+* Évolution du système socio-fiscal.
+* Zones impactées :
+  - `parameters/taxes/guyane/categories/*`
+* Détails :
+  - Revalorise les tarifs 2022 de la taxe sur l'or en Guyane.
+
+
 # 4.0.0 [#27](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/27)
 
 * Évolution du système socio-fiscal **non rétrocompatible**.
 * Périodes concernées : à partir du 01/01/2020.
-* Zones impactées : 
+* Zones impactées :
   - `variables/redevances.py`
   - `variables/taxes.py`
 * Détails :
@@ -36,7 +45,7 @@
 
 * Évolution du système socio-fiscal.
 * Périodes concernées : toutes.
-* Zones impactées : 
+* Zones impactées :
   - `entities.py`.
   - `variables/*`
 * Détails :
@@ -48,7 +57,7 @@
 
 * Changement mineur.
 * Périodes concernées : à partir du 01/01/2020.
-* Zones impactées : 
+* Zones impactées :
   - `simulations/drfip.py`
   - `simulations/estime_taxes_redevances.py`
 * Détails :
@@ -59,7 +68,7 @@
 
 * Changement mineur.
 * Périodes concernées : à partir du 01/01/2020.
-* Zones impactées : 
+* Zones impactées :
   - `simulations/drfip.py`
   - `simulations/estime_taxes_redevances.py`
 * Détails :
@@ -71,7 +80,7 @@
 
 * Évolution du système socio-fiscal.
 * Périodes concernées : à partir du 01/01/2014.
-* Zones impactées : 
+* Zones impactées :
   - `parameters/taxes/guyane/categories/*`
   - `parameters/fiscalite/frais/*`
   - `variables/fiscalite.py` désormais `variables/frais.py`
@@ -85,7 +94,7 @@
 
 * Évolution du système socio-fiscal.
 * Périodes concernées : à partir du 01/01/2021.
-* Zones impactées : 
+* Zones impactées :
   - `parameters/redevances/departementales/*`
   - `parameters/redevances/communales/*`
 * Détails :
