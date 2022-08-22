@@ -6,7 +6,7 @@ from openfisca_core.variables import Variable
 from openfisca_france_fiscalite_miniere.entities import Article
 
 
-class quantite_zinc_kt(Variable):
+class quantite_zinc_100t(Variable):
     value_type = float
     entity = Article
     definition_period = YEAR
@@ -29,7 +29,7 @@ class redevance_communale_des_mines_zinc(Variable):
 
         surface_communale_proportionnee = articles(
             "surface_communale_proportionnee", annee_production)
-        quantite = articles("quantite_zinc_kt", annee_production)
+        quantite = articles("quantite_zinc_100t", annee_production)
 
         tarif_rcm = parameters(period).redevances.communales.zinc
 
@@ -52,7 +52,7 @@ class redevance_departementale_des_mines_zinc(Variable):
 
         surface_communale_proportionnee = articles(
             "surface_communale_proportionnee", annee_production)
-        quantite = articles("quantite_zinc_kt", annee_production)
+        quantite = articles("quantite_zinc_100t", annee_production)
 
         tarif_rdm = parameters(period).redevances.departementales.zinc
         rdm = (quantite * tarif_rdm) * surface_communale_proportionnee

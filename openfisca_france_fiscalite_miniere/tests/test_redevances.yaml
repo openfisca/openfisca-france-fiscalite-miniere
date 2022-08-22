@@ -33,7 +33,7 @@
 
 # - name: "Minerais argentifères (par centaine de kilogrammes d'argent contenu)"
 #   input:
-#     quantite_argentifere_q:
+#     quantite_argentifere_100kg:
 #       2018: 100
 #       2017: 100
 #   output:
@@ -85,13 +85,13 @@
       2018: 100
       2017: 100
   output:
-    redevance_communale_des_mines_sel_abattage_kt:
+    redevance_communale_des_mines_sel_abattage:
       2019: 70800
       2018: 68740
-    redevance_departementale_des_mines_sel_abattage_kt:
+    redevance_departementale_des_mines_sel_abattage:
       2019: 14390
       2018: 13970
-    redevance_totale_des_mines_sel_abattage_kt:
+    redevance_totale_des_mines_sel_abattage:
       2019: 85190
       2018: 82710
 
@@ -101,13 +101,13 @@
       2018: 100
       2017: 100
   output:
-    redevance_communale_des_mines_sel_raffine_kt:
+    redevance_communale_des_mines_sel_raffine:
       2019: 43100
       2018: 41840
-    redevance_departementale_des_mines_sel_raffine_kt:
+    redevance_departementale_des_mines_sel_raffine:
       2019: 8500
       2018: 8250
-    redevance_totale_des_mines_sel_raffine_kt:
+    redevance_totale_des_mines_sel_raffine:
       2019: 51600
       2018: 50090
 
@@ -117,13 +117,13 @@
       2018: 100
       2017: 100
   output:
-    redevance_communale_des_mines_sel_dissolution_kt:
+    redevance_communale_des_mines_sel_dissolution:
       2019: 14390
       2018: 13970
-    redevance_departementale_des_mines_sel_dissolution_kt:
+    redevance_departementale_des_mines_sel_dissolution:
       2019: 2790
       2018: 2710
-    redevance_totale_des_mines_sel_dissolution_kt:
+    redevance_totale_des_mines_sel_dissolution:
       2019: 17180
       2018: 16680
 
@@ -132,25 +132,25 @@
   input:
     articles:
       societe_1:
-        redevance_communale_des_mines_sel_abattage_kt: 
+        redevance_communale_des_mines_sel_abattage:
           2019: 5
       societe_2:
-        redevance_communale_des_mines_sel_abattage_kt: 
+        redevance_communale_des_mines_sel_abattage:
           2019: 10
       societe_3:
-        redevance_communale_des_mines_sel_abattage_kt: 
+        redevance_communale_des_mines_sel_abattage:
           2019: 2
     communes:
       commune_1:
-        articles: 
+        articles:
         - societe_1
         - societe_2
       commune_2:
-        articles: 
+        articles:
         - societe_3
   output:
-    redevance_communale_totale_sel: 
-      2019: [15, 2]    
+    redevance_communale_totale_sel:
+      2019: [15, 2]
 
 
 # - name: "Charbon (par centaine de tonnes nettes extraites)"
@@ -494,13 +494,13 @@
 #       2018: 100
 #       2017: 100
 #   output:
-#     redevance_communale_des_mines_lithium_t:
+#     redevance_communale_des_mines_lithium_li20:
 #       2019: 4900
 #       2018: 4760
-#     redevance_departementale_des_mines_lithium_t:
+#     redevance_departementale_des_mines_lithium_li20:
 #       2019: 1000
 #       2018: 970
-#     redevance_totale_des_mines_lithium_t:
+#     redevance_totale_des_mines_lithium:
 #       2019: 5900
 #       2018: 5730
 

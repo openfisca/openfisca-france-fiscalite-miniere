@@ -14,7 +14,7 @@ class quantite_sel_abattage_kt(Variable):
     definition_period = YEAR
 
 
-class redevance_communale_des_mines_sel_abattage_kt(Variable):
+class redevance_communale_des_mines_sel_abattage(Variable):
     value_type = float
     entity = Article
     label = "Redevance communale du sel d'abattage"
@@ -41,7 +41,7 @@ class redevance_communale_des_mines_sel_abattage_kt(Variable):
         return round(quantites * taux, decimals = 2)
 
 
-class redevance_departementale_des_mines_sel_abattage_kt(Variable):
+class redevance_departementale_des_mines_sel_abattage(Variable):
     value_type = float
     entity = Article
     label = "Redevance départementale du sel d'abattage"
@@ -68,7 +68,7 @@ class redevance_departementale_des_mines_sel_abattage_kt(Variable):
         return round(quantites * taux, decimals = 2)
 
 
-class redevance_totale_des_mines_sel_abattage_kt(Variable):
+class redevance_totale_des_mines_sel_abattage(Variable):
     value_type = float
     entity = Article
     label = "Redevance départamentale + communale des mines de sel d'abattage"
@@ -76,9 +76,9 @@ class redevance_totale_des_mines_sel_abattage_kt(Variable):
 
     def formula(articles, period) -> ndarray:
         departementale = articles(
-            "redevance_departementale_des_mines_sel_abattage_kt",
+            "redevance_departementale_des_mines_sel_abattage",
             period)
         communale = articles(
-            "redevance_communale_des_mines_sel_abattage_kt",
+            "redevance_communale_des_mines_sel_abattage",
             period)
         return departementale + communale

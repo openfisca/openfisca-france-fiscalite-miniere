@@ -51,18 +51,18 @@ class redevance_communale_totale_sel(Variable):
     definition_period = YEAR
 
     def formula(communes, period) -> ndarray:
-        redevance_communale_des_mines_sel_abattage_kt = communes.members(
-            "redevance_communale_des_mines_sel_abattage_kt",
+        redevance_communale_des_mines_sel_abattage = communes.members(
+            "redevance_communale_des_mines_sel_abattage",
             period)
-        redevance_communale_des_mines_sel_raffine_kt = communes.members(
-            "redevance_communale_des_mines_sel_raffine_kt",
+        redevance_communale_des_mines_sel_raffine = communes.members(
+            "redevance_communale_des_mines_sel_raffine",
             period)
-        redevance_communale_des_mines_sel_dissolution_kt = communes.members(
-            "redevance_communale_des_mines_sel_dissolution_kt",
+        redevance_communale_des_mines_sel_dissolution = communes.members(
+            "redevance_communale_des_mines_sel_dissolution",
             period)
 
         return communes.sum(
-            redevance_communale_des_mines_sel_abattage_kt
-            + redevance_communale_des_mines_sel_raffine_kt
-            + redevance_communale_des_mines_sel_dissolution_kt
+            redevance_communale_des_mines_sel_abattage
+            + redevance_communale_des_mines_sel_raffine
+            + redevance_communale_des_mines_sel_dissolution
             )

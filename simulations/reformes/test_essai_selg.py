@@ -111,11 +111,11 @@ simulation.set_input(
     activite_selg_2018_par_titre['renseignements_selg']
     )
 
-redevance_communale_des_mines_sel_abattage_kt = simulation.calculate(
-    'redevance_communale_des_mines_sel_abattage_kt', period
+redevance_communale_des_mines_sel_abattage = simulation.calculate(
+    'redevance_communale_des_mines_sel_abattage', period
     )
-print("redevance_communale_des_mines_sel_abattage_kt ?")  # noqa: T201
-print(redevance_communale_des_mines_sel_abattage_kt)  # noqa: T201
+print("redevance_communale_des_mines_sel_abattage ?")  # noqa: T201
+print(redevance_communale_des_mines_sel_abattage)  # noqa: T201
 
 
 # SIMULATION : ESSAI REFORME
@@ -145,7 +145,7 @@ for index, row in activite_selg_2018_par_titre.iterrows():
     titre_surface_totale = sum(map(float, titre_communes.values()))
     print(titre_surface_totale, " = ", titre_communes)  # noqa: T201
 
-    redevance_actuelle = redevance_communale_des_mines_sel_abattage_kt[index]
+    redevance_actuelle = redevance_communale_des_mines_sel_abattage[index]
     print("/titre", redevance_actuelle, "€")  # noqa: T201
 
     for commune in titre_communes:

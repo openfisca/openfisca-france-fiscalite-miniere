@@ -111,11 +111,11 @@ simulation.set_input(
     activite_selh_2018_par_titre['renseignements_selh']
     )
 
-redevance_communale_des_mines_sel_dissolution_kt = simulation.calculate(
-    'redevance_communale_des_mines_sel_dissolution_kt', period
+redevance_communale_des_mines_sel_dissolution = simulation.calculate(
+    'redevance_communale_des_mines_sel_dissolution', period
     )
-print("redevance_communale_des_mines_sel_dissolution_kt ?")  # noqa: T201
-print(redevance_communale_des_mines_sel_dissolution_kt)  # noqa: T201
+print("redevance_communale_des_mines_sel_dissolution ?")  # noqa: T201
+print(redevance_communale_des_mines_sel_dissolution)  # noqa: T201
 
 
 # SIMULATION : ESSAI REFORME
@@ -146,7 +146,7 @@ for index, row in activite_selh_2018_par_titre.iterrows():
     titre_surface_totale = sum(map(float, titre_communes.values()))
     print(titre_surface_totale, " = ", titre_communes)  # noqa: T201
 
-    redevance_actuelle = redevance_communale_des_mines_sel_dissolution_kt[index]
+    redevance_actuelle = redevance_communale_des_mines_sel_dissolution[index]
     print("/titre", redevance_actuelle, "€")  # noqa: T201
 
     for commune in titre_communes:

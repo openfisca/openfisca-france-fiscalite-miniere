@@ -24,7 +24,7 @@ class quantite_aurifere_kg(Variable):
     '''
 
 
-class redevance_communale_des_mines_aurifere_kg(Variable):
+class redevance_communale_des_mines_aurifere(Variable):
     value_type = float
     entity = Article
     label = "Redevance communale des mines pour le minerais aurifères"
@@ -65,7 +65,7 @@ class redevance_communale_des_mines_aurifere_kg(Variable):
         return round(quantite * tarif, decimals = 2)
 
 
-class redevance_departementale_des_mines_aurifere_kg(Variable):
+class redevance_departementale_des_mines_aurifere(Variable):
     value_type = float
     entity = Article
     label = "Redevance départementale des mines pour le minerais aurifères"
@@ -97,7 +97,7 @@ class redevance_departementale_des_mines_aurifere_kg(Variable):
         return round(quantite * tarif, decimals = 2)
 
 
-class redevance_totale_des_mines_aurifere_kg(Variable):
+class redevance_totale_des_mines_aurifere(Variable):
     value_type = float
     entity = Article
     label = "Redevance départamentale + communale des mines"
@@ -105,9 +105,9 @@ class redevance_totale_des_mines_aurifere_kg(Variable):
 
     def formula(articles, period) -> ndarray:
         departementale = articles(
-            "redevance_departementale_des_mines_aurifere_kg",
+            "redevance_departementale_des_mines_aurifere",
             period)
         communale = articles(
-            "redevance_communale_des_mines_aurifere_kg",
+            "redevance_communale_des_mines_aurifere",
             period)
         return departementale + communale
