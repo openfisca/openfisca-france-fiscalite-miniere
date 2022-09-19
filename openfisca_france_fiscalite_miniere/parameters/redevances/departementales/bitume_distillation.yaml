@@ -25,3 +25,7 @@ values:
     value: 11.30
     metadata:
       reference: https://www.legifrance.gouv.fr/codes/id/LEGIARTI000043663002/2021-06-12/
+  2022-01-01:
+    value: 11.90
+    metadata:
+      reference: https://www.legifrance.gouv.fr/codes/id/LEGIARTI000045765025/2022-05-07/
