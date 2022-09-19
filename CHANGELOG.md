@@ -1,5 +1,11 @@
 # Changelog
 
+# 4.3.0 [#31](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/31)
+
+* Ajoute les redevances départementales et communales pour l'année 2022
+* Zones impactées :
+  - `parameters/redevances/*`
+
 # 4.2.0 [#29](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/29)
 
 * Uniformisation des noms des variables des redevances communales et departementales
