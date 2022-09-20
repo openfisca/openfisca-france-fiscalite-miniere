@@ -34,7 +34,7 @@ class redevance_communale_des_mines_aurifere(Variable):
         # tarification
         "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042160076/2020-07-25",
         "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293413/1987-08-09"  # noqa: E501
-    ]
+        ]
     definition_period = YEAR
     documentation = '''
     Dite RCM pour l'or.
@@ -72,7 +72,7 @@ class redevance_departementale_des_mines_aurifere(Variable):
     reference = [
         "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01",
         "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09"  # noqa: E501
-    ]
+        ]
     definition_period = YEAR
 
     def formula_2020_01(articles, period, parameters) -> ndarray:

@@ -344,9 +344,9 @@ def add_entreprises_data(data, entreprises_data):
 
 
 def select_reports(
-    data: pandas.DataFrame,
-    type: List[str]  # noqa: A002
-    ) -> pandas.DataFrame:
+        data: pandas.DataFrame,
+        type: List[str]  # noqa: A002
+        ) -> pandas.DataFrame:
 
     if len(type) == 2:  # 2020
         filtre_reports = (data.type == type[0]) | (data.type == type[1])
