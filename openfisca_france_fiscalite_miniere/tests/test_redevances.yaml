@@ -1,4 +1,4 @@
-
+---
 # - name: "Minerais d'uranium (par centaine de kilogrammes d'uranium contenu)"
 #   input:
 #     quantite_uranium_q:
@@ -143,11 +143,11 @@
     communes:
       commune_1:
         articles:
-        - societe_1
-        - societe_2
+          - societe_1
+          - societe_2
       commune_2:
         articles:
-        - societe_3
+          - societe_3
   output:
     redevance_communale_totale_sel:
       2019: [15, 2]
