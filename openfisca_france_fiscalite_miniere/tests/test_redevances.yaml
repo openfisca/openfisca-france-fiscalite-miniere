@@ -346,7 +346,21 @@
       2020: 72.10 * 100 * 1
 
 
-- name: "Minerais d'antimoine (par tonne d'antimoine contenu)"
+- name: "Minerais d'antimoine (par tonne d'antimoine contenu) 2020"
+  period: 2020  # année de production
+  input:
+    quantite_antimoine_t: 100
+    surface_communale: 1
+    surface_totale: 2
+  output:
+    redevance_communale_des_mines_antimoine:
+      2020: 0
+      2021: 13.10 * 100 * (1/2)
+    redevance_departementale_des_mines_antimoine:
+      2020: 0
+      2021: 3 * 100 * (1/2)
+
+- name: "Minerais d'antimoine (par tonne d'antimoine contenu) 2021"
   period: 2021  # année de production
   input:
     quantite_antimoine_t: 100
