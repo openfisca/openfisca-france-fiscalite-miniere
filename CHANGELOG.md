@@ -1,5 +1,10 @@
 # Changelog
 
+### 4.3.1 [#32](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/32)
+* Vérifie le formatage des fichiers python et yaml
+* Zones impactées : '*.py && *.yml'
+
+
 ### 4.3.0 [#31](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/31)
 
 * Ajoute les redevances départementales et communales pour l'année 2022

@@ -486,7 +486,7 @@ if __name__ == "__main__":
 
     rapports_trimestriels = select_reports(
         full_data,
-        "rapport trimestriel d'exploitation d'or en Guyane"
+        ["rapport trimestriel d'exploitation d'or en Guyane"]
         )
     rapports_trimestriels.renseignements_environnement.fillna(
         0, inplace=True)  # en 2020, 20 vides pour statuts autres que "déposé"
