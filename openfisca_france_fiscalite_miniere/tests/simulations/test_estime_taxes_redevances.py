@@ -153,8 +153,8 @@ def test_get_simulation_full_data(titres_data, activites_data):
         )  # act
 
     assert not full_data.empty
-    assert('id' not in full_data.columns)
-    assert((full_data['titre_id'] == ['titre_3', 'titre_2']).all())
+    assert ('id' not in full_data.columns)
+    assert ((full_data['titre_id'] == ['titre_3', 'titre_2']).all())
 
 
 def test_convertit_grammes_a_kilo():
