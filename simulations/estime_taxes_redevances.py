@@ -344,9 +344,9 @@ def add_entreprises_data(data, entreprises_data):
 
 
 def select_reports(
-    data: pandas.DataFrame,
-    type: List[str]  # noqa: A002
-    ) -> pandas.DataFrame:
+        data: pandas.DataFrame,
+        type: List[str]  # noqa: A002
+        ) -> pandas.DataFrame:
 
     if len(type) == 2:  # 2020
         filtre_reports = (data.type == type[0]) | (data.type == type[1])
@@ -486,7 +486,7 @@ if __name__ == "__main__":
 
     rapports_trimestriels = select_reports(
         full_data,
-        "rapport trimestriel d'exploitation d'or en Guyane"
+        ["rapport trimestriel d'exploitation d'or en Guyane"]
         )
     rapports_trimestriels.renseignements_environnement.fillna(
         0, inplace=True)  # en 2020, 20 vides pour statuts autres que "déposé"

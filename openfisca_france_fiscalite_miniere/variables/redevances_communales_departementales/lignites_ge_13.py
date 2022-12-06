@@ -22,7 +22,7 @@ class redevance_communale_des_mines_lignites_ge_13(Variable):
     reference = [
         "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293413/1987-08-09",  # noqa: E501
         "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042160076/2020-07-25"
-    ]
+        ]
 
     def formula_2020_01(articles, period, parameters) -> ndarray:
         annee_production = period.last_year
@@ -45,7 +45,7 @@ class redevance_departementale_des_mines_lignites_ge_13(Variable):
     reference = [
         "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069568/LEGISCTA000006161959/1987-08-09",  # noqa: E501
         "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000038686694/2020-01-01"
-    ]
+        ]
 
     def formula_2020_01(articles, period, parameters) -> ndarray:
         annee_production = period.last_year

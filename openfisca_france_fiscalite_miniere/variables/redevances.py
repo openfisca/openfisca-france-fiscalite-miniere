@@ -28,7 +28,7 @@ class surface_communale_proportionnee(Variable):
     reference = [
         "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006293413/1987-08-09",  # noqa: E501
         "https://www.legifrance.gouv.fr/codes/id/LEGIARTI000042160076/2020-07-25"  # noqa: E501
-    ]
+        ]
 
     def formula(articles, period) -> ndarray:
         surface_communale = articles("surface_communale", period)

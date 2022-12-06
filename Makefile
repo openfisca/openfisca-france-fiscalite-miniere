@@ -35,11 +35,9 @@ build: clean deps
 check-syntax-errors:
 	python -m compileall -q .
 
-format-style:
-	autopep8 `git ls-files | grep "\.py$$"`
-
 check-style:
-	flake8 `git ls-files | grep "\.py$$"`
+	flake8 .
+	yamllint .
 
 check-types:
 	mypy openfisca_france_fiscalite_miniere

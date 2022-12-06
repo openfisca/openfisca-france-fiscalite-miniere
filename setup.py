@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-France-Fiscalite-Miniere",
-    version="4.3.0",
+    version="4.3.1",
     author="OpenFisca Team",
     author_email = "contact@openfisca.org",
     classifiers=[
@@ -29,8 +29,7 @@ setup(
         ],
     extras_require = {
         "dev": [
-            "autopep8 >= 1.5.0, < 1.6.0",
-            "flake8 >= 3.7.0, < 3.8.0",
+            "flake8 >= 5.0.0",
             "flake8-print",
             "flake8-2020",
             "flake8-aaa",
@@ -52,8 +51,9 @@ setup(
             "flake8-rst-docstrings",
             "flake8-string-format",
             "flake8-tidy-imports",
-            'mypy >= 0.700, < 0.800',
+            "mypy >= 0.900",
             "pytest >= 5.0.0, < 6.0.0",
+            "yamllint"
             ],
         "simu": [  # for /simulations scripts
             "pandas >= 1.1.4, <2.0.0"

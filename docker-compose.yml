@@ -1,3 +1,4 @@
+---
 version: '3'
 
 services:
@@ -6,4 +7,4 @@ services:
     build: .
     restart: unless-stopped
     ports:
-    - 5000:8000
+      - 5000:8000

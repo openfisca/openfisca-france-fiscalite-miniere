@@ -1,3 +1,4 @@
+---
 description: Montant du tarif de la redevance départementale des mines
   pour le pétrole brut (centaine de tonnes nettes extraites)
 metadata:
@@ -7,7 +8,7 @@ values:
   2017-01-01:
     value: 1371
     metadata:
-      reference: 
+      reference:
         2017-01-01: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2018-01-01/
         2018-01-01: https://beta.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006162672/2019-01-01/
   2019-01-01:
