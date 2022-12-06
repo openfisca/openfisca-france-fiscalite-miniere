@@ -508,10 +508,10 @@
 #       2018: 100
 #       2017: 100
 #   output:
-#     redevance_communale_des_mines_lithium_li20:
+#     redevance_communale_des_mines_lithium:
 #       2019: 4900
 #       2018: 4760
-#     redevance_departementale_des_mines_lithium_li20:
+#     redevance_departementale_des_mines_lithium:
 #       2019: 1000
 #       2018: 970
 #     redevance_totale_des_mines_lithium:

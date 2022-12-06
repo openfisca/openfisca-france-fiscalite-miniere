@@ -1,5 +1,11 @@
 # Changelog
 
+### 5.0.0 [#33](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/33)
+* Change lithium_li20 par lithium pour garder une cohérence entre les paramètres et les variables
+* Met à jour OpenFiscaCore et web en version 37.0.0
+* Zones impactées :
+  - `variables/redevances_communales_departementales/lithium.py`
+
 ### 4.3.1 [#32](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/32)
 * Vérifie le formatage des fichiers python et yaml
 * Zones impactées : '*.py && *.yml'
