@@ -1,5 +1,11 @@
 # Changelog
 
+### 5.1.0 [#31](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/31)
+
+* Ajoute les redevances départementales et communales pour l'année 2023
+* Zones impactées :
+  - `parameters/redevances/*`
+  
 ### 5.0.0 [#34](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/34)
 * Change lithium_li20 par lithium pour garder une cohérence entre les paramètres et les variables
 * Met à jour OpenFiscaCore et web en version 37.0.0
