@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-France-Fiscalite-Miniere",
-    version="5.0.0",
+    version="5.1.0",
     author="OpenFisca Team",
     author_email = "contact@openfisca.org",
     classifiers=[
@@ -25,7 +25,7 @@ setup(
             ),
         ],
     install_requires = [
-        "OpenFisca-Core[web-api] >= 37.0.0, < 38.0.0",
+        "OpenFisca-Core[web-api] >= 37.0.0, <= 40.0.0",
         ],
     extras_require = {
         "dev": [
