@@ -29,3 +29,7 @@ values:
     value: 488.97
     metadata:
       reference: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044329274/2022-07-27/
+  2023-01-01:
+    value: 549.88
+    metadata:
+      reference: https://www.legifrance.gouv.fr/codes/id/LEGIARTI000048046958/2023-09-07
