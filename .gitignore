@@ -9,3 +9,4 @@ dist
 data_titres.csv
 data_activites.csv
 matrice_*
+*.iml
