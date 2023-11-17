@@ -1,5 +1,11 @@
 # Changelog
 
+### 5.2.0 [#36](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/36)
+
+* Ajoute les données pour la taxe de Guyane 2023
+* Zones impactées :
+  - `parameters/taxes/guyane/*`
+
 ### 5.1.0 [#31](https://github.com/openfisca/openfisca-france-fiscalite-miniere/pull/31)
 
 * Ajoute les redevances départementales et communales pour l'année 2023
